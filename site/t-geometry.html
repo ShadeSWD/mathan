@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Глава 2. Аналитическая геометрия</title>
+<meta name="description" content="Векторы и координаты, скалярное, векторное и смешанное произведения, прямая на плоскости, плоскость и прямая в пространстве, кривые второго порядка, поверхности второго порядка, полярные, цилиндрические и сферические координаты.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📐</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<script src="assets/site.js" data-root="./" data-page="theory"></script>
+<main class="wrap">
+  <h1>Глава 2. Аналитическая геометрия</h1>
+  <p class="lead">Аналитическая геометрия переводит чертёж в уравнение. Вопрос
+  «лежат ли четыре точки в одной плоскости» превращается в вычисление одного
+  определителя, «под каким углом сходятся два ребра» — в скалярное
+  произведение, «какую форму имеет обвод» — в приведение уравнения второго
+  порядка к каноническому виду. Для судостроителя это ещё и рабочий язык
+  теоретического чертежа: корпус задаётся сечениями, а сечение — уравнением
+  кривой.</p>
+
+  <div class="short">
+    <h2>Коротко</h2>
+    <p>Вектор задаётся координатами в базисе; три произведения векторов
+    отвечают на три разных вопроса. Скалярное — про угол и проекцию, векторное
+    — про площадь и нормаль, смешанное — про объём и компланарность. Прямая и
+    плоскость описываются линейными уравнениями, кривые и поверхности второго
+    порядка — квадратичными.</p>
+    <ul>
+      <li>\((\mathbf{a},\mathbf{b})=0\) — векторы перпендикулярны;
+      \([\mathbf{a},\mathbf{b}]=\mathbf{0}\) — коллинеарны;
+      \((\mathbf{a},\mathbf{b},\mathbf{c})=0\) — компланарны.</li>
+      <li>Общее уравнение плоскости \(Ax+By+Cz+D=0\): коэффициенты — это
+      координаты нормали \(\mathbf{n}=\{A;B;C\}\).</li>
+      <li>Канонический вид кривой второго порядка получают выделением полных
+      квадратов и переносом начала координат.</li>
+    </ul>
+    <p class="keyf">Ключевые формулы:</p>
+    $$(\mathbf a,\mathbf b)=|\mathbf a||\mathbf b|\cos\varphi=a_xb_x+a_yb_y+a_zb_z,\qquad
+    |[\mathbf a,\mathbf b]|=|\mathbf a||\mathbf b|\sin\varphi=S_{\text{парал}},$$
+    $$(\mathbf a,\mathbf b,\mathbf c)=\begin{vmatrix}
+    a_x&a_y&a_z\\ b_x&b_y&b_z\\ c_x&c_y&c_z\end{vmatrix}=\pm V,\qquad
+    d=\frac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}} .$$
+  </div>
+
+  <h2>2.1. Векторы и координаты</h2>
+  <p><b>Вектором</b> называют направленный отрезок, рассматриваемый с точностью
+  до параллельного переноса. В ортонормированном базисе
+  \(\mathbf i,\mathbf j,\mathbf k\) вектор раскладывается единственным образом:
+  \(\mathbf a=a_x\mathbf i+a_y\mathbf j+a_z\mathbf k=\{a_x;a_y;a_z\}\). Если
+  вектор задан концами \(A(x_1;y_1;z_1)\) и \(B(x_2;y_2;z_2)\), то
+  \(\overline{AB}=\{x_2-x_1;\,y_2-y_1;\,z_2-z_1\}\) — «конец минус начало».</p>
+  <p>Длина вектора \(|\mathbf a|=\sqrt{a_x^2+a_y^2+a_z^2}\); направляющие
+  косинусы \(\cos\alpha=a_x/|\mathbf a|\) и т. д. связаны тождеством
+  \(\cos^2\alpha+\cos^2\beta+\cos^2\gamma=1\). Единичный вектор направления
+  получают нормировкой: \(\mathbf a^0=\mathbf a/|\mathbf a|\).</p>
+
+  <h3>Скалярное произведение</h3>
+  $$(\mathbf a,\mathbf b)=|\mathbf a|\,|\mathbf b|\cos\varphi
+  = a_xb_x+a_yb_y+a_zb_z .$$
+  <p>Отсюда сразу три рабочих следствия: угол между векторами
+  \(\cos\varphi=(\mathbf a,\mathbf b)/(|\mathbf a||\mathbf b|)\); признак
+  перпендикулярности \((\mathbf a,\mathbf b)=0\); проекция вектора на
+  направление \(\operatorname{пр}_{\mathbf b}\mathbf a
+  =(\mathbf a,\mathbf b)/|\mathbf b|\). Физический смысл — работа постоянной
+  силы на прямолинейном перемещении: \(A=(\mathbf F,\mathbf S)\).</p>
+  <svg viewBox="0 0 640 250" class="geo-board" style="max-width:640px">
+    <text x="16" y="20" style="font:11px system-ui;fill:#6b6b74">Скалярное произведение: проекция одного вектора на направление другого</text>
+    <line x1="50" y1="200" x2="290" y2="200" stroke="#16161a" stroke-width="1.2"/>
+    <line x1="60" y1="215" x2="60" y2="55" stroke="#16161a" stroke-width="1.2"/>
+    <line x1="60" y1="200" x2="250" y2="200" stroke="#155e75" stroke-width="2.6"/>
+    <path d="M250 200 l -11 -4 v 8 z" fill="#155e75"/>
+    <text x="230" y="222" style="font:11px system-ui;fill:#155e75">b</text>
+    <line x1="60" y1="200" x2="180" y2="90" stroke="#b3382e" stroke-width="2.6"/>
+    <path d="M180 90 l -10 -1 l 2 9 z" fill="#b3382e"/>
+    <text x="160" y="82" style="font:11px system-ui;fill:#b3382e">a</text>
+    <line x1="180" y1="90" x2="180" y2="200" stroke="#6b6b74" stroke-width="1" stroke-dasharray="4 3"/>
+    <line x1="60" y1="192" x2="180" y2="192" stroke="#1a7f37" stroke-width="3"/>
+    <text x="86" y="184" style="font:11px system-ui;fill:#1a7f37">проекция a на b</text>
+    <path d="M92 200 A 32 32 0 0 0 84 178" fill="none" stroke="#6b6b74" stroke-width="1"/>
+    <text x="94" y="180" style="font:11px system-ui;fill:#6b6b74">φ</text>
+    <text x="50" y="240" style="font:11px system-ui;fill:#6b6b74">(a,b) = |b| · (проекция a на b)</text>
+    <line x1="360" y1="200" x2="610" y2="200" stroke="#16161a" stroke-width="1.2"/>
+    <line x1="380" y1="215" x2="380" y2="55" stroke="#16161a" stroke-width="1.2"/>
+    <line x1="380" y1="200" x2="530" y2="200" stroke="#155e75" stroke-width="2.6"/>
+    <line x1="380" y1="200" x2="380" y2="80" stroke="#b3382e" stroke-width="2.6"/>
+    <path d="M380 80 l -4 10 h 8 z" fill="#b3382e"/>
+    <path d="M380 186 h 14 v 14" fill="none" stroke="#1a7f37" stroke-width="1.6"/>
+    <text x="400" y="130" style="font:11px system-ui;fill:#1a7f37">φ = 90°: (a,b) = 0</text>
+    <text x="360" y="240" style="font:11px system-ui;fill:#6b6b74">признак перпендикулярности: скалярное произведение равно нулю</text>
+  </svg>
+  <div class="caption">Скалярное произведение — длина одного вектора,
+  умноженная на проекцию другого. Знак произведения показывает, острый угол
+  между векторами или тупой; ноль означает ортогональность.</div>
+
+  <h3>Векторное произведение</h3>
+  <p>Векторное произведение \([\mathbf a,\mathbf b]\) — вектор, перпендикулярный
+  обоим сомножителям, длиной \(|\mathbf a||\mathbf b|\sin\varphi\) и
+  направленный так, что тройка \(\mathbf a,\mathbf b,[\mathbf a,\mathbf b]\)
+  правая. В координатах</p>
+  $$[\mathbf a,\mathbf b]=\begin{vmatrix}
+  \mathbf i & \mathbf j & \mathbf k\\
+  a_x & a_y & a_z\\ b_x & b_y & b_z\end{vmatrix}.$$
+  <p>Длина векторного произведения численно равна площади параллелограмма на
+  векторах, значит площадь треугольника
+  \(S_{\triangle}=\tfrac12|[\mathbf a,\mathbf b]|\). Произведение
+  антикоммутативно: \([\mathbf a,\mathbf b]=-[\mathbf b,\mathbf a]\); равенство
+  нулю равносильно коллинеарности. Физический смысл — момент силы
+  \(\mathbf M=[\mathbf r,\mathbf F]\).</p>
+  <svg viewBox="0 0 640 260" class="geo-board" style="max-width:640px">
+    <text x="16" y="20" style="font:11px system-ui;fill:#6b6b74">Векторное произведение: нормаль к плоскости векторов и площадь параллелограмма</text>
+    <path d="M120 190 L 300 150 L 380 90 L 200 130 Z" fill="rgba(21,94,117,.12)" stroke="#155e75" stroke-width="1.4"/>
+    <line x1="120" y1="190" x2="300" y2="150" stroke="#16161a" stroke-width="2.4"/>
+    <path d="M300 150 l -11 -2 l 1 9 z" fill="#16161a"/>
+    <text x="250" y="176" style="font:11px system-ui;fill:#16161a">a</text>
+    <line x1="120" y1="190" x2="200" y2="130" stroke="#16161a" stroke-width="2.4"/>
+    <path d="M200 130 l -8 -6 l -2 9 z" fill="#16161a"/>
+    <text x="150" y="140" style="font:11px system-ui;fill:#16161a">b</text>
+    <line x1="120" y1="190" x2="120" y2="60" stroke="#b3382e" stroke-width="2.6"/>
+    <path d="M120 60 l -5 11 h 10 z" fill="#b3382e"/>
+    <text x="130" y="70" style="font:11px system-ui;fill:#b3382e">[a, b]</text>
+    <text x="228" y="128" style="font:11px system-ui;fill:#155e75">S = |[a, b]|</text>
+    <text x="120" y="228" style="font:11px system-ui;fill:#6b6b74">правило правой руки: от a к b — большой палец даёт направление произведения</text>
+    <text x="120" y="244" style="font:11px system-ui;fill:#6b6b74">площадь треугольника на a и b равна половине длины произведения</text>
+  </svg>
+  <div class="caption">Векторное произведение даёт сразу и нормаль к
+  плоскости, и площадь. Первое используется при составлении уравнения
+  плоскости по трём точкам, второе — при вычислении площадей граней и сечений.</div>
+
+  <h3>Смешанное произведение</h3>
+  $$(\mathbf a,\mathbf b,\mathbf c)=([\mathbf a,\mathbf b],\mathbf c)
+  =\begin{vmatrix} a_x&a_y&a_z\\ b_x&b_y&b_z\\ c_x&c_y&c_z\end{vmatrix}.$$
+  <p>Модуль смешанного произведения равен объёму параллелепипеда, построенного
+  на трёх векторах; объём тетраэдра —
+  \(V_{\text{тетр}}=\tfrac16|(\mathbf a,\mathbf b,\mathbf c)|\). Знак
+  показывает ориентацию тройки: плюс — правая, минус — левая. Равенство нулю
+  означает <b>компланарность</b> — три вектора лежат в одной плоскости, и
+  «объём сплющился». Это и есть рабочий критерий принадлежности четырёх точек
+  одной плоскости, который разобран в
+  <a href="z-geometry">задачах ТР‑1</a>.</p>
+  <svg viewBox="0 0 640 250" class="geo-board" style="max-width:640px">
+    <text x="16" y="20" style="font:11px system-ui;fill:#6b6b74">Смешанное произведение: объём параллелепипеда и признак компланарности</text>
+    <g fill="none" stroke="#16161a" stroke-width="1.5">
+      <path d="M70 190 L 190 190 L 240 150 L 120 150 Z"/>
+      <path d="M70 190 L 70 110 L 190 110 L 190 190"/>
+      <path d="M70 110 L 120 70 L 240 70 L 190 110"/>
+      <path d="M240 70 L 240 150"/>
+    </g>
+    <path d="M70 190 L 190 190 L 240 150 L 120 150 Z" fill="rgba(21,94,117,.10)"/>
+    <line x1="70" y1="190" x2="190" y2="190" stroke="#b3382e" stroke-width="2.4"/>
+    <line x1="70" y1="190" x2="120" y2="150" stroke="#1a7f37" stroke-width="2.4"/>
+    <line x1="70" y1="190" x2="70" y2="110" stroke="#155e75" stroke-width="2.4"/>
+    <text x="126" y="206" style="font:11px system-ui;fill:#b3382e">a</text>
+    <text x="90" y="160" style="font:11px system-ui;fill:#1a7f37">b</text>
+    <text x="46" y="150" style="font:11px system-ui;fill:#155e75">c</text>
+    <text x="150" y="126" style="font:11px system-ui;fill:#6b6b74">V = |(a, b, c)|</text>
+    <text x="70" y="232" style="font:11px system-ui;fill:#6b6b74">объём отличен от нуля — тройка некомпланарна</text>
+    <path d="M400 170 L 560 170 L 610 130 L 450 130 Z" fill="rgba(179,56,46,.10)" stroke="#b3382e" stroke-width="1.5"/>
+    <line x1="400" y1="170" x2="560" y2="170" stroke="#b3382e" stroke-width="2.4"/>
+    <line x1="400" y1="170" x2="450" y2="130" stroke="#1a7f37" stroke-width="2.4"/>
+    <line x1="400" y1="170" x2="530" y2="140" stroke="#155e75" stroke-width="2.4"/>
+    <text x="400" y="212" style="font:11px system-ui;fill:#6b6b74">все три вектора в одной плоскости:</text>
+    <text x="400" y="228" style="font:11px system-ui;fill:#6b6b74">(a, b, c) = 0, объём равен нулю</text>
+  </svg>
+  <div class="caption">Слева — некомпланарная тройка и её объём; справа —
+  вырожденный случай. Проверка компланарности сводится к вычислению одного
+  определителя третьего порядка.</div>
+
+  <h2>2.2. Системы координат</h2>
+  <p>Кроме декартовой системы в задачах используют:</p>
+  <ul>
+    <li><b>полярную</b> на плоскости: \(x=\rho\cos\varphi\),
+    \(y=\rho\sin\varphi\); удобна для кривых с осевой симметрией
+    (лемниската, кардиоида, спирали);</li>
+    <li><b>цилиндрическую</b> в пространстве: \(x=\rho\cos\varphi\),
+    \(y=\rho\sin\varphi\), \(z=z\); естественна для тел вращения — цистерн,
+    валов, труб;</li>
+    <li><b>сферическую</b>: \(x=r\sin\theta\cos\varphi\),
+    \(y=r\sin\theta\sin\varphi\), \(z=r\cos\theta\); нужна для задач с
+    центральной симметрией.</li>
+  </ul>
+  <p>Выбор системы координат — не формальность: он решает, будет уравнение
+  границы простым или неподъёмным. К этому вопросу мы вернёмся в
+  <a href="t-fnp">главе 6</a>, где переход к полярным координатам радикально
+  упрощает двойные интегралы по кругу и кольцу.</p>
+  <svg viewBox="0 0 640 240" class="geo-board" style="max-width:640px">
+    <text x="16" y="20" style="font:11px system-ui;fill:#6b6b74">Полярные координаты: положение точки задаётся радиусом и углом</text>
+    <line x1="60" y1="170" x2="290" y2="170" stroke="#16161a" stroke-width="1.2"/>
+    <line x1="80" y1="215" x2="80" y2="50" stroke="#16161a" stroke-width="1.2"/>
+    <circle cx="80" cy="170" r="45" fill="none" stroke="#c8cfce" stroke-width="1"/>
+    <circle cx="80" cy="170" r="85" fill="none" stroke="#c8cfce" stroke-width="1"/>
+    <circle cx="80" cy="170" r="125" fill="none" stroke="#c8cfce" stroke-width="1"/>
+    <line x1="80" y1="170" x2="188" y2="106" stroke="#b3382e" stroke-width="2.2"/>
+    <circle cx="188" cy="106" r="4.5" fill="#b3382e"/>
+    <text x="130" y="126" style="font:11px system-ui;fill:#b3382e">ρ</text>
+    <path d="M124 170 A 44 44 0 0 0 111 143" fill="none" stroke="#1a7f37" stroke-width="1.6"/>
+    <text x="126" y="156" style="font:11px system-ui;fill:#1a7f37">φ</text>
+    <line x1="188" y1="106" x2="188" y2="170" stroke="#6b6b74" stroke-width="1" stroke-dasharray="4 3"/>
+    <line x1="80" y1="106" x2="188" y2="106" stroke="#6b6b74" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="192" y="100" style="font:11px system-ui;fill:#16161a">M(ρ; φ)</text>
+    <text x="60" y="206" style="font:11px system-ui;fill:#6b6b74">x = ρ cos φ, y = ρ sin φ</text>
+    <text x="60" y="230" style="font:11px system-ui;fill:#6b6b74">окружности ρ = const и лучи φ = const — координатные линии</text>
+    <text x="360" y="44" style="font:11px system-ui;fill:#6b6b74">кардиоида ρ = a(1 + cos φ) в полярных координатах</text>
+    <line x1="380" y1="150" x2="620" y2="150" stroke="#16161a" stroke-width="1.1"/>
+    <line x1="420" y1="215" x2="420" y2="60" stroke="#16161a" stroke-width="1.1"/>
+    <path d="M420 150 C 424 108 470 68 520 68 C 570 68 604 102 604 140
+             C 604 178 570 212 520 212 C 470 212 424 192 420 150 Z"
+          fill="rgba(21,94,117,.10)" stroke="#155e75" stroke-width="2"/>
+    <circle cx="420" cy="150" r="4" fill="#b3382e"/>
+    <text x="380" y="230" style="font:11px system-ui;fill:#6b6b74">в декартовых координатах эта же кривая описывается громоздко</text>
+  </svg>
+  <div class="caption">Одна и та же кривая в удачных координатах записывается
+  одной строкой, в неудачных — уравнением четвёртой степени. Выбор системы
+  координат — первый шаг решения, а не «оформление».</div>
+
+  <h2>2.3. Прямая на плоскости</h2>
+  <p>Прямая допускает несколько равноправных записей, и умение мгновенно
+  переходить от одной к другой экономит половину времени решения:</p>
+  <table class="plan">
+    <tr><th>Вид</th><th>Уравнение</th><th>Когда удобен</th></tr>
+    <tr><td>общее</td><td>\(Ax+By+C=0\)</td>
+      <td>известна нормаль \(\mathbf n=\{A;B\}\); расстояние от точки</td></tr>
+    <tr><td>с угловым коэффициентом</td><td>\(y=kx+b\)</td>
+      <td>углы, параллельность \(k_1=k_2\), перпендикулярность \(k_1k_2=-1\)</td></tr>
+    <tr><td>каноническое</td><td>\(\dfrac{x-x_0}{m}=\dfrac{y-y_0}{n}\)</td>
+      <td>известны точка и направляющий вектор \(\mathbf s=\{m;n\}\)</td></tr>
+    <tr><td>параметрическое</td><td>\(x=x_0+mt,\ y=y_0+nt\)</td>
+      <td>движение точки, пересечения</td></tr>
+    <tr><td>через две точки</td>
+      <td>\(\dfrac{x-x_1}{x_2-x_1}=\dfrac{y-y_1}{y_2-y_1}\)</td>
+      <td>медианы, высоты, стороны треугольника</td></tr>
+    <tr><td>в отрезках</td><td>\(\dfrac{x}{a}+\dfrac{y}{b}=1\)</td>
+      <td>быстрое построение по точкам пересечения с осями</td></tr>
+  </table>
+  <p>Расстояние от точки \(M_0(x_0;y_0)\) до прямой \(Ax+By+C=0\):</p>
+  $$d=\frac{|Ax_0+By_0+C|}{\sqrt{A^2+B^2}} .$$
+  <p>Угол между прямыми находят как угол между их нормалями (или направляющими
+  векторами) через скалярное произведение — это надёжнее, чем формула с
+  тангенсами, которая ломается на вертикальных прямых.</p>
+  <svg viewBox="0 0 640 250" class="geo-board" style="max-width:640px">
+    <text x="16" y="20" style="font:11px system-ui;fill:#6b6b74">Расстояние от точки до прямой измеряется по перпендикуляру</text>
+    <line x1="40" y1="210" x2="600" y2="210" stroke="#16161a" stroke-width="1.1"/>
+    <line x1="80" y1="230" x2="80" y2="46" stroke="#16161a" stroke-width="1.1"/>
+    <line x1="100" y1="190" x2="520" y2="70" stroke="#155e75" stroke-width="2.2"/>
+    <text x="440" y="76" style="font:11px system-ui;fill:#155e75">Ax + By + C = 0</text>
+    <circle cx="250" cy="70" r="5" fill="#b3382e"/>
+    <text x="222" y="60" style="font:11px system-ui;fill:#b3382e">M₀</text>
+    <line x1="250" y1="70" x2="292" y2="217" stroke="#6b6b74" stroke-width="1" stroke-dasharray="4 3"/>
+    <line x1="250" y1="70" x2="278" y2="167" stroke="#1a7f37" stroke-width="2.4"/>
+    <path d="M270 158 l 12 -3 l 3 12" fill="none" stroke="#1a7f37" stroke-width="1.4"/>
+    <text x="286" y="126" style="font:11px system-ui;fill:#1a7f37">d</text>
+    <line x1="360" y1="120" x2="410" y2="138" stroke="#b3382e" stroke-width="2"/>
+    <path d="M410 138 l -9 -6 l -2 9 z" fill="#b3382e"/>
+    <text x="392" y="160" style="font:11px system-ui;fill:#b3382e">нормаль n = {A; B}</text>
+    <text x="40" y="238" style="font:11px system-ui;fill:#6b6b74">формула расстояния — это модуль проекции вектора от точки прямой к M₀ на единичную нормаль</text>
+  </svg>
+  <div class="caption">Формула расстояния не «магическая»: числитель — это
+  скалярное произведение с нормалью, знаменатель — нормировка нормали до
+  единичной длины.</div>
+
+  <h2>2.4. Плоскость и прямая в пространстве</h2>
+  <p><b>Общее уравнение плоскости</b> \(Ax+By+Cz+D=0\); вектор
+  \(\mathbf n=\{A;B;C\}\) ей перпендикулярен. Отсюда все рабочие приёмы:</p>
+  <ul>
+    <li>плоскость через точку \(M_0\) с нормалью \(\mathbf n\):
+    \(A(x-x_0)+B(y-y_0)+C(z-z_0)=0\);</li>
+    <li>плоскость через три точки: нормаль ищут как векторное произведение
+    \([\overline{M_1M_2},\overline{M_1M_3}]\), либо сразу записывают
+    определитель \(\begin{vmatrix} x-x_1 & y-y_1 & z-z_1\\
+    x_2-x_1 & y_2-y_1 & z_2-z_1\\ x_3-x_1 & y_3-y_1 & z_3-z_1\end{vmatrix}=0\);</li>
+    <li>угол между плоскостями — угол между нормалями;</li>
+    <li>расстояние от точки до плоскости —
+    \(d=\dfrac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}\);</li>
+    <li>отсутствие в уравнении переменной означает параллельность
+    соответствующей оси: \(Ax+By+D=0\) — плоскость параллельна оси \(Oz\).</li>
+  </ul>
+  <p><b>Прямая в пространстве</b> задаётся либо канонически
+  \(\dfrac{x-x_0}{m}=\dfrac{y-y_0}{n}=\dfrac{z-z_0}{p}\) (точка и направляющий
+  вектор \(\mathbf s=\{m;n;p\}\)), либо как пересечение двух плоскостей. Угол
+  между прямыми — угол между \(\mathbf s_1\) и \(\mathbf s_2\); угол между
+  прямой и плоскостью дополняет до 90° угол между \(\mathbf s\) и
+  \(\mathbf n\), поэтому в формуле стоит синус:</p>
+  $$\sin\psi=\frac{|(\mathbf s,\mathbf n)|}{|\mathbf s|\,|\mathbf n|} .$$
+  <svg viewBox="0 0 640 260" class="geo-board" style="max-width:640px">
+    <text x="16" y="20" style="font:11px system-ui;fill:#6b6b74">Плоскость, её нормаль и прямая: углы считаются через скалярное произведение</text>
+    <path d="M70 200 L 330 150 L 420 90 L 160 140 Z" fill="rgba(21,94,117,.10)" stroke="#155e75" stroke-width="1.6"/>
+    <text x="330" y="176" style="font:11px system-ui;fill:#155e75">Ax + By + Cz + D = 0</text>
+    <line x1="240" y1="145" x2="240" y2="50" stroke="#b3382e" stroke-width="2.4"/>
+    <path d="M240 50 l -5 11 h 10 z" fill="#b3382e"/>
+    <text x="248" y="62" style="font:11px system-ui;fill:#b3382e">n = {A; B; C}</text>
+    <line x1="150" y1="230" x2="360" y2="70" stroke="#1a7f37" stroke-width="2.4"/>
+    <text x="330" y="60" style="font:11px system-ui;fill:#1a7f37">прямая, s = {m; n; p}</text>
+    <circle cx="240" cy="145" r="4.5" fill="#16161a"/>
+    <path d="M240 176 A 40 40 0 0 0 214 166" fill="none" stroke="#6b6b74" stroke-width="1.2"/>
+    <text x="196" y="192" style="font:11px system-ui;fill:#6b6b74">ψ</text>
+    <text x="70" y="248" style="font:11px system-ui;fill:#6b6b74">угол прямой с плоскостью: sin ψ = |(s, n)| / (|s| · |n|); прямая параллельна плоскости при (s, n) = 0</text>
+  </svg>
+  <div class="caption">Все задачи о прямых и плоскостях сводятся к двум
+  векторам — нормали \(\mathbf n\) и направляющему \(\mathbf s\). Понимание,
+  какой из них где стоит, экономит запоминание десятка формул.</div>
+
+  <h2>2.5. Кривые второго порядка</h2>
+  <p>Общее уравнение второго порядка на плоскости</p>
+  $$a_{11}x^2+2a_{12}xy+a_{22}y^2+2a_{13}x+2a_{23}y+a_{33}=0$$
+  <p>после поворота осей (уничтожающего член с \(xy\)) и переноса начала
+  координат (выделение полных квадратов) приводится к одному из канонических
+  видов:</p>
+  <table class="plan">
+    <tr><th>Кривая</th><th>Каноническое уравнение</th><th>Характеристики</th></tr>
+    <tr><td>эллипс</td><td>\(\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1\)</td>
+      <td>\(c^2=a^2-b^2\), эксцентриситет \(\varepsilon=c/a&lt;1\)</td></tr>
+    <tr><td>гипербола</td><td>\(\dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}=1\)</td>
+      <td>\(c^2=a^2+b^2\), \(\varepsilon&gt;1\), асимптоты \(y=\pm\dfrac{b}{a}x\)</td></tr>
+    <tr><td>парабола</td><td>\(y^2=2px\)</td>
+      <td>\(\varepsilon=1\), фокус \((p/2;0)\), директриса \(x=-p/2\)</td></tr>
+  </table>
+  <p>Единое определение: кривая второго порядка — множество точек, для которых
+  отношение расстояния до фокуса к расстоянию до директрисы постоянно и равно
+  \(\varepsilon\). Эллипс — «сжатая» окружность, гипербола — две ветви с
+  асимптотами, парабола — граничный случай между ними.</p>
+  <div class="note tip"><b>Практический алгоритм приведения.</b> Если члена с
+  \(xy\) нет (а в типовых расчётах его обычно нет), достаточно сгруппировать
+  отдельно по \(x\) и по \(y\), выделить полные квадраты и разделить на
+  свободный член. Например \(4x^2+9y^2-32x-18y+37=0\) даёт
+  \(4(x-4)^2+9(y-1)^2=36\), то есть эллипс с центром \((4;1)\), полуосями
+  \(a=3\), \(b=2\). Полный разбор — в <a href="z-geometry">задачах ТР‑1</a>.</div>
+  <svg viewBox="0 0 640 280" class="geo-board" style="max-width:640px">
+    <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Три кривые второго порядка с фокусами</text>
+    <line x1="20" y1="150" x2="200" y2="150" stroke="#16161a" stroke-width="1"/>
+    <line x1="110" y1="230" x2="110" y2="70" stroke="#16161a" stroke-width="1"/>
+    <ellipse cx="110" cy="150" rx="80" ry="50" fill="rgba(21,94,117,.08)" stroke="#155e75" stroke-width="2"/>
+    <circle cx="48" cy="150" r="3.6" fill="#b3382e"/><circle cx="172" cy="150" r="3.6" fill="#b3382e"/>
+    <text x="34" y="140" style="font:11px system-ui;fill:#b3382e">F₁</text>
+    <text x="166" y="140" style="font:11px system-ui;fill:#b3382e">F₂</text>
+    <text x="20" y="250" style="font:11px system-ui;fill:#16161a">эллипс: r₁ + r₂ = 2a</text>
+    <text x="20" y="266" style="font:11px system-ui;fill:#6b6b74">эксцентриситет меньше единицы</text>
+    <line x1="230" y1="150" x2="410" y2="150" stroke="#16161a" stroke-width="1"/>
+    <line x1="320" y1="230" x2="320" y2="70" stroke="#16161a" stroke-width="1"/>
+    <line x1="248" y1="86" x2="392" y2="214" stroke="#c8cfce" stroke-width="1.2" stroke-dasharray="6 4"/>
+    <line x1="248" y1="214" x2="392" y2="86" stroke="#c8cfce" stroke-width="1.2" stroke-dasharray="6 4"/>
+    <path d="M356 82 C 336 116 336 184 356 218" fill="none" stroke="#155e75" stroke-width="2"/>
+    <path d="M284 82 C 304 116 304 184 284 218" fill="none" stroke="#155e75" stroke-width="2"/>
+    <circle cx="376" cy="150" r="3.6" fill="#b3382e"/><circle cx="264" cy="150" r="3.6" fill="#b3382e"/>
+    <text x="230" y="250" style="font:11px system-ui;fill:#16161a">гипербола: |r₁ − r₂| = 2a</text>
+    <text x="230" y="266" style="font:11px system-ui;fill:#6b6b74">серым — асимптоты y = ±(b/a)x</text>
+    <line x1="440" y1="150" x2="625" y2="150" stroke="#16161a" stroke-width="1"/>
+    <line x1="470" y1="230" x2="470" y2="70" stroke="#16161a" stroke-width="1"/>
+    <path d="M470 150 C 470 112 520 84 600 74" fill="none" stroke="#155e75" stroke-width="2"/>
+    <path d="M470 150 C 470 188 520 216 600 226" fill="none" stroke="#155e75" stroke-width="2"/>
+    <circle cx="502" cy="150" r="3.6" fill="#b3382e"/>
+    <line x1="438" y1="76" x2="438" y2="224" stroke="#1a7f37" stroke-width="1.8" stroke-dasharray="5 4"/>
+    <text x="444" y="242" style="font:11px system-ui;fill:#1a7f37">директриса</text>
+    <text x="440" y="266" style="font:11px system-ui;fill:#16161a">парабола: r = d, эксцентриситет равен единице</text>
+  </svg>
+  <div class="caption">Фокальные свойства кривых. Они не декоративны: на
+  фокальном свойстве параболы работают параболические антенны и прожекторы, а
+  эллиптические обводы возникают в задачах о равнопрочных сечениях.</div>
+
+  <h2>2.6. Поверхности второго порядка</h2>
+  <p>Канонические уравнения основных поверхностей:</p>
+  <table class="plan">
+    <tr><th>Поверхность</th><th>Уравнение</th><th>Сечения</th></tr>
+    <tr><td>эллипсоид</td>
+      <td>\(\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}+\dfrac{z^2}{c^2}=1\)</td>
+      <td>все сечения — эллипсы</td></tr>
+    <tr><td>однополостный гиперболоид</td>
+      <td>\(\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}-\dfrac{z^2}{c^2}=1\)</td>
+      <td>горизонтальные — эллипсы, вертикальные — гиперболы</td></tr>
+    <tr><td>двуполостный гиперболоид</td>
+      <td>\(\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}-\dfrac{z^2}{c^2}=-1\)</td>
+      <td>две отдельные «чаши»</td></tr>
+    <tr><td>эллиптический параболоид</td>
+      <td>\(z=\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}\)</td>
+      <td>горизонтальные — эллипсы, вертикальные — параболы</td></tr>
+    <tr><td>гиперболический параболоид</td>
+      <td>\(z=\dfrac{x^2}{a^2}-\dfrac{y^2}{b^2}\)</td>
+      <td>«седло»: гиперболы и параболы</td></tr>
+    <tr><td>конус</td>
+      <td>\(\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}-\dfrac{z^2}{c^2}=0\)</td>
+      <td>асимптотический для обоих гиперболоидов</td></tr>
+    <tr><td>цилиндры</td>
+      <td>\(\dfrac{x^2}{a^2}+\dfrac{y^2}{b^2}=1\) и т. п.</td>
+      <td>отсутствие переменной = образующие параллельны её оси</td></tr>
+  </table>
+  <p><b>Метод сечений</b> — универсальный способ понять, как выглядит
+  поверхность: пересекаем её плоскостями \(z=\mathrm{const}\),
+  \(x=\mathrm{const}\), \(y=\mathrm{const}\) и смотрим на получившиеся кривые.
+  Ровно этим приёмом строится теоретический чертёж корпуса: горизонтальные
+  сечения дают ватерлинии, поперечные — шпангоуты, продольные — батоксы.</p>
+  <svg viewBox="0 0 640 280" class="geo-board" style="max-width:640px">
+    <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Метод сечений: однополостный гиперболоид и его горизонтальные сечения</text>
+    <ellipse cx="180" cy="60" rx="86" ry="22" fill="none" stroke="#155e75" stroke-width="1.8"/>
+    <ellipse cx="180" cy="150" rx="44" ry="13" fill="none" stroke="#b3382e" stroke-width="2"/>
+    <ellipse cx="180" cy="240" rx="86" ry="22" fill="none" stroke="#155e75" stroke-width="1.8"/>
+    <path d="M94 60 C 128 100 128 200 94 240" fill="none" stroke="#16161a" stroke-width="1.8"/>
+    <path d="M266 60 C 232 100 232 200 266 240" fill="none" stroke="#16161a" stroke-width="1.8"/>
+    <path d="M137 52 C 160 100 160 200 137 248" fill="none" stroke="#c8cfce" stroke-width="1"/>
+    <path d="M223 52 C 200 100 200 200 223 248" fill="none" stroke="#c8cfce" stroke-width="1"/>
+    <text x="272" y="150" style="font:11px system-ui;fill:#b3382e">горловое сечение</text>
+    <text x="272" y="60" style="font:11px system-ui;fill:#155e75">z = h: эллипс</text>
+    <text x="60" y="270" style="font:11px system-ui;fill:#6b6b74">вертикальные сечения — гиперболы</text>
+    <text x="400" y="40" style="font:11px system-ui;fill:#6b6b74">гиперболический параболоид («седло»)</text>
+    <path d="M400 120 C 450 80 520 80 600 60" fill="none" stroke="#16161a" stroke-width="1.8"/>
+    <path d="M400 200 C 450 160 520 160 600 140" fill="none" stroke="#16161a" stroke-width="1.8"/>
+    <path d="M400 120 C 400 160 400 170 400 200" fill="none" stroke="#c8cfce" stroke-width="1"/>
+    <path d="M600 60 C 600 100 600 110 600 140" fill="none" stroke="#c8cfce" stroke-width="1"/>
+    <path d="M420 106 C 470 140 530 140 590 106" fill="none" stroke="#b3382e" stroke-width="2"/>
+    <path d="M420 190 C 470 130 530 130 590 74" fill="none" stroke="#1a7f37" stroke-width="2"/>
+    <text x="404" y="230" style="font:11px system-ui;fill:#b3382e">в одном направлении — вогнутая парабола</text>
+    <text x="404" y="248" style="font:11px system-ui;fill:#1a7f37">в перпендикулярном — выпуклая</text>
+    <text x="404" y="266" style="font:11px system-ui;fill:#6b6b74">такая поверхность не имеет ни максимума, ни минимума в центре</text>
+  </svg>
+  <div class="caption">Слева — как сечения плоскостями восстанавливают форму
+  поверхности; справа — седловая точка, которая ещё встретится в
+  <a href="t-fnp">главе 6</a> как случай \(AC-B^2&lt;0\).</div>
+  <div class="applied"><b>Где это работает.</b> Теоретический чертёж корпуса —
+  это в точности метод сечений: корпус задают тремя семействами кривых
+  (шпангоуты, ватерлинии, батоксы), а площади этих сечений затем интегрируют,
+  получая водоизмещение и положение центра величины — см.
+  <a href="https://shadeswd.duckdns.org/shipstat/t-buoyancy">«Плавучесть»</a>.
+  Правила построения и согласования проекций — в курсе
+  <a href="https://shadeswd.duckdns.org/descgeo/">начертательной геометрии</a>.</div>
+
+  <h2>Что дальше</h2>
+  <ul>
+    <li>Разбор реальных заданий — <a href="z-geometry">ТР‑1: векторы и
+    геометрия</a>: угол между векторами, единичная нормаль, компланарность,
+    уравнение плоскости, приведение кривой к каноническому виду.</li>
+    <li>Определители, через которые вычисляются произведения, —
+    <a href="t-linear">глава 1</a>.</li>
+    <li>Площади и объёмы фигур, ограниченных этими кривыми и поверхностями, —
+    <a href="t-integral">глава 5</a> и <a href="t-fnp">глава 6</a>.</li>
+    <li>Литература: Беклемишев Д. В., Клетеник Д. В. — см.
+    <a href="sources">Источники</a>.</li>
+  </ul>
+</main>
+</body>
+</html>
