@@ -71,7 +71,12 @@ def test_chapter_volume(name):
     """Глава — это изложение, а не аннотация."""
     html = read(name)
     assert len(html) > 18000, 'глава слишком короткая (%d байт)' % len(html)
-    assert html.count('<h2') >= 4, 'меньше четырёх разделов'
+    if name in THEORY:
+        assert html.count('<h2') >= 4, 'в теоретической главе меньше четырёх разделов'
+    else:
+        # на странице разборов заголовки задач — <h3>, разделов <h2> немного
+        assert html.count('<h2') >= 2, 'нет ни «Коротко», ни заключительного раздела'
+        assert html.count('<h3') >= 5, 'меньше пяти заголовков разобранных задач'
 
 
 @pytest.mark.parametrize('name', TASKS)
