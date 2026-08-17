@@ -306,3 +306,17 @@ table.plan th, table.plan td { border-bottom: 1px solid var(--line); padding: 6p
 table.plan th { color: #0b5a70; }
 
 .handle.red .handle-core { fill: var(--red); }
+
+/* раскрывающийся блок с длинной выкладкой */
+details.q {
+  background: #fff; border: 1px solid var(--line); border-radius: 10px;
+  padding: 8px 15px; margin: 12px 0;
+}
+details.q > summary {
+  cursor: pointer; font: 600 15px system-ui, sans-serif; color: #26262e;
+  list-style-position: outside;
+}
+details.q > summary::marker { color: var(--accent); }
+details.q[open] > summary { margin-bottom: 6px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+details.q p, details.q li { font-size: 15.5px; }
+details.q > :last-child { margin-bottom: 4px; }
