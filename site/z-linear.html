@@ -3,34 +3,677 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Задачи: линейная алгебра</title>
-<meta name="description" content="Разборы типовых расчётов по матрицам и системам уравнений.">
+<title>Задачи: матрицы и системы (ТР‑1)</title>
+<meta name="description" content="Разбор заданий типового расчёта: действия с матрицами, определитель четвёртого порядка двумя способами, обратная матрица через союзную и методом Гаусса — Жордана, ранг и базисный минор, система тремя способами, теорема Кронекера — Капелли, фундаментальная система решений, собственные числа и векторы, квадратичная форма и критерий Сильвестра.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📐</text></svg>">
 <link rel="stylesheet" href="assets/style.css">
-<style>
-.tldr { background:#f2f6fb; border-left:4px solid #155e75; border-radius:0 10px 10px 0;
-  padding:10px 16px; margin:16px 0; font-size:15.5px; }
-.tldr ul { margin:6px 0 2px; padding-left:20px; }
-</style>
 </head>
 <body>
 <script src="assets/site.js" data-root="./" data-page="tasks"></script>
 <main class="wrap">
-  <h1>Задачи: линейная алгебра</h1>
-  <p class="lead">Разборы типовых расчётов по матрицам и системам уравнений.</p>
-  <div class="tldr">
-    <b>Что будет в этой главе.</b>
+  <h1>Задачи: матрицы и системы (ТР‑1)</h1>
+  <p class="lead">Девять заданий первой части типового расчёта кафедры — от
+  действий с матрицами до квадратичных форм. Числа того же порядка, что в
+  вариантах, но пересчитаны заново, и каждое решение доведено до независимой
+  проверки. Теория — <a href="t-linear">глава 1</a>.</p>
+
+  <div class="short">
+    <h2>Коротко</h2>
+    <p>Каждый следующий приём опирается на предыдущий: определитель нужен для
+    обратной матрицы, обратная — для матричного способа решения системы, ранг —
+    для исследования совместности, однородная система — для собственных
+    векторов.</p>
     <ul>
-      <li>вычисление определителя разложением и приведением к треугольному виду</li>
-      <li>решение системы методом Гаусса с проверкой подстановкой</li>
-      <li>ранг матрицы и исследование системы на совместность</li>
-      <li>собственные значения и собственные векторы</li>
+      <li>Умножение матриц некоммутативно: у \(AB\) и \(BA\) может не совпасть
+      даже размер (задача 1).</li>
+      <li>Определитель порядка 4 считают приведением к треугольному виду, а не
+      полным раскрытием (задача 2).</li>
+      <li>Контроль обратной матрицы всегда один: \(AA^{-1}=E\) (задача 3).</li>
+      <li>Крамер, обратная матрица и Гаусс дают один ответ и расходятся только
+      в трудоёмкости (задача 5).</li>
+      <li>Совместность решает теорема Кронекера — Капелли, число свободных
+      неизвестных равно \(n-r\) (задачи 6 и 7).</li>
+      <li>Сумма собственных чисел равна следу, произведение — определителю
+      (задачи 4, 8 и 9).</li>
     </ul>
+    <p class="keyf">Ключевые формулы:</p>
+    $$A^{-1}=\frac{1}{\det A}\,\widetilde A^{\,T},\qquad
+    x_j=\frac{\Delta_j}{\Delta},\qquad
+    \det(A-\lambda E)=0,\qquad
+    \sum\lambda_i=\operatorname{tr}A,\quad \prod\lambda_i=\det A .$$
   </div>
-  <p>Глава готовится: текст пишется по конспектам и методическим материалам
-  кафедры, схемы и числовые примеры делаются заново. Пока она не готова,
-  соседние главы курса уже доступны — их список в разделе
-  <a href="theory">«Теория»</a>.</p>
-  <p><a href="theory">← Оглавление курса</a></p>
+
+  <div class="task">
+    <h3>Задача 1. Действия с матрицами и некоммутативность</h3>
+    <div class="given">Дано:
+    \(A=\begin{pmatrix}3&-2&1\\4&0&-1\end{pmatrix}\),
+    \(B=\begin{pmatrix}1&2\\-3&1\\2&0\end{pmatrix}\),
+    \(C=\begin{pmatrix}2&3\\-1&5\end{pmatrix}\).
+    Найти: \(D=AB-2C^T\); существует ли \(BA\) и равно ли оно \(AB\).</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Согласуем размеры: у \(A\) три столбца, у \(B\) три
+        строки, значит \(AB\) есть, и оно 2×2 — как и \(C^T\)
+        (<a href="t-linear">§ 1.1</a>).</div>
+        <div class="calc">\(A_{2\times 3}\cdot B_{3\times 2}\) =
+          <span class="sub">(строк у A) × (столбцов у B)</span> = <b>2×2</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Элементы — по правилу «строка на столбец»,
+        \(c_{ij}=\sum_k a_{ik}b_{kj}\).</div>
+        <div class="calc">\(c_{11}\) = <span class="sub">3·1 + (−2)·(−3) + 1·2</span> = <b>11</b>,
+          \(c_{12}\) = <span class="sub">3·2 + (−2)·1 + 1·0</span> = <b>4</b></div>
+        <div class="calc">\(c_{21}\) = <span class="sub">4·1 + 0·(−3) + (−1)·2</span> = <b>2</b>,
+          \(c_{22}\) = <span class="sub">4·2 + 0·1 + (−1)·0</span> = <b>8</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Транспонирование и умножение на число поэлементны.</div>
+        <div class="calc">\(D=AB-2C^T\) =
+          <span class="sub">\(\begin{pmatrix}11&4\\2&8\end{pmatrix}-\begin{pmatrix}4&-2\\6&10\end{pmatrix}\)</span> =
+          <b>\(\begin{pmatrix}7&6\\-4&-2\end{pmatrix}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Произведение \(BA\) тоже определено, но имеет размер
+        3×3 — различие не в числах, а в природе объектов.</div>
+        <div class="calc">\(BA=B_{3\times 2}\cdot A_{2\times 3}\) =
+          <span class="sub">строк у B — три, столбцов у A — три</span> =
+          <b>\(\begin{pmatrix}11&-2&-1\\-5&6&-4\\6&-4&2\end{pmatrix}\)</b></div>
+      </div>
+    </div>
+    <div class="answer">\(D=\begin{pmatrix}7&6\\-4&-2\end{pmatrix}\); \(BA\)
+    существует, но имеет размер 3×3, поэтому \(AB\neq BA\).</div>
+    <div class="check">когда определены оба произведения, обязано выполняться
+    \(\operatorname{tr}(AB)=\operatorname{tr}(BA)\): \(11+8=19\) и
+    \(11+6+2=19\) — совпало, значит обе таблицы посчитаны верно. Заодно
+    \(\det(BA)=0\): сомножители имеют ранг не выше двух.</div>
+  </div>
+  <div class="task">
+    <h3>Задача 2. Определитель четвёртого порядка</h3>
+    <div class="given">Дано:
+    \(\Delta=\begin{vmatrix}2&-1&3&1\\1&0&2&0\\3&2&-1&4\\-1&1&0&1\end{vmatrix}\).
+    Найти: \(\Delta\) двумя способами, сравнить трудоёмкость.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Способ 1 — приведение к треугольному виду. Меняем
+        местами строки 1 и 2 (знак определителя меняется) и обнуляем первый
+        столбец.</div>
+        <div class="calc">строка 2 = <span class="sub">(2, −1, 3, 1) − 2·(1, 0, 2, 0)</span> = <b>(0, −1, −1, 1)</b></div>
+        <div class="calc">строка 3 = <span class="sub">(3, 2, −1, 4) − 3·(1, 0, 2, 0)</span> = <b>(0, 2, −7, 4)</b></div>
+        <div class="calc">строка 4 = <span class="sub">(−1, 1, 0, 1) + (1, 0, 2, 0)</span> = <b>(0, 1, 2, 1)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Ведущим элементом \(-1\) обнуляем второй столбец
+        (<a href="t-linear">§ 1.2</a>).</div>
+        <div class="calc">строка 3 = <span class="sub">(0, 2, −7, 4) + 2·(0, −1, −1, 1)</span> = <b>(0, 0, −9, 6)</b></div>
+        <div class="calc">строка 4 = <span class="sub">(0, 1, 2, 1) + (0, −1, −1, 1)</span> = <b>(0, 0, 1, 2)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Чтобы не появились дроби, меняем местами строки 3 и 4
+        (знак меняется второй раз, то есть восстанавливается), и перемножаем
+        диагональ.</div>
+        <div class="calc">строка 4 = <span class="sub">(0, 0, −9, 6) + 9·(0, 0, 1, 2)</span> = <b>(0, 0, 0, 24)</b></div>
+        <div class="calc">\(\Delta=(-1)^2a_{11}a_{22}a_{33}a_{44}\) =
+          <span class="sub">1·(−1)·1·24</span> = <b>−24</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Способ 2 — разложение по строке с наибольшим числом
+        нулей: для строки \((1,0,2,0)\) нужны два минора вместо четырёх.</div>
+        <div class="calc">\(M_{21}=\begin{vmatrix}-1&3&1\\2&-1&4\\1&0&1\end{vmatrix}\) =
+          <span class="sub">(1 + 12 + 0) − (−1 + 0 + 6)</span> = <b>8</b></div>
+        <div class="calc">\(M_{23}=\begin{vmatrix}2&-1&1\\3&2&4\\-1&1&1\end{vmatrix}\) =
+          <span class="sub">(4 + 4 + 3) − (−2 + 8 − 3)</span> = <b>8</b></div>
+        <div class="calc">\(\Delta=a_{21}A_{21}+a_{23}A_{23}\) =
+          <span class="sub">1·(−1)³·8 + 2·(−1)⁵·8</span> = <b>−24</b></div>
+      </div>
+    </div>
+    <div class="answer">\(\Delta=-24\). Приведение к треугольному виду стоило
+    около 20 умножений, разложение по «удачной» строке — около 26, по строке без
+    нулей — около 50, полное раскрытие (\(4!=24\) слагаемых) — около 72.</div>
+    <div class="check">определитель не меняется, если к одной строке прибавить
+    другую. Прибавим к первой строке четвёртую: она станет \((1,0,3,2)\), и во
+    втором столбце будет три нуля. Разложение по этому столбцу даёт
+    \(2\cdot(-1)^{5}\cdot 3+1\cdot(-1)^{6}\cdot(-18)=-24\) — то же число
+    третьим путём.</div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 3. Обратная матрица третьего порядка</h3>
+    <div class="given">Дано: \(A=\begin{pmatrix}3&-1&-1\\-2&2&-1\\2&-1&1\end{pmatrix}\).
+    Найти: \(A^{-1}\) через союзную матрицу, сделать проверку.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Обратная существует лишь при \(\det A\neq 0\), поэтому
+        определитель считаем первым.</div>
+        <div class="calc">\(\det A\) = <span class="sub">3·(2 − 1) + 1·(−2 + 2) − 1·(2 − 4)</span> = <b>5</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Девять алгебраических дополнений
+        \(A_{ik}=(-1)^{i+k}M_{ik}\); знаки — шахматной доской.</div>
+        <div class="calc">\(A_{11}\) = <span class="sub">+(2·1 − (−1)(−1))</span> = <b>1</b>,
+          \(A_{12}\) = <span class="sub">−((−2)·1 − (−1)·2)</span> = <b>0</b>,
+          \(A_{13}\) = <span class="sub">+((−2)(−1) − 2·2)</span> = <b>−2</b></div>
+        <div class="calc">\(A_{21}\) = <span class="sub">−((−1)·1 − (−1)(−1))</span> = <b>2</b>,
+          \(A_{22}\) = <span class="sub">+(3·1 − (−1)·2)</span> = <b>5</b>,
+          \(A_{23}\) = <span class="sub">−(3·(−1) − (−1)·2)</span> = <b>1</b></div>
+        <div class="calc">\(A_{31}\) = <span class="sub">+((−1)(−1) − (−1)·2)</span> = <b>3</b>,
+          \(A_{32}\) = <span class="sub">−(3·(−1) − (−1)(−2))</span> = <b>5</b>,
+          \(A_{33}\) = <span class="sub">+(3·2 − (−1)(−2))</span> = <b>4</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Союзную матрицу составляем из дополнений и
+        <b>транспонируем</b>: \(A_{ik}\) встаёт на место \((k,i)\) — этот шаг
+        чаще всего пропускают.</div>
+        <div class="calc">\(A^{-1}=\dfrac{1}{\det A}\widetilde A^{\,T}\) =
+          <span class="sub">\(\dfrac{1}{5}\begin{pmatrix}1&2&3\\0&5&5\\-2&1&4\end{pmatrix}\)</span> =
+          <b>\(\begin{pmatrix}0{,}2&0{,}4&0{,}6\\0&1&1\\-0{,}4&0{,}2&0{,}8\end{pmatrix}\)</b></div>
+      </div>
+    </div>
+    <div class="answer">\(A^{-1}=\dfrac{1}{5}\begin{pmatrix}1&2&3\\0&5&5\\-2&1&4\end{pmatrix}\).</div>
+    <div class="check">перемножаем. Первая строка \(AA^{-1}\):
+    \(\tfrac15(3+0+2)=1\), \(\tfrac15(6-5-1)=0\), \(\tfrac15(9-5-4)=0\);
+    две остальные считаются так же и дают \((0,1,0)\) и \((0,0,1)\). Итого
+    \(AA^{-1}=E\).</div>
+  </div>
+  <details class="q"><summary>Тот же результат методом Гаусса — Жордана</summary>
+    <p>Справа от \(A\) приписывают единичную матрицу и элементарными
+    преобразованиями строк приводят левую половину к единичной; что окажется
+    справа, то и есть \(A^{-1}\). Стоимость \(\sim n^3\) операций против
+    \(\sim n!\) у союзной матрицы. Чтобы избежать дробей, первой строкой берём
+    \(r_1+r_2\), затем \(r_2+2r_1'\) и \(r_3-2r_1'\):</p>
+    $$\left(\begin{array}{ccc|ccc}
+    3&-1&-1&1&0&0\\ -2&2&-1&0&1&0\\ 2&-1&1&0&0&1\end{array}\right)
+    \sim\left(\begin{array}{ccc|ccc}
+    1&1&-2&1&1&0\\ 0&4&-5&2&3&0\\ 0&-3&5&-2&-2&1\end{array}\right)$$
+    <p>Сумма второй и третьей строк даёт простую строку
+    \((0,1,0\mid 0,1,1)\); ставим её второй, дальше \(r_3'+3r_2''\) с делением
+    на 5 и \(r_1'-r_2''+2r_3''\):</p>
+    $$\sim\left(\begin{array}{ccc|ccc}
+    1&1&-2&1&1&0\\ 0&1&0&0&1&1\\ 0&0&5&-2&1&4\end{array}\right)
+    \sim\left(\begin{array}{ccc|ccc}
+    1&0&0&0{,}2&0{,}4&0{,}6\\ 0&1&0&0&1&1\\ 0&0&1&-0{,}4&0{,}2&0{,}8\end{array}\right)$$
+    <p>Справа стоит ровно та же матрица, что была найдена через союзную.</p>
+  </details>
+
+  <div class="task">
+    <h3>Задача 4. Ранг матрицы и базисный минор</h3>
+    <div class="given">Дано:
+    \(A=\begin{pmatrix}1&2&-1&3&0\\2&-1&3&1&5\\3&1&2&4&5\\0&1&1&2&1\end{pmatrix}\).
+    Найти: \(\operatorname{rang}A\) и какой-нибудь базисный минор.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Перебирать миноры бессмысленно: приводим матрицу к
+        ступенчатому виду, ранг при этом не меняется
+        (<a href="t-linear">§ 1.4</a>).</div>
+        <div class="calc">строка 2 = <span class="sub">(2, −1, 3, 1, 5) − 2·(1, 2, −1, 3, 0)</span> = <b>(0, −5, 5, −5, 5)</b></div>
+        <div class="calc">строка 3 = <span class="sub">(3, 1, 2, 4, 5) − 3·(1, 2, −1, 3, 0)</span> = <b>(0, −5, 5, −5, 5)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Строки 2 и 3 совпали — одна лишняя. Делим вторую на
+        \(-5\), вычитаем её из третьей и из четвёртой.</div>
+        <div class="calc">строка 2 = <span class="sub">(0, −5, 5, −5, 5) : (−5)</span> = <b>(0, 1, −1, 1, −1)</b></div>
+        <div class="calc">строка 3 = <span class="sub">(0, −5, 5, −5, 5) + 5·(0, 1, −1, 1, −1)</span> = <b>(0, 0, 0, 0, 0)</b></div>
+        <div class="calc">строка 4 = <span class="sub">(0, 1, 1, 2, 1) − (0, 1, −1, 1, −1)</span> = <b>(0, 0, 2, 1, 2)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Ненулевых строк три — это и есть ранг. Базисный минор
+        берём в <i>исходной</i> матрице: строки 1, 2, 4 и столбцы 1, 2, 3, где
+        стоят ведущие элементы.</div>
+        <div class="calc">\(M=\begin{vmatrix}1&2&-1\\2&-1&3\\0&1&1\end{vmatrix}\) =
+          <span class="sub">(−1 + 0 − 2) − (0 + 3 + 4)</span> = <b>−10</b></div>
+      </div>
+    </div>
+    <div class="answer">\(\operatorname{rang}A=3\); базисный минор стоит на
+    пересечении строк 1, 2, 4 и столбцов 1, 2, 3 и равен \(-10\).</div>
+    <div class="check">зависимость видна и без преобразований: третья строка
+    равна сумме первой и второй (\(1+2=3\), \(2-1=1\), \(-1+3=2\),
+    \(3+1=4\), \(0+5=5\)), поэтому \(\operatorname{rang}A\leqslant 3\); с
+    другой стороны найден ненулевой минор третьего порядка, значит
+    \(\operatorname{rang}A\geqslant 3\). Оценки сходятся, и все пять миноров
+    четвёртого порядка обязаны быть нулевыми — прямой счёт подтверждает.</div>
+  </div>
+  <svg viewBox="0 0 640 224" class="geo-board" style="max-width:640px;font:11px system-ui">
+    <text x="16" y="20" fill="#6b6b74">Ранг и базисный минор: слева — где он стоит, справа — почему ранг равен трём</text>
+    <text x="40" y="52" fill="#16161a">исходная матрица</text>
+    <rect x="40" y="62" width="160" height="96" fill="none" stroke="#16161a" stroke-width="1.4"/>
+    <rect x="41" y="111" width="158" height="22" fill="#b3382e" opacity=".10"/>
+    <rect x="40" y="62" width="96" height="48" fill="rgba(26,127,55,.13)" stroke="#1a7f37" stroke-width="1.8"/>
+    <rect x="40" y="134" width="96" height="24" fill="rgba(26,127,55,.13)" stroke="#1a7f37" stroke-width="1.8"/>
+    <g text-anchor="middle" fill="#16161a"><text x="56" y="78">1</text><text x="88" y="78">2</text><text x="120" y="78">−1</text><text x="152" y="78">3</text><text x="184" y="78">0</text><text x="56" y="102">2</text><text x="88" y="102">−1</text><text x="120" y="102">3</text><text x="152" y="102">1</text><text x="184" y="102">5</text><text x="56" y="126">3</text><text x="88" y="126">1</text><text x="120" y="126">2</text><text x="152" y="126">4</text><text x="184" y="126">5</text><text x="56" y="150">0</text><text x="88" y="150">1</text><text x="120" y="150">1</text><text x="152" y="150">2</text><text x="184" y="150">1</text></g>
+    <text x="40" y="180" fill="#1a7f37">зелёное — базисный минор, он равен −10</text>
+    <text x="40" y="196" fill="#b3382e">розовое — строка 3 = строка 1 + строка 2</text>
+    <path d="M232 110 L 366 110" stroke="#1a7f37" stroke-width="2"/>
+    <path d="M366 110 l -9 -4.5 v 9 z" fill="#1a7f37"/>
+    <text x="242" y="102" fill="#1a7f37">элементарные</text>
+    <text x="242" y="130" fill="#6b6b74">ранг не меняется</text>
+    <text x="400" y="52" fill="#16161a">ступенчатый вид</text>
+    <rect x="400" y="62" width="160" height="96" fill="none" stroke="#16161a" stroke-width="1.4"/>
+    <rect x="401" y="135" width="158" height="22" fill="#b3382e" opacity=".10"/>
+    <circle cx="416" cy="74" r="10" fill="none" stroke="#b3382e" stroke-width="1.6"/>
+    <circle cx="448" cy="98" r="10" fill="none" stroke="#b3382e" stroke-width="1.6"/>
+    <circle cx="480" cy="122" r="10" fill="none" stroke="#b3382e" stroke-width="1.6"/>
+    <g text-anchor="middle" fill="#16161a"><text x="416" y="78">1</text><text x="448" y="78">2</text><text x="480" y="78">−1</text><text x="512" y="78">3</text><text x="544" y="78">0</text><text x="416" y="102">0</text><text x="448" y="102">1</text><text x="480" y="102">−1</text><text x="512" y="102">1</text><text x="544" y="102">−1</text><text x="416" y="126">0</text><text x="448" y="126">0</text><text x="480" y="126">2</text><text x="512" y="126">1</text><text x="544" y="126">2</text><text x="416" y="150">0</text><text x="448" y="150">0</text><text x="480" y="150">0</text><text x="512" y="150">0</text><text x="544" y="150">0</text></g>
+    <text x="400" y="180" fill="#b3382e">три ведущих элемента — три ступеньки</text>
+    <text x="400" y="196" fill="#6b6b74">нулевая строка: rang A = 3</text>
+  </svg>
+  <div class="caption">Ступенчатый вид делает ранг видимым, а номера уцелевших
+  строк и столбцов с ведущими элементами указывают, где искать базисный
+  минор.</div>
+
+  <div class="task">
+    <h3>Задача 5. Система трёх уравнений тремя способами</h3>
+    <div class="given">Дано:
+    \(\begin{cases}2x+y+z=7,\\ x-y+2z=5,\\ 3x+2y-z=4.\end{cases}\)
+    Найти: решение по формулам Крамера, матричным способом и методом Гаусса.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Способ 1 — формулы Крамера. Главный определитель не равен
+        нулю, значит решение единственно; \(\Delta_j\) получается заменой
+        \(j\)-го столбца на \((7,5,4)^T\).</div>
+        <div class="calc">\(\Delta=\begin{vmatrix}2&1&1\\1&-1&2\\3&2&-1\end{vmatrix}\) =
+          <span class="sub">(2 + 6 + 2) − (−3 + 8 − 1)</span> = <b>6</b></div>
+        <div class="calc">\(\Delta_1\) = <span class="sub">(7 + 8 + 10) − (−4 + 28 − 5)</span> = <b>6</b>,
+          \(\Delta_2\) = <span class="sub">(−10 + 42 + 4) − (15 + 16 − 7)</span> = <b>12</b>,
+          \(\Delta_3\) = <span class="sub">(−8 + 15 + 14) − (−21 + 20 + 4)</span> = <b>18</b></div>
+        <div class="calc">\(x,\ y,\ z=\Delta_j/\Delta\) =
+          <span class="sub">6/6, 12/6, 18/6</span> = <b>1, 2, 3</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Способ 2 — матричный: \(\mathbf x=A^{-1}\mathbf b\).
+        Обратную строим, как в задаче 3.</div>
+        <div class="calc">\(A^{-1}\) = <span class="sub">\(\dfrac{1}{6}\begin{pmatrix}-3&3&3\\7&-5&-3\\5&-1&-3\end{pmatrix}\)</span> = <b>\(\dfrac16\widetilde A^{\,T}\)</b></div>
+        <div class="calc">\(x\) = <span class="sub">((−3)·7 + 3·5 + 3·4)/6</span> = <b>1</b>,
+          \(y\) = <span class="sub">(7·7 − 5·5 − 3·4)/6</span> = <b>2</b>,
+          \(z\) = <span class="sub">(5·7 − 1·5 − 3·4)/6</span> = <b>3</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Способ 3 — метод Гаусса. Меняем местами первые два
+        уравнения ради ведущей единицы и обнуляем первый столбец.</div>
+        <div class="calc">строка 2 = <span class="sub">(2, 1, 1 | 7) − 2·(1, −1, 2 | 5)</span> = <b>(0, 3, −3 | −3)</b></div>
+        <div class="calc">строка 3 = <span class="sub">(3, 2, −1 | 4) − 3·(1, −1, 2 | 5)</span> = <b>(0, 5, −7 | −11)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Делим вторую строку на 3, обнуляем второй столбец, и
+        обратным ходом снизу вверх находим неизвестные.</div>
+        <div class="calc">строка 3 = <span class="sub">(0, 5, −7 | −11) − 5·(0, 1, −1 | −1)</span> = <b>(0, 0, −2 | −6)</b></div>
+        <div class="calc">\(z\) = <span class="sub">−6 : (−2)</span> = <b>3</b>,
+          \(y=z-1\) = <span class="sub">3 − 1</span> = <b>2</b>,
+          \(x=5+y-2z\) = <span class="sub">5 + 2 − 6</span> = <b>1</b></div>
+      </div>
+    </div>
+    <div class="answer">\(x=1,\ y=2,\ z=3\). Крамер стоил четырёх определителей
+    третьего порядка (около 70 умножений), матричный способ — определителя и
+    девяти дополнений (около 60), Гаусс — примерно 20 действий.</div>
+    <div class="check">подставляем в исходные уравнения: \(2+2+3=7\) ✓,
+    \(1-2+6=5\) ✓, \(3+4-3=4\) ✓. Все три равенства выполнены, а так как
+    \(\Delta\neq 0\), других решений нет.</div>
+  </div>
+  <svg viewBox="0 0 640 196" class="geo-board" style="max-width:640px;font:11px system-ui">
+    <text x="16" y="20" fill="#6b6b74">Прямой ход Гаусса: расширенная матрица становится ступенчатой, ведущие элементы обведены</text>
+    <text x="40" y="60" fill="#16161a">после перестановки строк</text>
+    <rect x="40" y="72" width="128" height="72" fill="none" stroke="#16161a" stroke-width="1.4"/>
+    <line x1="136" y1="72" x2="136" y2="144" stroke="#6b6b74" stroke-width="1" stroke-dasharray="3 3"/>
+    <circle cx="56" cy="84" r="10" fill="none" stroke="#b3382e" stroke-width="1.6"/>
+    <g text-anchor="middle" fill="#16161a"><text x="56" y="88">1</text><text x="88" y="88">−1</text><text x="120" y="88">2</text><text x="152" y="88">5</text><text x="56" y="112">2</text><text x="88" y="112">1</text><text x="120" y="112">1</text><text x="152" y="112">7</text><text x="56" y="136">3</text><text x="88" y="136">2</text><text x="120" y="136">−1</text><text x="152" y="136">4</text></g>
+    <path d="M180 108 L 236 108" stroke="#1a7f37" stroke-width="1.8"/>
+    <path d="M236 108 l -9 -4.5 v 9 z" fill="#1a7f37"/>
+    <text x="178" y="100" fill="#1a7f37">−2r₁, −3r₁</text>
+    <text x="250" y="60" fill="#16161a">первый столбец обнулён</text>
+    <rect x="250" y="72" width="128" height="72" fill="none" stroke="#16161a" stroke-width="1.4"/>
+    <line x1="346" y1="72" x2="346" y2="144" stroke="#6b6b74" stroke-width="1" stroke-dasharray="3 3"/>
+    <circle cx="266" cy="84" r="10" fill="none" stroke="#b3382e" stroke-width="1.6"/>
+    <circle cx="298" cy="108" r="10" fill="none" stroke="#b3382e" stroke-width="1.6"/>
+    <g text-anchor="middle" fill="#16161a"><text x="266" y="88">1</text><text x="298" y="88">−1</text><text x="330" y="88">2</text><text x="362" y="88">5</text><text x="266" y="112">0</text><text x="298" y="112">3</text><text x="330" y="112">−3</text><text x="362" y="112">−3</text><text x="266" y="136">0</text><text x="298" y="136">5</text><text x="330" y="136">−7</text><text x="362" y="136">−11</text></g>
+    <path d="M390 108 L 446 108" stroke="#1a7f37" stroke-width="1.8"/>
+    <path d="M446 108 l -9 -4.5 v 9 z" fill="#1a7f37"/>
+    <text x="392" y="100" fill="#1a7f37">:3, −5r₂</text>
+    <text x="460" y="60" fill="#16161a">ступенчатый вид</text>
+    <rect x="460" y="72" width="128" height="72" fill="none" stroke="#16161a" stroke-width="1.4"/>
+    <line x1="556" y1="72" x2="556" y2="144" stroke="#6b6b74" stroke-width="1" stroke-dasharray="3 3"/>
+    <circle cx="476" cy="84" r="10" fill="none" stroke="#b3382e" stroke-width="1.6"/>
+    <circle cx="508" cy="108" r="10" fill="none" stroke="#b3382e" stroke-width="1.6"/>
+    <circle cx="540" cy="132" r="10" fill="none" stroke="#b3382e" stroke-width="1.6"/>
+    <g text-anchor="middle" fill="#16161a"><text x="476" y="88">1</text><text x="508" y="88">−1</text><text x="540" y="88">2</text><text x="572" y="88">5</text><text x="476" y="112">0</text><text x="508" y="112">1</text><text x="540" y="112">−1</text><text x="572" y="112">−1</text><text x="476" y="136">0</text><text x="508" y="136">0</text><text x="540" y="136">−2</text><text x="572" y="136">−6</text></g>
+    <path d="M604 140 L 604 84" stroke="#155e75" stroke-width="1.8"/>
+    <path d="M604 84 l -4.5 9 h 9 z" fill="#155e75"/>
+    <text x="516" y="162" fill="#155e75">обратный ход</text>
+    <text x="40" y="182" fill="#6b6b74">пунктир отделяет столбец свободных членов; ведущих элементов три</text>
+  </svg>
+  <div class="caption">Три состояния расширенной матрицы в прямом ходе: ведущий
+  элемент каждой ступеньки обведён красным, ниже него стоят нули.</div>
+  <div class="applied"><b>Где это работает.</b> В реальном расчёте порядок
+  матрицы измеряется тысячами: узловые перемещения модели перекрытия, токи
+  судовой сети, расходы в трубопроводной системе. Крамер и обратная матрица там
+  невозможны физически, а метод Гаусса и его варианты (прогонка, разложение
+  \(LU\)) остаются рабочими: см.
+  <a href="https://shadeswd.duckdns.org/strength/">строительную механику</a> и
+  <a href="https://shadeswd.duckdns.org/nummet/">численные методы</a>.</div>
+
+  <div class="task">
+    <h3>Задача 6. Исследование системы на совместность</h3>
+    <div class="given">Дано:
+    \(\begin{cases}x_1+2x_2-x_3+3x_4=5,\\ 2x_1+4x_2-x_3+4x_4=9,\\
+    3x_1+6x_2-2x_3+7x_4=14.\end{cases}\)
+    Найти: исследовать систему по теореме Кронекера — Капелли, выписать общее
+    решение.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Оба ранга находим сразу: преобразуем расширенную
+        матрицу, а на ранг основной смотрим «до черты».</div>
+        <div class="calc">строка 2 = <span class="sub">(2, 4, −1, 4 | 9) − 2·(1, 2, −1, 3 | 5)</span> = <b>(0, 0, 1, −2 | −1)</b></div>
+        <div class="calc">строка 3 = <span class="sub">(3, 6, −2, 7 | 14) − 3·(1, 2, −1, 3 | 5)</span> = <b>(0, 0, 1, −2 | −1)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Строки совпали: третье уравнение — следствие первых двух.
+        Ранги равны, система совместна, но ранг меньше числа неизвестных
+        (<a href="t-linear">§ 1.5</a>).</div>
+        <div class="calc">\(r=\operatorname{rang}A=\operatorname{rang}\overline A\) =
+          <span class="sub">две ненулевые строки</span> = <b>2</b></div>
+        <div class="calc">число свободных неизвестных \(n-r\) = <span class="sub">4 − 2</span> = <b>2</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Базисные — \(x_1\) и \(x_3\): минор при них
+        \(\begin{vmatrix}1&-1\\2&-1\end{vmatrix}=1\neq 0\). Свободные
+        \(x_2,x_4\) переносим вправо.</div>
+        <div class="calc">\(x_3-2x_4=-1\Rightarrow x_3\) = <span class="sub">−1 + 2x₄</span> = <b>2x₄ − 1</b></div>
+        <div class="calc">\(x_1=5-2x_2+x_3-3x_4\) =
+          <span class="sub">5 − 2x₂ + (2x₄ − 1) − 3x₄</span> = <b>4 − 2x₂ − x₄</b></div>
+      </div>
+    </div>
+    <div class="answer">система совместна и неопределённа; общее решение
+    \(x_1=4-2C_1-C_2\), \(x_2=C_1\), \(x_3=2C_2-1\), \(x_4=C_2\), где
+    \(C_1,C_2\) — произвольные постоянные.</div>
+    <div class="check">подставим общее решение в отброшенное третье уравнение:
+    \(3(4-2C_1-C_2)+6C_1-2(2C_2-1)+7C_2=14\) — постоянные сократились при любых
+    \(C_1,C_2\), значит верно и решение, и то, что третье уравнение было
+    следствием. При \(C_1=C_2=1\) получаем \((1;1;1;1)\): \(1+2-1+3=5\),
+    \(2+4-1+4=9\), \(3+6-2+7=14\) ✓. Если же заменить в третьем уравнении 14
+    на 15, то \(\operatorname{rang}A=2\), а \(\operatorname{rang}\overline A=3\):
+    появляется строка \((0,0,0,0\mid 1)\), то есть \(0=1\), и система
+    становится несовместной.</div>
+  </div>
+  <div class="note warn"><b>Признак несовместности.</b> Строка вида «нули
+  слева, ненулевое число справа» — это уравнение \(0=c\), то есть
+  противоречие. В трёхмерном случае так выглядит трёхгранная призма: плоскости
+  пересекаются попарно, но общей точки не имеют.</div>
+  <svg viewBox="0 0 640 268" class="geo-board" style="max-width:640px;font:11px system-ui">
+    <text x="16" y="20" fill="#6b6b74">Три уравнения с тремя неизвестными: что именно различают ранги</text>
+    <g fill-opacity=".13" stroke-width="1.4">
+      <path d="M58 91 L 27 208 L 162 209 L 193 92 Z" fill="#16161a" stroke="#16161a"/>
+      <path d="M193 92 L 89 123 L 27 208 L 131 177 Z" fill="#155e75" stroke="#155e75"/>
+      <path d="M48 196 L 193 191 L 172 104 L 27 109 Z" fill="#1a7f37" stroke="#1a7f37"/>
+    </g>
+    <circle cx="110" cy="150" r="5" fill="#b3382e"/>
+    <text x="122" y="144" fill="#b3382e">одна точка</text>
+    <text x="26" y="236" fill="#16161a">rang A = rang A|b = 3 = n</text>
+    <text x="26" y="252" fill="#6b6b74">решение единственно (задача 5)</text>
+    <g fill-opacity=".13" stroke-width="1.4">
+      <path d="M268 91 L 237 208 L 372 209 L 403 92 Z" fill="#16161a" stroke="#16161a"/>
+      <path d="M403 92 L 299 123 L 237 208 L 341 177 Z" fill="#155e75" stroke="#155e75"/>
+      <path d="M403 92 L 299 74 L 237 208 L 341 226 Z" fill="#1a7f37" stroke="#1a7f37"/>
+    </g>
+    <line x1="403" y1="92" x2="237" y2="208" stroke="#b3382e" stroke-width="2.6"/>
+    <text x="296" y="140" fill="#b3382e">прямая</text>
+    <text x="236" y="236" fill="#16161a">rang A = rang A|b = 2 &lt; n</text>
+    <text x="236" y="252" fill="#6b6b74">решений бесконечно много</text>
+    <g fill-opacity=".13" stroke-width="1.4">
+      <path d="M478 91 L 447 208 L 582 209 L 613 92 Z" fill="#16161a" stroke="#16161a"/>
+      <path d="M613 92 L 509 123 L 447 208 L 551 177 Z" fill="#155e75" stroke="#155e75"/>
+      <path d="M602 99 L 498 80 L 447 190 L 551 208 Z" fill="#1a7f37" stroke="#1a7f37"/>
+    </g>
+    <g stroke="#b3382e" stroke-width="2.2" stroke-dasharray="6 4">
+      <line x1="613" y1="92" x2="447" y2="208"/>
+      <line x1="564" y1="92" x2="458" y2="165"/>
+      <line x1="590" y1="123" x2="485" y2="196"/>
+    </g>
+    <text x="446" y="236" fill="#16161a">rang A = 2 &lt; rang A|b = 3</text>
+    <text x="446" y="252" fill="#6b6b74">общей точки нет (задача 6)</text>
+  </svg>
+  <div class="caption">Плоскости и линии их пересечения посчитаны численно и
+  обрезаны кубом. Слева плоскости общего положения дают точку; в середине третье
+  уравнение — следствие первых двух, и все они проходят через общую прямую;
+  справа сдвинутая третья плоскость даёт призму без общей точки.</div>
+
+  <div class="task">
+    <h3>Задача 7. Фундаментальная система решений</h3>
+    <div class="given">Дано:
+    \(\begin{cases}x_1+x_2+x_4+2x_5=0,\\ x_1+x_3+3x_4+x_5=0,\\
+    x_2-x_3-2x_4+x_5=0,\\ x_1+x_2+x_3+2x_4+4x_5=0.\end{cases}\)
+    Найти: общее решение и фундаментальную систему решений.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Однородная система совместна всегда; вопрос лишь в
+        наличии ненулевых решений. Столбец свободных членов остаётся нулевым,
+        поэтому преобразуем только коэффициенты.</div>
+        <div class="calc">строка 2 = <span class="sub">(1, 0, 1, 3, 1) − (1, 1, 0, 1, 2)</span> = <b>(0, −1, 1, 2, −1)</b></div>
+        <div class="calc">строка 4 = <span class="sub">(1, 1, 1, 2, 4) − (1, 1, 0, 1, 2)</span> = <b>(0, 0, 1, 1, 2)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">После умножения второй строки на \(-1\) она совпадает с
+        третьей: ненулевых строк остаётся три.</div>
+        <div class="calc">строка 3 = <span class="sub">(0, 1, −1, −2, 1) − (0, 1, −1, −2, 1)</span> = <b>(0, 0, 0, 0, 0)</b></div>
+        <div class="calc">\(k=n-r\) = <span class="sub">5 − 3</span> = <b>2 вектора в ФСР</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Базисные — \(x_1,x_2,x_3\) (минор при них треугольный и
+        равен 1), свободные — \(x_4,x_5\); выражаем базисные обратным
+        ходом.</div>
+        <div class="calc">\(x_3\) = <span class="sub">из уравнения x₃ + x₄ + 2x₅ = 0</span> = <b>−x₄ − 2x₅</b></div>
+        <div class="calc">\(x_2=x_3+2x_4-x_5\) = <span class="sub">(−x₄ − 2x₅) + 2x₄ − x₅</span> = <b>x₄ − 3x₅</b></div>
+        <div class="calc">\(x_1=-x_2-x_4-2x_5\) = <span class="sub">−(x₄ − 3x₅) − x₄ − 2x₅</span> = <b>−2x₄ + x₅</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Векторы ФСР получаем, поочерёдно придавая свободным
+        неизвестным значения \((1;0)\) и \((0;1)\).</div>
+        <div class="calc">\(\mathbf e_1\) = <span class="sub">при x₄ = 1, x₅ = 0</span> = <b>(−2; 1; −1; 1; 0)</b></div>
+        <div class="calc">\(\mathbf e_2\) = <span class="sub">при x₄ = 0, x₅ = 1</span> = <b>(1; −3; −2; 0; 1)</b></div>
+      </div>
+    </div>
+    <div class="answer">\(\mathbf x=C_1\mathbf e_1+C_2\mathbf e_2\), где
+    \(\mathbf e_1=(-2;1;-1;1;0)\), \(\mathbf e_2=(1;-3;-2;0;1)\); пространство
+    решений двумерно.</div>
+    <div class="check">подставляем \(\mathbf e_1\) во все четыре уравнения:
+    \(-2+1+1=0\) ✓, \(-2-1+3=0\) ✓, \(1+1-2=0\) ✓, \(-2+1-1+2=0\) ✓; для
+    \(\mathbf e_2\): \(1-3+2=0\) ✓, \(1-2+1=0\) ✓, \(-3+2+1=0\) ✓,
+    \(1-3-2+4=0\) ✓. Линейная независимость видна по последним двум
+    координатам: минор \(\begin{vmatrix}1&0\\0&1\end{vmatrix}=1\neq 0\),
+    поэтому \(C_1\mathbf e_1+C_2\mathbf e_2=\mathbf 0\) лишь при
+    \(C_1=C_2=0\).</div>
+  </div>
+  <div class="note tip"><b>Почему проверка независимости бесплатна.</b> Свободным
+  неизвестным придают значения строк единичной матрицы, поэтому в «свободной»
+  части векторов ФСР стоит единичная матрица порядка \(k\) с минором,
+  равным единице.</div>
+
+  <div class="task">
+    <h3>Задача 8. Собственные числа и собственные векторы</h3>
+    <div class="given">Дано: \(A=\begin{pmatrix}4&4&-1\\1&1&1\\1&-2&4\end{pmatrix}\).
+    Найти: собственные числа и собственные векторы.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Характеристическое уравнение \(\det(A-\lambda E)=0\)
+        (<a href="t-linear">§ 1.7</a>) раскрываем по первой строке.</div>
+        <div class="calc">\(\begin{vmatrix}4-\lambda&4&-1\\1&1-\lambda&1\\1&-2&4-\lambda\end{vmatrix}\) =
+          <span class="sub">(4−λ)(λ² − 5λ + 6) − 4(3 − λ) − (λ − 3)</span> = <b>\(-\lambda^3+9\lambda^2-23\lambda+15\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Целые корни ищем среди делителей 15: при \(\lambda=1\)
+        получаем \(1-9+23-15=0\), деление многочлена завершает разложение.</div>
+        <div class="calc">\(\lambda^3-9\lambda^2+23\lambda-15\) =
+          <span class="sub">(λ − 1)(λ² − 8λ + 15)</span> = <b>(λ − 1)(λ − 3)(λ − 5)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Для каждого корня решаем однородную систему
+        \((A-\lambda E)\mathbf x=\mathbf 0\). При \(\lambda_1=1\) второе
+        уравнение даёт \(x_1=-x_3\), первое — \(x_2=x_3\).</div>
+        <div class="calc">\(\mathbf e_1\) = <span class="sub">при x₃ = 1</span> = <b>(−1; 1; 1)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">При \(\lambda_2=3\) матрица \((A-3E)\) имеет две
+        одинаковые строки \((1,-2,1)\); вместе с \((1,4,-1)\) они дают
+        \(x_3=3x_2\) и \(x_1=-x_2\). При \(\lambda_3=5\) сумма второй и третьей
+        строк равна \((2,-6,0)\), откуда \(x_1=3x_2\), \(x_3=x_2\).</div>
+        <div class="calc">\(\mathbf e_2\) = <span class="sub">при x₂ = 1</span> = <b>(−1; 1; 3)</b>,
+          \(\mathbf e_3\) = <span class="sub">при x₂ = 1</span> = <b>(3; 1; 1)</b></div>
+      </div>
+    </div>
+    <div class="answer">\(\lambda_1=1,\ \lambda_2=3,\ \lambda_3=5\); собственные
+    векторы \((-1;1;1)\), \((-1;1;3)\), \((3;1;1)\) — каждый с точностью до
+    ненулевого множителя.</div>
+    <div class="check">прямая подстановка:
+    \(A\mathbf e_3=(12+4-1;\,3+1+1;\,3-2+4)=(15;5;5)=5\mathbf e_3\) ✓. И
+    теорема Виета: сумма корней обязана равняться следу, произведение —
+    определителю. Считаем: \(1+3+5=9\) и \(\operatorname{tr}A=4+1+4=9\) ✓;
+    \(1\cdot 3\cdot 5=15\) и \(\det A=24-12+3=15\) ✓. Ошибка в корнях
+    нарушила бы оба равенства.</div>
+  </div>
+  <svg viewBox="0 0 640 250" class="geo-board" style="max-width:640px;font:11px system-ui">
+    <text x="16" y="20" fill="#6b6b74">Собственное направление — то, которое оператор не поворачивает</text>
+    <line x1="70" y1="150" x2="292" y2="150" stroke="#16161a" stroke-width="1.1"/>
+    <path d="M292 150 l -9 -4 v 8 z" fill="#16161a"/>
+    <line x1="180" y1="222" x2="180" y2="52" stroke="#16161a" stroke-width="1.1"/>
+    <path d="M180 52 l -4 9 h 8 z" fill="#16161a"/>
+    <circle cx="180" cy="150" r="30" fill="none" stroke="#6b6b74" stroke-width="1.3" stroke-dasharray="5 4"/>
+    <ellipse cx="180" cy="150" rx="90" ry="30" transform="rotate(-45 180 150)" fill="none" stroke="#155e75" stroke-width="1.8"/>
+    <line x1="180" y1="150" x2="210" y2="150" stroke="#6b6b74" stroke-width="2"/>
+    <line x1="180" y1="150" x2="240" y2="120" stroke="#b3382e" stroke-width="2"/>
+    <path d="M240 120 l -10 -1.5 l 1.5 9 z" fill="#b3382e"/>
+    <line x1="180" y1="150" x2="201.2" y2="128.8" stroke="#1a7f37" stroke-width="2.2"/>
+    <line x1="180" y1="150" x2="243.6" y2="86.4" stroke="#1a7f37" stroke-width="2" stroke-dasharray="7 4"/>
+    <path d="M243.6 86.4 l -10 0 l 3 9 z" fill="#1a7f37"/>
+    <line x1="180" y1="150" x2="201.2" y2="171.2" stroke="#1a7f37" stroke-width="2.2"/>
+    <path d="M201.2 171.2 l -9 0 l 2 8 z" fill="#1a7f37"/>
+    <text x="192" y="168" fill="#6b6b74">v</text>
+    <text x="246" y="114" fill="#b3382e">Av</text>
+    <text x="250" y="82" fill="#1a7f37">λ = 3</text>
+    <text x="214" y="196" fill="#1a7f37">λ = 1</text>
+    <text x="40" y="240" fill="#6b6b74">пунктир — единичная окружность, синяя линия — её образ</text>
+    <text x="330" y="64" fill="#16161a">Оператор растягивает окружность в эллипс.</text>
+    <text x="330" y="80" fill="#16161a">Оси эллипса и есть собственные направления:</text>
+    <text x="330" y="96" fill="#16161a">по ним вектор только удлиняется в λ раз,</text>
+    <text x="330" y="112" fill="#b3382e">а красный вектор Av уже развёрнут.</text>
+    <text x="330" y="140" fill="#1a7f37">Для матрицы примера (2 1; 1 2):</text>
+    <text x="330" y="158" fill="#1a7f37">λ₁ + λ₂ = 3 + 1 = 4 = след 2 + 2</text>
+    <text x="330" y="174" fill="#1a7f37">λ₁ · λ₂ = 3 · 1 = 3 = определитель</text>
+    <text x="330" y="200" fill="#6b6b74">Те же равенства проверяют задачу 8:</text>
+    <text x="330" y="216" fill="#6b6b74">1 + 3 + 5 = 9, 1 · 3 · 5 = 15.</text>
+  </svg>
+  <div class="caption">Образ единичной окружности построен численно. Красный
+  вектор оператор поворачивает, зелёные — нет: они лежат на осях эллипса и лишь
+  меняют длину, а коэффициенты растяжения и есть собственные числа.</div>
+  <div class="applied"><b>Где это работает.</b> Собственные числа — коэффициенты
+  «усиления» по главным направлениям: главные моменты инерции сечения, главные
+  напряжения, квадраты частот свободных колебаний; собственные векторы задают
+  главные оси и формы колебаний — см.
+  <a href="https://shadeswd.duckdns.org/vibro/">«Вибрацию корпуса»</a>.</div>
+
+  <div class="task">
+    <h3>Задача 9. Квадратичная форма и критерий Сильвестра</h3>
+    <div class="given">Дано:
+    \(Q(x_1,x_2,x_3)=5x_1^2+6x_2^2+4x_3^2-4x_1x_2-4x_1x_3\).
+    Найти: канонический вид формы, выяснить знакоопределённость.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">На диагонали матрицы формы — коэффициенты при квадратах,
+        вне диагонали — <b>половины</b> коэффициентов при смешанных
+        произведениях, поэтому она симметрична.</div>
+        <div class="calc">\(A\) = <span class="sub">коэффициент при x₁x₂ равен −4, значит a₁₂ = a₂₁ = −2</span> =
+          <b>\(\begin{pmatrix}5&-2&-2\\-2&6&0\\-2&0&4\end{pmatrix}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Критерий Сильвестра: форма положительно определена
+        тогда и только тогда, когда все угловые миноры положительны
+        (<a href="t-linear">§ 1.8</a>).</div>
+        <div class="calc">\(\Delta_1=a_{11}\) = <span class="sub">5</span> = <b>5 &gt; 0</b>,
+          \(\Delta_2\) = <span class="sub">30 − 4</span> = <b>26 &gt; 0</b>,
+          \(\Delta_3=\det A\) = <span class="sub">5·24 − (−2)·(−8) + (−2)·12</span> = <b>80 &gt; 0</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Канонический вид даёт переход к базису собственных
+        векторов симметричной матрицы \(A\): на диагонали окажутся её
+        собственные числа.</div>
+        <div class="calc">\(\det(A-\lambda E)=0\) =
+          <span class="sub">−(λ³ − 15λ² + 66λ − 80) = 0</span> = <b>(λ − 2)(λ − 5)(λ − 8) = 0</b></div>
+        <div class="calc">\(Q=\lambda_1y_1^2+\lambda_2y_2^2+\lambda_3y_3^2\) =
+          <span class="sub">λ₁ = 2, λ₂ = 5, λ₃ = 8</span> = <b>\(2y_1^2+5y_2^2+8y_3^2\)</b></div>
+      </div>
+    </div>
+    <div class="answer">канонический вид \(Q=2y_1^2+5y_2^2+8y_3^2\); все угловые
+    миноры и все собственные числа положительны, значит форма <b>положительно
+    определена</b>: \(Q(\mathbf x)&gt;0\) при любом \(\mathbf x\neq\mathbf 0\).</div>
+    <div class="check">сумма собственных чисел \(2+5+8=15\) равна следу
+    \(5+6+4=15\) ✓, произведение \(2\cdot 5\cdot 8=80\) равно \(\Delta_3\) ✓.
+    Независимо: метод Лагранжа даёт другой канонический вид
+    \(Q=5z_1^2+\tfrac{26}{5}z_2^2+\tfrac{40}{13}z_3^2\) — числа иные, но
+    положительных коэффициентов снова три, как и требует закон инерции. Наконец,
+    при \(\mathbf x=(1;1;1)\) исходная запись даёт \(5+6+4-4-4=7&gt;0\).</div>
+  </div>
+  <details class="q"><summary>Приведение методом Лагранжа, шаг за шагом</summary>
+    <p>Метод Лагранжа обходится без собственных векторов: последовательно
+    выделяют полный квадрат по каждой переменной. Сначала по \(x_1\):</p>
+    $$Q=5\Bigl(x_1-\tfrac{2}{5}x_2-\tfrac{2}{5}x_3\Bigr)^2
+    -\tfrac{4}{5}(x_2+x_3)^2+6x_2^2+4x_3^2
+    =5z_1^2+\tfrac{26}{5}x_2^2-\tfrac{8}{5}x_2x_3+\tfrac{16}{5}x_3^2 ,$$
+    <p>затем то же самое с \(x_2\):</p>
+    $$\tfrac{26}{5}\Bigl(x_2-\tfrac{2}{13}x_3\Bigr)^2+\Bigl(\tfrac{16}{5}-\tfrac{8}{65}\Bigr)x_3^2
+    =\tfrac{26}{5}z_2^2+\tfrac{40}{13}z_3^2 .$$
+    <p>Итого \(Q=5z_1^2+\tfrac{26}{5}z_2^2+\tfrac{40}{13}z_3^2\) при
+    \(z_1=x_1-0{,}4(x_2+x_3)\), \(z_2=x_2-\tfrac{2}{13}x_3\), \(z_3=x_3\).
+    Коэффициенты \(5=\Delta_1\), \(\tfrac{26}{5}=\Delta_2/\Delta_1\),
+    \(\tfrac{40}{13}=\Delta_3/\Delta_2\) — это метод Якоби; он и объясняет,
+    почему критерий Сильвестра выглядит как цепочка угловых миноров.</p>
+  </details>
+  <svg viewBox="0 0 640 240" class="geo-board" style="max-width:640px;font:11px system-ui">
+    <text x="16" y="20" fill="#6b6b74">Положительно определённая форма: по любому направлению парабола идёт вверх</text>
+    <line x1="66" y1="206" x2="216" y2="206" stroke="#16161a" stroke-width="1.1"/>
+    <line x1="140" y1="220" x2="140" y2="76" stroke="#16161a" stroke-width="1.1"/>
+    <path d="M140 76 l -4 9 h 8 z" fill="#16161a"/>
+    <g fill="none" stroke="#155e75" stroke-width="1.6">
+      <path d="M83 177 L 92 186 L 102 193 L 111 199 L 121 203 L 130 205 L 140 206 L 150 205 L 159 203 L 169 199 L 178 193 L 188 186 L 197 177"/>
+      <path d="M83 134 L 92 156 L 102 174 L 111 188 L 121 198 L 130 204 L 140 206 L 150 204 L 159 198 L 169 188 L 178 174 L 188 156 L 197 134"/>
+      <path d="M83 91 L 92 126 L 102 155 L 111 177 L 121 193 L 130 203 L 140 206 L 150 203 L 159 193 L 169 177 L 178 155 L 188 126 L 197 91"/>
+    </g>
+    <text x="200" y="180" fill="#155e75">λ = 2</text>
+    <text x="200" y="137" fill="#155e75">λ = 5</text>
+    <text x="200" y="94" fill="#155e75">λ = 8</text>
+    <text x="124" y="72" fill="#16161a">Q</text>
+    <text x="60" y="226" fill="#6b6b74">сечения Q = λt² по главным осям</text>
+    <text x="236" y="64" fill="#16161a">λ₁ = 2, λ₂ = 5, λ₃ = 8</text>
+    <text x="236" y="84" fill="#6b6b74">все три положительны,</text>
+    <text x="236" y="100" fill="#6b6b74">поэтому Q = 1 — эллипсоид</text>
+    <text x="236" y="128" fill="#1a7f37">полуоси равны 1/√λ:</text>
+    <text x="236" y="146" fill="#1a7f37">0,71   0,45   0,35</text>
+    <text x="236" y="176" fill="#b3382e">будь одно λ</text>
+    <text x="236" y="190" fill="#b3382e">отрицательным —</text>
+    <text x="236" y="204" fill="#b3382e">был бы гиперболоид</text>
+    <g fill="none" stroke="#155e75" stroke-width="1.4">
+      <path d="M 403 168 L 424 170 L 449 167 L 475 161 L 498 153 L 516 143 L 527 133 L 529 124 L 522 116 L 507 112 L 486 110 L 461 113 L 435 119 L 412 127 L 394 137 L 383 147 L 381 156 L 388 164 L 403 168 Z"/>
+      <path d="M 403 168 L 406 152 L 415 135 L 429 118 L 446 104 L 464 94 L 481 90 L 495 91 L 504 99 L 507 112 L 504 128 L 495 145 L 481 162 L 464 176 L 446 186 L 429 190 L 415 189 L 406 181 L 403 168 Z"/>
+      <path d="M 508 148 L 505 134 L 495 120 L 481 108 L 464 100 L 446 97 L 429 100 L 415 107 L 405 118 L 402 132 L 405 146 L 415 160 L 429 172 L 446 180 L 464 183 L 481 180 L 495 173 L 505 162 L 508 148 Z"/>
+    </g>
+    <g stroke="#1a7f37" stroke-width="1.6">
+      <line x1="455" y1="140" x2="403" y2="168"/><line x1="455" y1="140" x2="508" y2="148"/><line x1="455" y1="140" x2="455" y2="98"/>
+    </g>
+    <text x="374" y="182" fill="#1a7f37">y₁</text>
+    <text x="514" y="152" fill="#1a7f37">y₂</text>
+    <text x="438" y="94" fill="#1a7f37">y₃</text>
+    <text x="380" y="226" fill="#6b6b74">поверхность Q = 1 в каноническом базисе</text>
+  </svg>
+  <div class="caption">Слева — профили формы вдоль главных осей: все три
+  параболы направлены вверх, что равносильно положительности собственных чисел.
+  Справа — главные сечения поверхности \(Q=1\): чем больше \(\lambda\), тем
+  короче полуось, ведь она равна \(1/\sqrt{\lambda}\).</div>
+
+  <h2>Что дальше</h2>
+  <ul>
+    <li>Теория, на которую опираются все девять задач, — <a href="t-linear">глава 1
+    «Линейная алгебра»</a>.</li>
+    <li>Вторая часть того же типового расчёта — <a href="z-geometry">векторы и
+    аналитическая геометрия</a>: там определитель третьего порядка работает как
+    смешанное произведение.</li>
+    <li>Геометрический смысл определителя — <a href="t-geometry">глава 2</a>.</li>
+    <li>Оглавление разборов — <a href="tasks">страница задач</a>; литература —
+    <a href="sources">Источники</a>.</li>
+  </ul>
 </main>
 </body>
 </html>

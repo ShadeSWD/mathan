@@ -4,33 +4,712 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Задачи: интегралы</title>
-<meta name="description" content="Разборы задач на интегрирование и его приложения.">
+<meta name="description" content="Разбор заданий типового расчёта по интегральному исчислению: подведение под знак дифференциала, замена переменной с иррациональностью, интегрирование по частям и возвратный интеграл, разложение рациональной дроби на простейшие, тригонометрические подстановки, определённый интеграл с пересчётом пределов, площадь фигуры, объём тела вращения, исследование несобственного интеграла на сходимость.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📐</text></svg>">
 <link rel="stylesheet" href="assets/style.css">
-<style>
-.tldr { background:#f2f6fb; border-left:4px solid #155e75; border-radius:0 10px 10px 0;
-  padding:10px 16px; margin:16px 0; font-size:15.5px; }
-.tldr ul { margin:6px 0 2px; padding-left:20px; }
-</style>
 </head>
 <body>
 <script src="assets/site.js" data-root="./" data-page="tasks"></script>
 <main class="wrap">
   <h1>Задачи: интегралы</h1>
-  <p class="lead">Разборы задач на интегрирование и его приложения.</p>
-  <div class="tldr">
-    <b>Что будет в этой главе.</b>
+  <p class="lead">Девять задач по разделу «Интегральное исчисление функции
+  одной переменной»: восемь на технику интегрирования и её геометрические
+  приложения и одна на сходимость несобственных интегралов. Условия взяты из
+  типового расчёта и рабочей тетради кафедры математики, все ответы пересчитаны
+  заново. Задачи идут по возрастанию сложности приёма: от одного подведения под
+  знак дифференциала до оценки сходимости, где первообразную не находят
+  вовсе.</p>
+
+  <div class="short">
+    <h2>Коротко</h2>
+    <p>Приёмов интегрирования немного, и почти вся работа — правильно опознать,
+    какой из них применим. Каждый разбор начинается именно с этого шага, а не с
+    преобразований.</p>
     <ul>
-      <li>замена переменной и интегрирование по частям</li>
-      <li>интегрирование рациональных дробей</li>
-      <li>вычисление площадей и объёмов тел вращения</li>
-      <li>длина дуги кривой и статические моменты</li>
+      <li>Задачи 1 и 2 — замена переменной в двух видах: подведение под знак
+      дифференциала и подстановка, убирающая корень.</li>
+      <li>Задача 3 — интегрирование по частям: с многочленом и возвратное, когда
+      интеграл находится из уравнения.</li>
+      <li>Задача 4 — рациональная дробь: деление уголком и разложение на
+      простейшие.</li>
+      <li>Задача 5 — тригонометрический интеграл: сначала частная подстановка
+      \(t=\operatorname{tg}x\), затем универсальная
+      \(t=\operatorname{tg}\frac{x}{2}\).</li>
+      <li>Задачи 6—8 — определённый интеграл: пересчёт пределов при замене,
+      площадь фигуры между двумя кривыми, объём тела вращения.</li>
+      <li>Задача 9 — несобственные интегралы обоих родов и сравнение с
+      эталонным \(\int x^{-p}dx\).</li>
     </ul>
+    <p class="keyf">Проверки, которыми пользуются все девять задач:</p>
+    $$\left(\int f(x)\,dx\right)'=f(x),$$
+    $$m(b-a)\le\int\limits_a^b f(x)\,dx\le M(b-a),$$
+    <p class="small">а для определённых интегралов — численный счёт по формуле
+    Симпсона с удвоением числа отрезков и наблюдением за сходимостью значений.</p>
   </div>
-  <p>Глава готовится: текст пишется по конспектам и методическим материалам
-  кафедры, схемы и числовые примеры делаются заново. Пока она не готова,
-  соседние главы курса уже доступны — их список в разделе
-  <a href="theory">«Теория»</a>.</p>
-  <p><a href="theory">← Оглавление курса</a></p>
+
+  <p class="small">Теория к этим задачам — <a href="t-integral">глава 5
+  «Интеграл»</a>. Формат разбора описан на странице
+  <a href="tasks">«Разборы типовых расчётов»</a>.</p>
+
+  <div class="task">
+    <h3>Задача 1. Подведение под знак дифференциала</h3>
+    <div class="given">Дано: \(\displaystyle\int\frac{x^{3}\,dx}{\sqrt{4-x^{8}}}\).
+    Найти: неопределённый интеграл.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Ищем структуру «функция от чего-то, умноженная на
+        производную этого чего-то». Под корнем \(x^{8}=(x^{4})^{2}\), а снаружи
+        \(x^{3}\) — с точностью до множителя производная \(x^{4}\).</div>
+        <div class="calc">\((x^{4})'=4x^{3}\ \Rightarrow\ x^{3}dx=\frac{1}{4}\,d(x^{4})\) =
+          <span class="sub">множитель \(1/4\) выносится за знак интеграла</span> =
+          <b>\(\frac{1}{4}\displaystyle\int\frac{d(x^{4})}{\sqrt{4-(x^{4})^{2}}}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Обозначаем \(u=x^{4}\). Получился табличный интеграл
+        \(\int\frac{du}{\sqrt{a^{2}-u^{2}}}=\arcsin\frac{u}{a}+C\) с
+        \(a=2\).</div>
+        <div class="calc">\(\frac{1}{4}\displaystyle\int\frac{du}{\sqrt{2^{2}-u^{2}}}\) =
+          <span class="sub">\(\frac{1}{4}\arcsin\frac{u}{2}\)</span> =
+          <b>\(\frac{1}{4}\arcsin\frac{x^{4}}{2}+C\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Область, где ответ имеет смысл: подкоренное выражение
+        положительно.</div>
+        <div class="calc">\(4-x^{8}&gt;0\) =
+          <span class="sub">\(|x|&lt;\sqrt[8]{4}\)</span> =
+          <b>\(|x|&lt;\sqrt[4]{2}\approx 1{,}189\)</b></div>
+      </div>
+    </div>
+    <div class="answer">\(\displaystyle\int\frac{x^{3}dx}{\sqrt{4-x^{8}}}
+    =\frac{1}{4}\arcsin\frac{x^{4}}{2}+C\), \(|x|&lt;\sqrt[4]{2}\).</div>
+    <div class="check">дифференцируем найденную первообразную:</div>
+    <div class="panel" style="margin-top:8px;box-shadow:none">
+      $$\left(\frac{1}{4}\arcsin\frac{x^{4}}{2}\right)'
+      =\frac{1}{4}\cdot\frac{1}{\sqrt{1-\dfrac{x^{8}}{4}}}\cdot\frac{4x^{3}}{2}
+      =\frac{x^{3}}{2}\cdot\frac{2}{\sqrt{4-x^{8}}}
+      =\frac{x^{3}}{\sqrt{4-x^{8}}} .$$
+      <p class="small">Совпало с подынтегральной функцией. Дополнительно —
+      числовая проверка: \(F(1{,}1)-F(0{,}9)=0{,}12177192\), а численное
+      интегрирование по формуле Симпсона на \([0{,}9;\,1{,}1]\) даёт
+      \(0{,}12177192\).</p>
+    </div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 2. Замена переменной: линейная иррациональность</h3>
+    <div class="given">Дано: \(\displaystyle\int\frac{(x+1)\,dx}{\sqrt[3]{1-3x}}\).
+    Найти: неопределённый интеграл.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Подвести под дифференциал не удаётся: числитель не
+        связан с производной подкоренного выражения. Зато иррациональность
+        линейная — годится подстановка, убирающая корень целиком.</div>
+        <div class="calc">\(t=\sqrt[3]{1-3x}\ \Rightarrow\ t^{3}=1-3x\) =
+          <span class="sub">\(x=\dfrac{1-t^{3}}{3}\), \(dx=-t^{2}dt\)</span> =
+          <b>\(x+1=\dfrac{4-t^{3}}{3}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Подставляем всё сразу — корень исчезает, остаётся
+        многочлен.</div>
+        <div class="calc">\(\displaystyle\int\frac{4-t^{3}}{3t}\cdot(-t^{2})\,dt\) =
+          <span class="sub">\(-\frac{1}{3}\displaystyle\int(4t-t^{4})\,dt\)</span> =
+          <b>\(-\frac{1}{3}\left(2t^{2}-\frac{t^{5}}{5}\right)\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Возвращаемся к переменной \(x\) — в неопределённом
+        интеграле это обязательно.</div>
+        <div class="calc">\(-\frac{2}{3}t^{2}+\frac{t^{5}}{15}\) =
+          <span class="sub">\(t^{2}=(1-3x)^{2/3}\), \(t^{5}=(1-3x)^{5/3}\)</span> =
+          <b>\(-\frac{2}{3}\sqrt[3]{(1-3x)^{2}}+\frac{1}{15}\sqrt[3]{(1-3x)^{5}}+C\)</b></div>
+      </div>
+    </div>
+    <div class="answer">\(\displaystyle\int\frac{(x+1)dx}{\sqrt[3]{1-3x}}
+    =\frac{1}{15}\sqrt[3]{(1-3x)^{5}}-\frac{2}{3}\sqrt[3]{(1-3x)^{2}}+C\).</div>
+    <div class="check">дифференцируем ответ. Удобно обозначить \(z=1-3x\),
+    \(z'=-3\):</div>
+    <div class="panel" style="margin-top:8px;box-shadow:none">
+      $$\left(\frac{z^{5/3}}{15}-\frac{2z^{2/3}}{3}\right)'
+      =\left(\frac{5z^{2/3}}{45}-\frac{4z^{-1/3}}{9}\right)\cdot(-3)
+      =-\frac{z^{2/3}}{3}+\frac{4}{3}z^{-1/3}
+      =\frac{4-z}{3z^{1/3}} .$$
+      <p class="small">Осталось заметить, что \(\dfrac{4-z}{3}=\dfrac{4-(1-3x)}{3}
+      =\dfrac{3+3x}{3}=x+1\), то есть производная равна
+      \(\dfrac{x+1}{\sqrt[3]{1-3x}}\) — исходной функции. Числовая проверка на
+      отрезке \([-1;\,0]\), где \(1-3x\) положительно:
+      \(F(0)-F(-1)=0{,}407937\), формула Симпсона даёт \(0{,}407937\).</p>
+    </div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 3. Интегрирование по частям, в том числе возвратное</h3>
+    <div class="given">Дано: а) \(\displaystyle\int (x^{2}-3x+7)e^{2x}dx\);
+    б) \(\displaystyle\int e^{2x}\cos 3x\,dx\). Найти: неопределённые интегралы.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">а) Многочлен умножен на экспоненту — берём \(u=P(x)\),
+        чтобы дифференцирование понижало степень; \(v=\frac{1}{2}e^{2x}\).</div>
+        <div class="calc">\(u=x^{2}-3x+7,\ dv=e^{2x}dx\) =
+          <span class="sub">\(\frac{1}{2}(x^{2}-3x+7)e^{2x}
+          -\frac{1}{2}\displaystyle\int(2x-3)e^{2x}dx\)</span> =
+          <b>степень многочлена упала с 2 до 1</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Повторяем приём: снова \(u=2x-3\), \(dv=e^{2x}dx\).
+        Производная многочлена постоянна, и интеграл берётся сразу.</div>
+        <div class="calc">\(\displaystyle\int(2x-3)e^{2x}dx\) =
+          <span class="sub">\(\frac{1}{2}(2x-3)e^{2x}-\displaystyle\int e^{2x}dx\)</span> =
+          <b>\(\frac{1}{2}(2x-3)e^{2x}-\frac{1}{2}e^{2x}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Собираем и приводим подобные, вынося \(e^{2x}\).</div>
+        <div class="calc">\(e^{2x}\left(\frac{x^{2}-3x+7}{2}-\frac{2x-3}{4}+\frac{1}{4}\right)\) =
+          <span class="sub">\(e^{2x}\cdot\dfrac{2x^{2}-6x+14-2x+3+1}{4}\)</span> =
+          <b>\(\dfrac{x^{2}-4x+9}{2}\,e^{2x}+C\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">б) Ни один сомножитель не упрощается — интеграл
+        возвратный. Обозначим искомое через \(I\) и применим формулу дважды,
+        каждый раз оставляя экспоненту в \(dv\).</div>
+        <div class="calc">\(I=\displaystyle\int e^{2x}\cos 3x\,dx\) =
+          <span class="sub">\(u=\cos 3x,\ dv=e^{2x}dx\)</span> =
+          <b>\(\frac{1}{2}e^{2x}\cos 3x+\frac{3}{2}\displaystyle\int e^{2x}\sin 3x\,dx\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Второе применение к интегралу с синусом возвращает
+        исходный \(I\).</div>
+        <div class="calc">\(\displaystyle\int e^{2x}\sin 3x\,dx\) =
+          <span class="sub">\(\frac{1}{2}e^{2x}\sin 3x-\frac{3}{2}I\)</span> =
+          <b>\(I=\frac{1}{2}e^{2x}\cos 3x+\frac{3}{4}e^{2x}\sin 3x-\frac{9}{4}I\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Получилось линейное уравнение относительно \(I\).
+        Решаем его.</div>
+        <div class="calc">\(\frac{13}{4}I=\frac{1}{2}e^{2x}\cos 3x+\frac{3}{4}e^{2x}\sin 3x\) =
+          <span class="sub">умножаем на \(4/13\)</span> =
+          <b>\(I=\dfrac{e^{2x}(2\cos 3x+3\sin 3x)}{13}+C\)</b></div>
+      </div>
+    </div>
+    <div class="answer">а) \(\dfrac{x^{2}-4x+9}{2}e^{2x}+C\);
+    б) \(\dfrac{e^{2x}(2\cos 3x+3\sin 3x)}{13}+C\).</div>
+    <div class="check">дифференцируем оба ответа:</div>
+    <div class="panel" style="margin-top:8px;box-shadow:none">
+      $$\left(\frac{x^{2}-4x+9}{2}e^{2x}\right)'
+      =\frac{2x-4}{2}e^{2x}+(x^{2}-4x+9)e^{2x}
+      =(x^{2}-3x+7)e^{2x},$$
+      $$\left(\frac{e^{2x}(2\cos 3x+3\sin 3x)}{13}\right)'
+      =\frac{e^{2x}\bigl(2(2\cos 3x+3\sin 3x)+(-6\sin 3x+9\cos 3x)\bigr)}{13}
+      =\frac{13\,e^{2x}\cos 3x}{13}=e^{2x}\cos 3x .$$
+      <p class="small">Обе производные совпали с подынтегральными функциями.
+      Числовой контроль на отрезке \([0;\,1]\): для (а)
+      \(F(1)-F(0)=17{,}667168\) и формула Симпсона даёт \(17{,}667168\); для (б)
+      \(F(1)-F(0)=-1{,}038615\) и Симпсон даёт \(-1{,}038615\).</p>
+    </div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 4. Рациональная дробь: деление и разложение на простейшие</h3>
+    <div class="given">Дано:
+    \(\displaystyle\int\frac{(x^{3}+3)\,dx}{(x-1)(x^{2}+1)}\).
+    Найти: неопределённый интеграл.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Первое, что проверяют у рациональной дроби, —
+        правильная ли она. Степени числителя и знаменателя равны 3, значит, дробь
+        неправильная и её надо разделить.</div>
+        <div class="calc">\((x-1)(x^{2}+1)=x^{3}-x^{2}+x-1\) =
+          <span class="sub">\(x^{3}+3=(x^{3}-x^{2}+x-1)\cdot 1+(x^{2}-x+4)\)</span> =
+          <b>\(1+\dfrac{x^{2}-x+4}{(x-1)(x^{2}+1)}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Остаток — правильная дробь. Знаменатель уже разложен:
+        простой корень \(x=1\) и неразложимый трёхчлен \(x^{2}+1\). Первому
+        отвечает дробь первого типа, второму — третьего.</div>
+        <div class="calc">\(\dfrac{x^{2}-x+4}{(x-1)(x^{2}+1)}
+          =\dfrac{A}{x-1}+\dfrac{Bx+C}{x^{2}+1}\) =
+          <span class="sub">умножаем на знаменатель</span> =
+          <b>\(x^{2}-x+4=A(x^{2}+1)+(Bx+C)(x-1)\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Коэффициенты находим смешанным способом: подставляем
+        корень знаменателя, затем сравниваем коэффициенты при старшей степени и
+        при свободном члене.</div>
+        <div class="calc">\(x=1:\ 1-1+4=2A\) =
+          <span class="sub">\(A=2\); при \(x^{2}\): \(1=A+B\); при \(x^{0}\): \(4=A-C\)</span> =
+          <b>\(A=2,\ B=-1,\ C=-2\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Контроль коэффициентов по ещё не использованной
+        степени \(x^{1}\): слева коэффициент \(-1\), справа \(-B+C\).</div>
+        <div class="calc">\(-B+C\) =
+          <span class="sub">\(1+(-2)\)</span> = <b>\(-1\) — сходится</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Интегрируем почленно. Дробь \(\frac{-x-2}{x^{2}+1}\)
+        разбиваем на часть, пропорциональную \((x^{2}+1)'=2x\), и постоянную:
+        первая даёт логарифм, вторая — арктангенс.</div>
+        <div class="calc">\(\displaystyle\int\left(1+\frac{2}{x-1}-\frac{x+2}{x^{2}+1}\right)dx\) =
+          <span class="sub">\(x+2\ln|x-1|-\frac{1}{2}\ln(x^{2}+1)-2\operatorname{arctg}x\)</span> =
+          <b>ответ</b></div>
+      </div>
+    </div>
+    <svg viewBox="0 0 640 236" class="geo-board" style="max-width:640px">
+      <text x="16" y="20" style="font:11px system-ui;fill:#6b6b74">Схема разбора рациональной дроби: множитель знаменателя → простейшая дробь → интеграл</text>
+      <text x="16" y="40" style="font:11px system-ui;fill:#b3382e">сначала деление уголком: неправильная дробь = многочлен + правильная дробь</text>
+      <text x="44" y="66" style="font:11px system-ui;fill:#16161a">знаменатель</text>
+      <text x="244" y="66" style="font:11px system-ui;fill:#16161a">простейшая дробь</text>
+      <text x="454" y="66" style="font:11px system-ui;fill:#16161a">её интеграл</text>
+      <g fill="none" stroke="#16161a" stroke-width="1.4">
+        <rect x="40" y="76" width="170" height="40"/>
+        <rect x="240" y="76" width="180" height="40"/>
+        <rect x="450" y="76" width="170" height="40"/>
+        <rect x="40" y="136" width="170" height="54"/>
+        <rect x="240" y="136" width="180" height="54"/>
+        <rect x="450" y="136" width="170" height="54"/>
+      </g>
+      <rect x="40" y="76" width="170" height="40" fill="rgba(21,94,117,.10)" stroke="none"/>
+      <rect x="40" y="136" width="170" height="54" fill="rgba(21,94,117,.10)" stroke="none"/>
+      <rect x="450" y="76" width="170" height="40" fill="rgba(26,127,55,.12)" stroke="none"/>
+      <rect x="450" y="136" width="170" height="54" fill="rgba(26,127,55,.12)" stroke="none"/>
+      <text x="52" y="100" style="font:11px system-ui;fill:#155e75">множитель (x − 1)</text>
+      <text x="252" y="100" style="font:11px system-ui;fill:#16161a">A / (x − 1)</text>
+      <text x="462" y="100" style="font:11px system-ui;fill:#1a7f37">A ln|x − 1|</text>
+      <text x="52" y="158" style="font:11px system-ui;fill:#155e75">множитель x² + 1</text>
+      <text x="52" y="176" style="font:11px system-ui;fill:#6b6b74">(D &lt; 0, не разлагается)</text>
+      <text x="252" y="167" style="font:11px system-ui;fill:#16161a">(Bx + C) / (x² + 1)</text>
+      <text x="462" y="158" style="font:11px system-ui;fill:#1a7f37">½B ln(x² + 1) +</text>
+      <text x="462" y="176" style="font:11px system-ui;fill:#1a7f37">C arctg x</text>
+      <path d="M210 96 L 234 96 M420 96 L 444 96 M210 163 L 234 163 M420 163 L 444 163" stroke="#6b6b74" stroke-width="1.2"/>
+      <path d="M234 96 l -8 -4 v 8 z M444 96 l -8 -4 v 8 z M234 163 l -8 -4 v 8 z M444 163 l -8 -4 v 8 z" fill="#6b6b74"/>
+      <text x="16" y="216" style="font:11px system-ui;fill:#6b6b74">коэффициенты A, B, C находят подстановкой корней и приравниванием коэффициентов при степенях x</text>
+    </svg>
+    <div class="caption">Каждому множителю знаменателя отвечает своя простейшая
+    дробь, а ей — свой тип первообразной: линейный множитель даёт логарифм,
+    неразложимый трёхчлен — логарифм плюс арктангенс. Здесь \(A=2\), \(B=-1\),
+    \(C=-2\).</div>
+    <div class="answer">\(\displaystyle\int\frac{(x^{3}+3)dx}{(x-1)(x^{2}+1)}
+    =x+2\ln|x-1|-\frac{1}{2}\ln(x^{2}+1)-2\operatorname{arctg}x+C\).</div>
+    <div class="check">две независимые проверки. Первая — подстановка
+    «постороннего» значения \(x=0\) в разложение: слева
+    \(\dfrac{0-0+4}{(-1)\cdot 1}=-4\), справа
+    \(\dfrac{2}{-1}+\dfrac{0-2}{1}=-2-2=-4\), совпало. Вторая —
+    дифференцирование ответа:</div>
+    <div class="panel" style="margin-top:8px;box-shadow:none">
+      $$1+\frac{2}{x-1}-\frac{x}{x^{2}+1}-\frac{2}{x^{2}+1}
+      =\frac{(x-1)(x^{2}+1)+2(x^{2}+1)-(x+2)(x-1)}{(x-1)(x^{2}+1)}
+      =\frac{x^{3}+3}{(x-1)(x^{2}+1)} .$$
+      <p class="small">В числителе:
+      \((x^{3}-x^{2}+x-1)+(2x^{2}+2)-(x^{2}+x-2)=x^{3}+3\). Числовой контроль на
+      отрезке \([2;\,3]\), где особая точка \(x=1\) не мешает:
+      \(F(3)-F(2)=1{,}755927\), формула Симпсона даёт \(1{,}755927\).</p>
+    </div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 5. Тригонометрический интеграл: частная и универсальная подстановки</h3>
+    <div class="given">Дано: а) \(\displaystyle\int\frac{dx}{1-5\cos^{2}x}\);
+    б) \(\displaystyle\int\frac{dx}{1+\sin x+\cos x}\).
+    Найти: неопределённые интегралы.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">а) Косинус входит только в чётной степени — работает
+        экономная подстановка \(t=\operatorname{tg}x\), а универсальная только
+        усложнила бы дробь.</div>
+        <div class="calc">\(t=\operatorname{tg}x\) =
+          <span class="sub">\(\cos^{2}x=\dfrac{1}{1+t^{2}}\),
+          \(dx=\dfrac{dt}{1+t^{2}}\)</span> =
+          <b>\(\displaystyle\int\frac{dt}{(1+t^{2})\left(1-\frac{5}{1+t^{2}}\right)}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Множитель \(1+t^{2}\) сокращается, остаётся табличный
+        интеграл \(\int\frac{dt}{t^{2}-a^{2}}\) с \(a=2\).</div>
+        <div class="calc">\(\displaystyle\int\frac{dt}{1+t^{2}-5}
+          =\int\frac{dt}{t^{2}-4}\) =
+          <span class="sub">\(\frac{1}{2\cdot 2}\ln\left|\frac{t-2}{t+2}\right|\)</span> =
+          <b>\(\frac{1}{4}\ln\left|\dfrac{\operatorname{tg}x-2}{\operatorname{tg}x+2}\right|+C\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">б) Синус и косинус входят в первой степени, частные
+        приёмы не подходят — применяем универсальную подстановку
+        \(t=\operatorname{tg}\frac{x}{2}\).</div>
+        <div class="calc">\(\sin x=\dfrac{2t}{1+t^{2}},\
+          \cos x=\dfrac{1-t^{2}}{1+t^{2}},\ dx=\dfrac{2dt}{1+t^{2}}\) =
+          <span class="sub">знаменатель:
+          \(\dfrac{(1+t^{2})+2t+(1-t^{2})}{1+t^{2}}\)</span> =
+          <b>\(\dfrac{2+2t}{1+t^{2}}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Множители \(1+t^{2}\) взаимно уничтожаются, дробь
+        становится простейшей первого типа.</div>
+        <div class="calc">\(\displaystyle\int\frac{2\,dt}{1+t^{2}}\cdot
+          \frac{1+t^{2}}{2+2t}\) =
+          <span class="sub">\(\displaystyle\int\frac{dt}{1+t}\)</span> =
+          <b>\(\ln\left|1+\operatorname{tg}\frac{x}{2}\right|+C\)</b></div>
+      </div>
+    </div>
+    <div class="answer">а) \(\frac{1}{4}\ln\left|\dfrac{\operatorname{tg}x-2}
+    {\operatorname{tg}x+2}\right|+C\);
+    б) \(\ln\left|1+\operatorname{tg}\dfrac{x}{2}\right|+C\).</div>
+    <div class="check">дифференцируем ответ (б) как более короткий; обозначим
+    \(t=\operatorname{tg}\frac{x}{2}\), тогда
+    \(t'=\frac{1}{2}(1+t^{2})\):</div>
+    <div class="panel" style="margin-top:8px;box-shadow:none">
+      $$\bigl(\ln|1+t|\bigr)'=\frac{t'}{1+t}=\frac{1+t^{2}}{2(1+t)}
+      =\frac{1}{\dfrac{2+2t}{1+t^{2}}}=\frac{1}{1+\sin x+\cos x} .$$
+      <p class="small">Последнее равенство — та же выкладка третьего шага,
+      прочитанная справа налево. Числовые проверки: для (а) на отрезке
+      \([0{,}2;\,0{,}8]\) приращение первообразной равно \(-0{,}233780\) и
+      формула Симпсона даёт \(-0{,}233780\); для (б) на \([0;\,1]\) —
+      \(0{,}435867\) и \(0{,}435867\) соответственно. Отрицательный знак в (а)
+      закономерен: на этом отрезке \(\cos^{2}x&gt;\frac{1}{5}\), то есть
+      подынтегральная функция отрицательна.</p>
+    </div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 6. Определённый интеграл: замена с пересчётом пределов</h3>
+    <div class="given">Дано: \(\displaystyle\int\limits_0^{4}
+    \frac{dx}{\bigl(16+x^{2}\bigr)^{3/2}}\). Найти: значение интеграла.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Иррациональность \(\sqrt{a^{2}+x^{2}}\) при \(a=4\)
+        снимается подстановкой \(x=a\operatorname{tg}t\): тогда
+        \(a^{2}+x^{2}=a^{2}/\cos^{2}t\).</div>
+        <div class="calc">\(x=4\operatorname{tg}t\) =
+          <span class="sub">\(dx=\dfrac{4\,dt}{\cos^{2}t}\),
+          \(16+x^{2}=\dfrac{16}{\cos^{2}t}\)</span> =
+          <b>\((16+x^{2})^{3/2}=\dfrac{64}{\cos^{3}t}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Пересчитываем пределы: возвращаться к \(x\) не нужно,
+        но пределы обязаны измениться вместе с переменной.</div>
+        <div class="calc">\(t=\operatorname{arctg}\dfrac{x}{4}\) =
+          <span class="sub">\(x=0\Rightarrow t=0\); \(x=4\Rightarrow
+          t=\operatorname{arctg}1\)</span> =
+          <b>\(t\in\left[0;\dfrac{\pi}{4}\right]\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Степени косинуса почти полностью сокращаются, и
+        остаётся простейший интеграл.</div>
+        <div class="calc">\(\displaystyle\int\limits_0^{\pi/4}
+          \frac{4\,dt}{\cos^{2}t}\cdot\frac{\cos^{3}t}{64}\) =
+          <span class="sub">\(\frac{1}{16}\displaystyle\int\limits_0^{\pi/4}\cos t\,dt\)</span> =
+          <b>\(\frac{1}{16}\sin t\Big|_0^{\pi/4}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Вычисляем по формуле Ньютона — Лейбница.</div>
+        <div class="calc">\(\frac{1}{16}\left(\sin\frac{\pi}{4}-\sin 0\right)\) =
+          <span class="sub">\(\frac{1}{16}\cdot\frac{\sqrt{2}}{2}\)</span> =
+          <b>\(\frac{\sqrt{2}}{32}\approx 0{,}044194\)</b></div>
+      </div>
+    </div>
+    <svg viewBox="0 0 640 220" class="geo-board" style="max-width:640px">
+      <text x="16" y="20" style="font:11px system-ui;fill:#6b6b74">Замена переменной в определённом интеграле: отрезок по x переходит в отрезок по t</text>
+      <text x="16" y="42" style="font:11px system-ui;fill:#155e75">x = 4 tg t,  t = arctg (x/4)</text>
+      <line x1="76" y1="80" x2="560" y2="80" stroke="#16161a" stroke-width="1.3"/>
+      <path d="M560 80 l -9 -4.5 v 9 z" fill="#16161a"/>
+      <line x1="76" y1="170" x2="560" y2="170" stroke="#16161a" stroke-width="1.3"/>
+      <path d="M560 170 l -9 -4.5 v 9 z" fill="#16161a"/>
+      <g stroke="#16161a" stroke-width="1.2">
+        <path d="M90 74 v 12 M200 74 v 12 M310 74 v 12 M420 74 v 12 M530 74 v 12"/>
+        <path d="M90 164 v 12 M227 164 v 12 M350 164 v 12 M450 164 v 12 M530 164 v 12"/>
+      </g>
+      <g stroke="#6b6b74" stroke-width="1" stroke-dasharray="4 3">
+        <path d="M200 86 L 227 164 M310 86 L 350 164 M420 86 L 450 164"/>
+      </g>
+      <path d="M90 86 L 90 164" stroke="#1a7f37" stroke-width="1.6"/>
+      <path d="M530 86 L 530 164" stroke="#1a7f37" stroke-width="1.6"/>
+      <text x="86" y="68" style="font:11px system-ui;fill:#1a7f37">0</text>
+      <text x="196" y="68" style="font:11px system-ui;fill:#6b6b74">1</text>
+      <text x="306" y="68" style="font:11px system-ui;fill:#6b6b74">2</text>
+      <text x="416" y="68" style="font:11px system-ui;fill:#6b6b74">3</text>
+      <text x="526" y="68" style="font:11px system-ui;fill:#1a7f37">4</text>
+      <text x="566" y="84" style="font:11px system-ui;fill:#16161a">x</text>
+      <text x="86" y="192" style="font:11px system-ui;fill:#1a7f37">0</text>
+      <text x="209" y="192" style="font:11px system-ui;fill:#6b6b74">0,245</text>
+      <text x="332" y="192" style="font:11px system-ui;fill:#6b6b74">0,464</text>
+      <text x="432" y="192" style="font:11px system-ui;fill:#6b6b74">0,644</text>
+      <text x="519" y="192" style="font:11px system-ui;fill:#1a7f37">π/4</text>
+      <text x="566" y="174" style="font:11px system-ui;fill:#16161a">t</text>
+      <text x="16" y="212" style="font:11px system-ui;fill:#6b6b74">отображение монотонно и взаимно однозначно — условия теоремы о замене выполнены</text>
+    </svg>
+    <div class="caption">Замена \(x=4\operatorname{tg}t\) переводит отрезок
+    \([0;4]\) оси \(x\) в отрезок \([0;\pi/4]\) оси \(t\); равномерная сетка по
+    \(x\) становится неравномерной по \(t\) — именно это и «выпрямляет»
+    подынтегральную функцию до \(\cos t\).</div>
+    <div class="answer">\(\displaystyle\int\limits_0^{4}\frac{dx}{(16+x^{2})^{3/2}}
+    =\frac{\sqrt{2}}{32}\approx 0{,}0441942\).</div>
+    <div class="check">численное интегрирование исходного выражения по формуле
+    Симпсона, независимо от подстановки: при \(n=4\) получается
+    \(0{,}0441924\), при \(n=8\) — \(0{,}0441941\), при \(n=16\) —
+    \(0{,}0441942\); значения сходятся к \(\sqrt{2}/32=0{,}0441942\). Грубая
+    оценка сверху и снизу: функция убывает от \(1/64=0{,}0156\) до
+    \(32^{-3/2}=0{,}0055\), поэтому интеграл лежит между \(0{,}022\) и
+    \(0{,}0625\) — ответ укладывается.</div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 7. Площадь фигуры, ограниченной двумя линиями</h3>
+    <div class="given">Дано: линии \(y=2x-x^{2}\) и \(y=-x\).
+    Найти: площадь ограниченной ими фигуры.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Находим пределы интегрирования — абсциссы точек
+        пересечения. Это всегда первый шаг.</div>
+        <div class="calc">\(2x-x^{2}=-x\) =
+          <span class="sub">\(x^{2}-3x=0,\ x(x-3)=0\)</span> =
+          <b>\(x_1=0,\ x_2=3\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Определяем, какая линия сверху: достаточно одной
+        внутренней точки, например \(x=1\).</div>
+        <div class="calc">\(x=1:\ y_{\text{пар}}=2-1,\ y_{\text{пр}}=-1\) =
+          <span class="sub">\(1&gt;-1\)</span> =
+          <b>сверху парабола, снизу прямая</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Записываем площадь как интеграл разности ординат —
+        она оказывается простым квадратным трёхчленом.</div>
+        <div class="calc">\(S=\displaystyle\int\limits_0^{3}\bigl((2x-x^{2})-(-x)\bigr)dx\) =
+          <span class="sub">\(\displaystyle\int\limits_0^{3}(3x-x^{2})\,dx\)</span> =
+          <b>\(\left(\frac{3x^{2}}{2}-\frac{x^{3}}{3}\right)\Big|_0^{3}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Подставляем пределы.</div>
+        <div class="calc">\(\frac{3\cdot 9}{2}-\frac{27}{3}\) =
+          <span class="sub">\(13{,}5-9\)</span> = <b>\(4{,}5\)</b></div>
+      </div>
+    </div>
+    <svg viewBox="0 0 640 300" class="geo-board" style="max-width:640px">
+      <text x="16" y="20" style="font:11px system-ui;fill:#6b6b74">Фигура между параболой y = 2x − x² и прямой y = −x</text>
+      <path d="M142.7 116.8 L168.8 99.5 L195 86.4 L221.1 77.5 L247.3 72.7 L273.4 72 L299.6 75.4 L325.7 83 L351.8 94.7 L378 110.6 L404.1 130.5 L430.3 154.6 L456.4 182.9 L482.6 215.2 L508.7 251.7 L508.7 251.7 L447.7 229.2 L386.7 206.8 L325.7 184.2 L264.7 161.8 L203.7 139.2 L142.7 116.8 Z" fill="rgba(26,127,55,.16)" stroke="none"/>
+      <line x1="80" y1="116.8" x2="580" y2="116.8" stroke="#16161a" stroke-width="1.2"/>
+      <path d="M580 116.8 l -9 -4.5 v 9 z" fill="#16161a"/>
+      <line x1="142.7" y1="282" x2="142.7" y2="46" stroke="#16161a" stroke-width="1.2"/>
+      <path d="M142.7 46 l -4.5 9 h 9 z" fill="#16161a"/>
+      <path d="M100 153.8 L125.9 130 L151.8 110.3 L177.8 94.6 L203.7 83 L229.6 75.5 L255.5 72 L281.5 72.6 L307.4 77.3 L333.3 86 L359.2 98.8 L385.2 115.6 L411.1 136.5 L437 161.5 L462.9 190.6 L488.9 223.7 L514.8 260.9" fill="none" stroke="#155e75" stroke-width="2"/>
+      <path d="M100.0 101.0 L527.0 258.5" stroke="#b3382e" stroke-width="2"/>
+      <circle cx="142.7" cy="116.8" r="4" fill="#16161a"/>
+      <circle cx="508.7" cy="251.7" r="4" fill="#16161a"/>
+      <line x1="508.7" y1="116.8" x2="508.7" y2="251.7" stroke="#6b6b74" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="272" y="58" style="font:11px system-ui;fill:#155e75">y = 2x − x²</text>
+      <text x="486" y="272" style="font:11px system-ui;fill:#b3382e">y = −x</text>
+      <text x="296" y="140" style="font:11px system-ui;fill:#1a7f37">S = 4,5</text>
+      <text x="124" y="136" style="font:11px system-ui;fill:#16161a">0</text>
+      <text x="498" y="108" style="font:11px system-ui;fill:#16161a">x = 3</text>
+      <text x="16" y="292" style="font:11px system-ui;fill:#6b6b74">часть фигуры лежит ниже оси Ox, но формула этого не замечает: интегрируется разность ординат</text>
+    </svg>
+    <div class="caption">Точки пересечения \((0;0)\) и \((3;-3)\) отмечены.
+    Фигура частично лежит под осью абсцисс, но площадь всё равно равна интегралу
+    разности «верхняя минус нижняя»: сдвиг обеих линий вверх площадь не
+    изменил бы.</div>
+    <div class="answer">\(S=\dfrac{9}{2}=4{,}5\) квадратных единицы.</div>
+    <div class="check">площадь сегмента, отсекаемого от параболы хордой,
+    вычисляется независимо — по формуле Архимеда
+    \(S=\dfrac{|a|\,(x_2-x_1)^{3}}{6}\), где \(a\) — старший коэффициент
+    разности «парабола минус прямая». Здесь разность равна \(-x^{2}+3x\), то
+    есть \(a=-1\), \(x_2-x_1=3\), и
+    \(S=\dfrac{1\cdot 27}{6}=4{,}5\) — то же число. Оценка порядка величины:
+    фигура вписана в прямоугольник \(3\times 4\) (по \(y\) от \(-3\) до \(1\)),
+    его площадь 12, и полученные 4,5 составляют разумную долю от неё.</div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 8. Объём тела вращения</h3>
+    <div class="given">Дано: фигура, ограниченная линиями \(y=2x\) и \(y=x^{2}\),
+    вращается вокруг оси \(Ox\). Найти: объём полученного тела.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Находим границы фигуры — точки пересечения прямой и
+        параболы.</div>
+        <div class="calc">\(2x=x^{2}\) =
+          <span class="sub">\(x(x-2)=0\)</span> =
+          <b>\(x_1=0,\ x_2=2\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Сечение плоскостью \(x=\mathrm{const}\) — не круг, а
+        кольцо: внешний радиус даёт верхняя граница \(y=2x\), внутренний —
+        нижняя \(y=x^{2}\).</div>
+        <div class="calc">\(S(x)=\pi R^{2}-\pi r^{2}\) =
+          <span class="sub">\(R=2x,\ r=x^{2}\)</span> =
+          <b>\(S(x)=\pi\bigl(4x^{2}-x^{4}\bigr)\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Интегрируем площадь сечения по отрезку изменения
+        \(x\).</div>
+        <div class="calc">\(V=\pi\displaystyle\int\limits_0^{2}(4x^{2}-x^{4})\,dx\) =
+          <span class="sub">\(\pi\left(\frac{4x^{3}}{3}-\frac{x^{5}}{5}\right)\Big|_0^{2}\)</span> =
+          <b>\(\pi\left(\frac{32}{3}-\frac{32}{5}\right)\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Приводим к общему знаменателю.</div>
+        <div class="calc">\(32\pi\left(\frac{1}{3}-\frac{1}{5}\right)\) =
+          <span class="sub">\(32\pi\cdot\frac{2}{15}\)</span> =
+          <b>\(\frac{64\pi}{15}\approx 13{,}404\)</b></div>
+      </div>
+    </div>
+    <svg viewBox="0 0 640 310" class="geo-board" style="max-width:640px">
+      <text x="16" y="20" style="font:11px system-ui;fill:#6b6b74">Плоская фигура и тело, полученное её вращением вокруг оси Ox</text>
+      <path d="M70 195 L110 162 L150 129 L190 96 L230 63 L230 63 L218.6 81.2 L207.1 98 L195.7 113.5 L184.3 127.7 L172.9 140.4 L161.4 151.9 L150 162 L138.6 170.8 L127.1 178.2 L115.7 184.2 L104.3 188.9 L92.9 192.3 L81.4 194.3 L70 195 Z" fill="rgba(26,127,55,.16)" stroke="none"/>
+      <line x1="46" y1="195" x2="275" y2="195" stroke="#16161a" stroke-width="1.2"/>
+      <path d="M275 195 l -9 -4.5 v 9 z" fill="#16161a"/>
+      <line x1="70" y1="212" x2="70" y2="50" stroke="#16161a" stroke-width="1.2"/>
+      <path d="M70 50 l -4.5 9 h 9 z" fill="#16161a"/>
+      <path d="M70.0 195.0 L230.0 63.0" stroke="#b3382e" stroke-width="2"/>
+      <path d="M70 195 L81.4 194.3 L92.9 192.3 L104.3 188.9 L115.7 184.2 L127.1 178.2 L138.6 170.8 L150 162 L161.4 151.9 L172.9 140.4 L184.3 127.7 L195.7 113.5 L207.1 98 L218.6 81.2 L230 63" fill="none" stroke="#155e75" stroke-width="2"/>
+      <text x="244" y="96" style="font:11px system-ui;fill:#b3382e">y = 2x</text>
+      <text x="244" y="150" style="font:11px system-ui;fill:#155e75">y = x²</text>
+      <path d="M240 92 L 206 88" stroke="#b3382e" stroke-width="1" stroke-dasharray="4 3"/>
+      <path d="M240 146 L 206 112" stroke="#155e75" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="58" y="211" style="font:11px system-ui;fill:#16161a">0</text>
+      <text x="226" y="211" style="font:11px system-ui;fill:#16161a">2</text>
+      <path d="M345 160 L395 135 L445 110 L495 85 L545 60 L545 60 L530.7 73.8 L516.4 86.5 L502.1 98.3 L487.9 109 L473.6 118.7 L459.3 127.3 L445 135 L430.7 141.6 L416.4 147.2 L402.1 151.8 L387.9 155.4 L373.6 158 L359.3 159.5 L345 160 Z" fill="rgba(21,94,117,.13)" stroke="none"/>
+      <path d="M345 160 L395 185 L445 210 L495 235 L545 260 L545 260 L530.7 246.2 L516.4 233.5 L502.1 221.7 L487.9 211 L473.6 201.3 L459.3 192.7 L445 185 L430.7 178.4 L416.4 172.8 L402.1 168.2 L387.9 164.6 L373.6 162 L359.3 160.5 L345 160 Z" fill="rgba(21,94,117,.13)" stroke="none"/>
+      <line x1="320" y1="160" x2="600" y2="160" stroke="#16161a" stroke-width="1.2"/>
+      <path d="M600 160 l -9 -4.5 v 9 z" fill="#16161a"/>
+      <path d="M345 160 L 545 60 M345 160 L 545 260" stroke="#b3382e" stroke-width="1.6"/>
+      <path d="M345 160 L359.3 159.5 L373.6 158 L387.9 155.4 L402.1 151.8 L416.4 147.2 L430.7 141.6 L445 135 L459.3 127.3 L473.6 118.7 L487.9 109 L502.1 98.3 L516.4 86.5 L530.7 73.8 L545 60" fill="none" stroke="#155e75" stroke-width="1.6"/>
+      <path d="M345 160 L359.3 160.5 L373.6 162 L387.9 164.6 L402.1 168.2 L416.4 172.8 L430.7 178.4 L445 185 L459.3 192.7 L473.6 201.3 L487.9 211 L502.1 221.7 L516.4 233.5 L530.7 246.2 L545 260" fill="none" stroke="#155e75" stroke-width="1.6"/>
+      <ellipse cx="545" cy="160" rx="13" ry="100" fill="none" stroke="#16161a" stroke-width="1.3"/>
+      <ellipse cx="475" cy="160" rx="11" ry="65" fill="rgba(179,56,46,.16)" stroke="#b3382e" stroke-width="1.5"/>
+      <ellipse cx="475" cy="160" rx="8" ry="42.2" fill="#ffffff" stroke="#155e75" stroke-width="1.3" stroke-dasharray="5 3"/>
+      <path d="M475 95 L 548 95" stroke="#6b6b74" stroke-width="1" stroke-dasharray="4 3"/>
+      <path d="M475 117.8 L 548 128" stroke="#6b6b74" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="558" y="99" style="font:11px system-ui;fill:#b3382e">R = 2x</text>
+      <text x="558" y="132" style="font:11px system-ui;fill:#155e75">r = x²</text>
+      <text x="46" y="292" style="font:11px system-ui;fill:#6b6b74">плоская фигура между прямой и параболой</text>
+      <text x="336" y="292" style="font:11px system-ui;fill:#6b6b74">тело вращения; сечение — кольцо</text>
+    </svg>
+    <div class="caption">Слева фигура, справа тело. Красный эллипс — сечение в
+    точке \(x\): внешний радиус задаёт прямая, внутренний — парабола. При
+    \(x=2\) радиусы совпадают, и «дырка» исчезает.</div>
+    <div class="answer">\(V=\dfrac{64\pi}{15}\approx 13{,}404\) кубических
+    единицы.</div>
+    <div class="check">две независимые проверки. Первая — по разности объёмов:
+    вращение прямой \(y=2x\) даёт конус объёмом
+    \(\frac{1}{3}\pi R^{2}H=\frac{32\pi}{3}\approx 33{,}510\) (школьная формула,
+    без интегрирования), вращение параболы —
+    \(\pi\int_0^{2}x^{4}dx=\frac{32\pi}{5}\approx 20{,}106\), и разность
+    \(33{,}510-20{,}106=13{,}404\) совпала с ответом. Вторая — численный счёт
+    \(\pi\int_0^2(4x^{2}-x^{4})dx\) по формуле Симпсона: \(13{,}352\) при
+    \(n=4\), \(13{,}401\) при \(n=8\), \(13{,}404\) при \(n=16\).</div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 9. Исследование несобственных интегралов на сходимость</h3>
+    <div class="given">Дано: а)
+    \(\displaystyle\int\limits_2^{+\infty}\frac{\operatorname{arctg}\frac{1}{x}}
+    {x\sqrt[3]{x^{5}}}\,dx\); б)
+    \(\displaystyle\int\limits_1^{2}\frac{dx}{x^{2}-1}\).
+    Найти: сходятся ли интегралы.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">а) Интеграл первого рода: промежуток бесконечен,
+        других особенностей нет — функция непрерывна и положительна при
+        \(x\ge 2\). Приводим знаменатель к одной степени.</div>
+        <div class="calc">\(x\sqrt[3]{x^{5}}\) =
+          <span class="sub">\(x^{1}\cdot x^{5/3}\)</span> =
+          <b>\(x^{8/3}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Заменяем функцию эквивалентной при \(x\to\infty\):
+        аргумент арктангенса стремится к нулю, а \(\operatorname{arctg}u\sim u\).</div>
+        <div class="calc">\(\operatorname{arctg}\frac{1}{x}\sim\frac{1}{x}\) =
+          <span class="sub">\(f(x)\sim\dfrac{1}{x\cdot x^{8/3}}\)</span> =
+          <b>\(f(x)\sim x^{-11/3}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Сравниваем с эталоном \(\int_1^{\infty}x^{-p}dx\),
+        сходящимся при \(p&gt;1\): по предельному признаку оба интеграла ведут
+        себя одинаково.</div>
+        <div class="calc">\(p=\frac{11}{3}\) =
+          <span class="sub">\(3{,}67&gt;1\)</span> =
+          <b>интеграл (а) сходится</b></div>
+      </div>
+      <div class="step">
+        <div class="what">б) Интеграл второго рода: в точке \(x=1\) функция не
+        ограничена. Раскладываем знаменатель и выделяем поведение около особой
+        точки.</div>
+        <div class="calc">\(\dfrac{1}{x^{2}-1}=\dfrac{1}{(x-1)(x+1)}\) =
+          <span class="sub">при \(x\to 1{+}0\): \(x+1\to 2\)</span> =
+          <b>\(f(x)\sim\dfrac{1}{2(x-1)}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Сравниваем с эталоном
+        \(\int_a^{c}\frac{dx}{(x-c)^{m}}\), сходящимся при \(m&lt;1\).</div>
+        <div class="calc">\(m=1\) =
+          <span class="sub">граничный случай, даёт логарифм</span> =
+          <b>интеграл (б) расходится</b></div>
+      </div>
+    </div>
+    <svg viewBox="0 0 640 260" class="geo-board" style="max-width:640px">
+      <text x="16" y="20" style="font:11px system-ui;fill:#6b6b74">Два несобственных интеграла: «тонкий хвост» и бесконечная площадь у асимптоты</text>
+      <path d="M61.9 72.2 L77.2 139 L92.4 167.1 L107.7 180.6 L123 187.8 L138.2 191.9 L153.5 194.4 L168.7 196 L184 197.1 L199.3 197.8 L214.5 198.3 L229.8 198.7 L245.1 198.9 L260.3 199.2 L275.6 199.3 L290.8 199.4 L306.1 199.5 L306.1 200 L61.9 200 Z" fill="rgba(21,94,117,.12)" stroke="none"/>
+      <path d="M127.9 189.4 L145.7 193.3 L163.5 195.5 L181.4 196.9 L199.2 197.8 L217 198.4 L234.8 198.8 L252.6 199.1 L270.5 199.3 L288.3 199.4 L306.1 199.5 L306.1 200 L127.9 200 Z" fill="rgba(26,127,55,.30)" stroke="none"/>
+      <line x1="40" y1="200" x2="330" y2="200" stroke="#16161a" stroke-width="1.2"/>
+      <path d="M330 200 l -9 -4.5 v 9 z" fill="#16161a"/>
+      <line x1="52" y1="212" x2="52" y2="60" stroke="#16161a" stroke-width="1.2"/>
+      <path d="M52 60 l -4.5 9 h 9 z" fill="#16161a"/>
+      <path d="M61.9 72.2 L77.2 139 L92.4 167.1 L107.7 180.6 L123 187.8 L138.2 191.9 L153.5 194.4 L168.7 196 L184 197.1 L199.3 197.8 L214.5 198.3 L229.8 198.7 L245.1 198.9 L260.3 199.2 L275.6 199.3 L290.8 199.4 L306.1 199.5" fill="none" stroke="#b3382e" stroke-width="2"/>
+      <path d="M61.9 62.2 L77.2 135.7 L92.4 165.8 L107.7 180 L123 187.5 L138.2 191.8 L153.5 194.3 L168.7 196 L184 197 L199.3 197.8 L214.5 198.3 L229.8 198.7 L245.1 198.9 L260.3 199.2 L275.6 199.3 L290.8 199.4 L306.1 199.5" fill="none" stroke="#155e75" stroke-width="1.4" stroke-dasharray="6 4"/>
+      <line x1="127.9" y1="200" x2="127.9" y2="176" stroke="#1a7f37" stroke-width="1.4"/>
+      <text x="40" y="44" style="font:11px system-ui;fill:#16161a">а) первый род</text>
+      <text x="100" y="84" style="font:11px system-ui;fill:#b3382e">f(x) = arctg(1/x) / x^(8/3)</text>
+      <text x="100" y="102" style="font:11px system-ui;fill:#155e75">эталон g(x) = 1/x^(11/3)</text>
+      <text x="100" y="120" style="font:11px system-ui;fill:#6b6b74">кривые практически сливаются</text>
+      <text x="48" y="216" style="font:11px system-ui;fill:#16161a">2</text>
+      <text x="124" y="216" style="font:11px system-ui;fill:#1a7f37">A</text>
+      <text x="40" y="242" style="font:11px system-ui;fill:#1a7f37">хвост от A до ∞ имеет конечную площадь</text>
+      <path d="M400.2 55.1 L411 123 L421.7 148.4 L432.5 161.7 L443.2 169.8 L454 175.3 L464.7 179.3 L475.5 182.2 L486.2 184.5 L497 186.3 L507.7 187.8 L518.5 189.1 L529.2 190.1 L540 191 L550.7 191.8 L561.5 192.4 L572.2 193 L572.2 200 L400.2 200 Z" fill="rgba(179,56,46,.16)" stroke="none"/>
+      <line x1="360" y1="200" x2="610" y2="200" stroke="#16161a" stroke-width="1.2"/>
+      <path d="M610 200 l -9 -4.5 v 9 z" fill="#16161a"/>
+      <line x1="387.2" y1="204" x2="387.2" y2="52" stroke="#b3382e" stroke-width="1.2" stroke-dasharray="5 4"/>
+      <path d="M400.2 55.1 L411 123 L421.7 148.4 L432.5 161.7 L443.2 169.8 L454 175.3 L464.7 179.3 L475.5 182.2 L486.2 184.5 L497 186.3 L507.7 187.8 L518.5 189.1 L529.2 190.1 L540 191 L550.7 191.8 L561.5 192.4 L572.2 193" fill="none" stroke="#b3382e" stroke-width="2"/>
+      <text x="360" y="44" style="font:11px system-ui;fill:#16161a">б) второй род</text>
+      <text x="450" y="90" style="font:11px system-ui;fill:#b3382e">f(x) = 1/(x² − 1)</text>
+      <text x="450" y="108" style="font:11px system-ui;fill:#6b6b74">при x → 1 ведёт себя</text>
+      <text x="450" y="126" style="font:11px system-ui;fill:#6b6b74">как 1 / (2(x − 1))</text>
+      <text x="383" y="216" style="font:11px system-ui;fill:#16161a">1</text>
+      <text x="568" y="216" style="font:11px system-ui;fill:#16161a">2</text>
+      <text x="360" y="242" style="font:11px system-ui;fill:#b3382e">площадь у асимптоты неограниченна</text>
+    </svg>
+    <div class="caption">Слева подынтегральная функция и её эталон
+    \(x^{-11/3}\) настолько близки, что графики сливаются, — это и есть
+    эквивалентность; зелёным выделен «хвост» от \(A\) до бесконечности с конечной
+    площадью. Справа функция уходит в бесконечность у прямой \(x=1\), и площадь
+    между кривой и асимптотой растёт неограниченно.</div>
+    <div class="answer">интеграл (а) сходится (показатель \(11/3&gt;1\));
+    интеграл (б) расходится (показатель \(1\), граничный случай).</div>
+    <div class="check">для (а) — численный расчёт с растущим верхним пределом:
+    \(\int_2^{10}=0{,}055700\), \(\int_2^{50}=0{,}056496\),
+    \(\int_2^{200}=0{,}056506\), \(\int_2^{1000}=0{,}056507\); значения
+    стабилизируются, то есть конечный предел существует. Теоретическая оценка
+    остатка \(\int_A^{\infty}x^{-11/3}dx=\frac{3}{8}A^{-8/3}\) при \(A=50\) даёт
+    \(1{,}1\cdot 10^{-5}\) — как раз порядок наблюдаемого расхождения. Для (б) —
+    расчёт с приближением к особой точке: \(\int_{1{,}01}^{2}=2{,}102\),
+    \(\int_{1{,}0001}^{2}=4{,}402\), \(\int_{1{,}000001}^{2}=6{,}705\),
+    \(\int_{1{+}10^{-8}}^{2}=9{,}008\); значения растут как
+    \(\ln\frac{1}{\varepsilon}\) и предела не имеют.</div>
+  </div>
+
+  <div class="note warn"><b>Три самые частые ошибки.</b> Потерянная постоянная
+  \(C\) в неопределённом интеграле — ответ без неё формально неверен. Забытый
+  пересчёт пределов при замене (задача 6) — признак беды — знак или порядок
+  величины, не согласующиеся с графиком. Вывод о сходимости по одной особой
+  точке, когда их несколько: интеграл сходится, только если сходится каждый
+  кусок.</div>
+
+  <h2>Что дальше</h2>
+  <div class="applied"><b>Где это работает.</b> Задача 7 — это в чистом виде
+  расчёт площади шпангоута по обводу, задача 8 — объёма отсека по площадям
+  поперечных сечений. На практике такие интегралы берут численно, и точность
+  разбиения играет ту же роль, что число \(n\) в проверках этой страницы: см.
+  <a href="https://shadeswd.duckdns.org/shipstat/">«Статику корабля»</a> и
+  <a href="https://shadeswd.duckdns.org/nummet/">«Численные методы»</a>.</div>
+
+  <p class="small">Теоретическая часть — <a href="t-integral">глава 5
+  «Интеграл»</a>; другие разборы — <a href="tasks">оглавление типовых
+  расчётов</a>; литература и происхождение задач —
+  <a href="sources">Источники</a>.</p>
 </main>
 </body>
 </html>

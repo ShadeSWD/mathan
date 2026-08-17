@@ -4,33 +4,701 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Задачи: дифференциальные уравнения</title>
-<meta name="description" content="Разборы задач на решение уравнений и задачу Коши.">
+<meta name="description" content="Разбор типового расчёта по дифференциальным уравнениям: разделяющиеся переменные и задача Коши, однородное уравнение, линейное уравнение первого порядка и уравнение Бернулли, уравнение в полных дифференциалах, понижение порядка, ЛОДУ второго порядка с тремя типами корней, подбор частного решения и резонанс, метод вариации произвольных постоянных, система двух уравнений.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📐</text></svg>">
 <link rel="stylesheet" href="assets/style.css">
-<style>
-.tldr { background:#f2f6fb; border-left:4px solid #155e75; border-radius:0 10px 10px 0;
-  padding:10px 16px; margin:16px 0; font-size:15.5px; }
-.tldr ul { margin:6px 0 2px; padding-left:20px; }
-</style>
 </head>
 <body>
 <script src="assets/site.js" data-root="./" data-page="tasks"></script>
 <main class="wrap">
   <h1>Задачи: дифференциальные уравнения</h1>
-  <p class="lead">Разборы задач на решение уравнений и задачу Коши.</p>
-  <div class="tldr">
-    <b>Что будет в этой главе.</b>
+  <p class="lead">Девять задач по образцу типового расчёта кафедры: от
+  разделяющихся переменных до системы двух уравнений первого порядка. Порядок
+  задач повторяет порядок заданий расчёта, поэтому разбор удобно читать до
+  своего варианта — чтобы увидеть логику, — и после, чтобы сверить структуру
+  решения. Все числа пересчитаны заново.</p>
+
+  <div class="short">
+    <h2>Коротко</h2>
+    <p>Каждая задача решается по одной схеме: распознать тип уравнения, применить
+    отвечающий ему приём, довести до общего решения (или общего интеграла) и
+    только затем использовать начальные условия.</p>
     <ul>
-      <li>уравнения с разделяющимися переменными и линейные первого порядка</li>
-      <li>линейные уравнения второго порядка с постоянными коэффициентами</li>
-      <li>задача Коши и подбор частного решения</li>
-      <li>уравнение вынужденных колебаний и резонанс</li>
+      <li>Задачи 1—4 — первый порядок: разделяющиеся переменные, однородное,
+      линейное и Бернулли, полный дифференциал.</li>
+      <li>Задача 5 — понижение порядка в уравнении без независимой переменной.</li>
+      <li>Задачи 6—8 — линейные уравнения второго порядка с постоянными
+      коэффициентами: все три случая корней, подбор частного решения без
+      резонанса и с резонансом, вариация произвольных постоянных.</li>
+      <li>Задача 9 — система двух уравнений: сведение к одному уравнению и метод
+      Эйлера через собственные числа матрицы.</li>
+      <li>В каждой задаче блок «Проверка» — подстановка найденной функции в
+      исходное уравнение и в начальные условия. Это единственный способ убедиться
+      в ответе, не сверяясь с чужим решением.</li>
     </ul>
+    <p class="keyf">Теория к этим задачам — <a href="t-diffeq">глава 8</a>.</p>
   </div>
-  <p>Глава готовится: текст пишется по конспектам и методическим материалам
-  кафедры, схемы и числовые примеры делаются заново. Пока она не готова,
-  соседние главы курса уже доступны — их список в разделе
-  <a href="theory">«Теория»</a>.</p>
-  <p><a href="theory">← Оглавление курса</a></p>
+
+  <div class="task">
+    <h3>Задача 1. Разделяющиеся переменные и задача Коши</h3>
+    <div class="given">Дано: \((3+e^{x})\,y\,y'=e^{x}\), \(y(0)=2\).
+    Найти: решение задачи Коши.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Распознаём тип. Уравнение приводится к виду
+        \(y'=f(x)g(y)\): справа множитель зависит только от \(x\), слева — только
+        от \(y\). Значит, переменные разделяются.</div>
+        <div class="calc">\(y\,dy=\dfrac{e^{x}}{3+e^{x}}\,dx\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Интегрируем обе части. Справа числитель есть
+        производная знаменателя, поэтому интеграл — логарифм. Модуль не нужен:
+        \(3+e^{x}&gt;0\) при всех \(x\).</div>
+        <div class="calc">\(\displaystyle\int y\,dy=\int\frac{d(3+e^{x})}{3+e^{x}}
+        \ \Rightarrow\ \frac{y^{2}}{2}=\ln(3+e^{x})+C\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Проверяем, не потеряно ли решение. Делить приходилось
+        на \(3+e^{x}\), а это выражение в нуль не обращается; функция
+        \(y\equiv 0\) решением не является — подстановка даёт \(0=e^{x}\).
+        Особых решений нет.</div>
+        <div class="calc">общий интеграл: \(y^{2}=2\ln(3+e^{x})+C_1\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Используем начальное условие \(y(0)=2\).</div>
+        <div class="calc">\(y^2(0)=2\ln 4+C_1\) = <span class="sub">4 = 2·ln 4 + C₁</span>
+        = <b>\(C_1=4-2\ln 4\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Выбираем ветвь корня. В точке \(x=0\) значение
+        \(y=2&gt;0\), поэтому берём положительный корень.</div>
+        <div class="calc">\(y=\sqrt{4+2\ln\dfrac{3+e^{x}}{4}}\)</div>
+      </div>
+    </div>
+    <div class="answer">\(y=\sqrt{4+2\ln\dfrac{3+e^{x}}{4}}\); общий интеграл
+    уравнения — \(y^{2}=2\ln(3+e^{x})+C_1\).</div>
+    <div class="check">начальное условие: \(y(0)=\sqrt{4+2\ln 1}=2\) — верно.
+    Подстановка в уравнение: из \(y^2=4+2\ln\frac{3+e^x}{4}\) дифференцированием
+    получаем \(2yy'=\dfrac{2e^{x}}{3+e^{x}}\), то есть
+    \((3+e^{x})\,y\,y'=e^{x}\) — исходное уравнение. Численно при \(x=1\):
+    \(y=2{,}1713\), \(y'=0{,}2189\), и \((3+e)\cdot 2{,}1713\cdot 0{,}2189
+    =2{,}718=e^{1}\).</div>
+  </div>
+
+  <svg viewBox="0 0 640 296" class="geo-board" style="max-width:640px">
+    <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Интегральные кривые уравнения (3 + eˣ)·y·y′ = eˣ и решение задачи Коши y(0) = 2</text>
+    <path d="M91 205 l9 -0 M91 172 l9 -0 M91 140 l9 -0 M91 108 l9 -0 M91 75 l9 -0 M91 43 l9 -0 M140 205 l9 -0 M140 172 l9 -0 M140 140 l9 -0 M140 108 l9 -0 M140 76 l9 -0 M140 43 l9 -0 M189 205 l9 -1 M189 172 l9 -0 M189 140 l9 -0 M189 108 l9 -0 M189 76 l9 -0 M189 43 l9 -0 M238 205 l9 -1 M238 173 l9 -0 M238 140 l9 -0 M238 108 l9 -0 M238 76 l9 -0 M238 43 l9 -0 M287 205 l9 -1 M287 173 l9 -1 M287 140 l9 -1 M287 108 l9 -0 M287 76 l9 -0 M287 43 l9 -0 M336 206 l9 -2 M336 173 l9 -1 M336 140 l9 -1 M336 108 l9 -1 M336 76 l9 -1 M336 43 l9 -0 M385 206 l9 -3 M385 173 l9 -2 M384 141 l9 -1 M384 108 l9 -1 M384 76 l9 -1 M384 44 l9 -1 M434 206 l8 -4 M433 173 l9 -2 M433 141 l9 -2 M433 108 l9 -1 M433 76 l9 -1 M433 44 l9 -1 M483 207 l8 -4 M482 174 l9 -3 M482 141 l9 -2 M482 109 l9 -2 M482 76 l9 -1 M482 44 l9 -1 M532 207 l8 -5 M532 174 l8 -3 M531 141 l9 -2 M531 109 l9 -2 M531 76 l9 -2 M531 44 l9 -1 M581 207 l7 -5 M581 174 l8 -4 M580 141 l9 -3 M580 109 l9 -2 M580 76 l9 -2 M580 44 l9 -1" stroke="#9a9aa2" stroke-width="1" fill="none"/>
+    <path d="M62 250 L 612 250" stroke="#16161a" stroke-width="1.2"/>
+    <path d="M618 250 l -9 -4.5 v 9 z" fill="#16161a"/>
+    <path d="M340 250 L 340 42" stroke="#16161a" stroke-width="1.2"/>
+    <path d="M340 36 l -4.5 9 h 9 z" fill="#16161a"/>
+    <path d="M62 192 L79 192 L96 192 L113 191 L129 191 L146 191 L163 190 L180 190 L197 189 L214 188 L230 187 L247 186 L264 185 L281 183 L298 182 L315 180 L332 178 L348 175 L365 173 L382 170 L399 167 L416 164 L433 160 L450 157 L466 153 L483 149 L500 145 L517 140 L534 136 L551 132 L567 127 L584 123 L601 118 L618 114" stroke="#155e75" stroke-width="1.3" fill="none"/>
+    <path d="M62 85 L79 85 L96 85 L113 85 L129 85 L146 84 L163 84 L180 84 L197 84 L214 83 L230 83 L247 83 L264 82 L281 82 L298 81 L315 80 L332 79 L348 78 L365 77 L382 76 L399 75 L416 73 L433 71 L450 69 L466 67 L483 65 L500 63 L517 60 L534 58 L551 55 L567 53 L584 50 L601 47 L618 44" stroke="#155e75" stroke-width="1.3" fill="none"/>
+    <path d="M62 136 L79 136 L96 136 L113 136 L129 136 L146 136 L163 135 L180 135 L197 135 L214 134 L230 134 L247 133 L264 132 L281 132 L298 131 L315 130 L332 128 L348 127 L365 125 L382 124 L399 122 L416 120 L433 117 L450 115 L466 112 L483 109 L500 106 L517 103 L534 100 L551 96 L567 93 L584 90 L601 86 L618 83" stroke="#b3382e" stroke-width="2.4" fill="none"/>
+    <path d="M337 189 h 6 M337 128 h 6 M337 67 h 6" stroke="#16161a" stroke-width="1"/>
+    <path d="M155 247 v 6 M247 247 v 6 M433 247 v 6 M525 247 v 6" stroke="#16161a" stroke-width="1"/>
+    <circle cx="340" cy="128" r="4" fill="#b3382e"/>
+    <text x="322" y="193" style="font:11px system-ui;fill:#6b6b74;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">1</text>
+    <text x="322" y="132" style="font:11px system-ui;fill:#6b6b74;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">2</text>
+    <text x="322" y="71" style="font:11px system-ui;fill:#6b6b74;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">3</text>
+    <text x="149" y="266" style="font:11px system-ui;fill:#6b6b74">−2</text>
+    <text x="241" y="266" style="font:11px system-ui;fill:#6b6b74">−1</text>
+    <text x="430" y="266" style="font:11px system-ui;fill:#6b6b74">1</text>
+    <text x="522" y="266" style="font:11px system-ui;fill:#6b6b74">2</text>
+    <text x="348" y="114" style="font:11px system-ui;fill:#b3382e;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">M(0; 2)</text>
+    <text x="400" y="152" style="font:11px system-ui;fill:#b3382e;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">решение задачи Коши</text>
+    <text x="100" y="70" style="font:11px system-ui;fill:#155e75;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">другие кривые семейства</text>
+    <text x="598" y="242" style="font:11px system-ui;fill:#16161a">x</text>
+    <text x="348" y="48" style="font:11px system-ui;fill:#16161a">y</text>
+    <text x="16" y="286" style="font:11px system-ui;fill:#6b6b74">все кривые лежат в полуплоскости y &gt; 0 и нигде не пересекаются</text>
+  </svg>
+  <div class="caption">Интегральные кривые уравнения из задачи 1 на фоне его
+  поля направлений. Красная кривая проходит через точку \(M(0;\,2)\) — это
+  решение задачи Коши. Все кривые лежат в полуплоскости \(y&gt;0\), где условия
+  теоремы существования и единственности выполнены, и потому не пересекаются.</div>
+
+  <div class="task">
+    <h3>Задача 2. Однородное уравнение первого порядка</h3>
+    <div class="given">Дано: \(y'=\dfrac{y}{x}+\operatorname{tg}\dfrac{y}{x}\),
+    \(y(1)=\pi/6\). Найти: решение задачи Коши.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Правая часть зависит только от отношения \(y/x\),
+        то есть является однородной функцией нулевого порядка. Вводим новую
+        неизвестную функцию \(u=y/x\), тогда \(y=ux\) и \(y'=u'x+u\).</div>
+        <div class="calc">\(u'x+u=u+\operatorname{tg}u\ \Rightarrow\
+        x\,\dfrac{du}{dx}=\operatorname{tg}u\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Слагаемое \(u\) сократилось — это и есть признак
+        правильной замены. Переменные разделяются.</div>
+        <div class="calc">\(\operatorname{ctg}u\,du=\dfrac{dx}{x}\ \Rightarrow\
+        \ln|\sin u|=\ln|x|+\ln C\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Возвращаемся к \(y\). Потенциально потерянные решения
+        \(\operatorname{tg}u=0\) дают прямые \(y=k\pi x\); подстановка
+        показывает, что они действительно решения, и получаются из общего
+        интеграла при \(C=0\).</div>
+        <div class="calc">\(\sin\dfrac{y}{x}=Cx\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Подставляем начальное условие \(x=1\), \(y=\pi/6\).</div>
+        <div class="calc">\(\sin\dfrac{\pi}{6}=C\cdot 1\) =
+        <span class="sub">1/2 = C</span> = <b>\(C=\tfrac12\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Выражаем \(y\) явно. Так как при \(x=1\) угол
+        \(y/x=\pi/6\) лежит в первой четверти, берём главную ветвь арксинуса.</div>
+        <div class="calc">\(\dfrac{y}{x}=\arcsin\dfrac{x}{2}\ \Rightarrow\
+        y=x\arcsin\dfrac{x}{2}\), \(|x|\le 2\)</div>
+      </div>
+    </div>
+    <div class="answer">\(y=x\arcsin\dfrac{x}{2}\); общий интеграл —
+    \(\sin\dfrac{y}{x}=Cx\).</div>
+    <div class="check">начальное условие: \(y(1)=\arcsin\frac12=\pi/6\) — верно.
+    Подстановка: \(y'=\arcsin\dfrac{x}{2}+\dfrac{x}{\sqrt{4-x^{2}}}\), а
+    \(\dfrac{y}{x}+\operatorname{tg}\dfrac{y}{x}
+    =\arcsin\dfrac{x}{2}+\operatorname{tg}\left(\arcsin\dfrac{x}{2}\right)
+    =\arcsin\dfrac{x}{2}+\dfrac{x/2}{\sqrt{1-x^{2}/4}}\) — то же самое
+    выражение.</div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 3. Линейное уравнение первого порядка и уравнение Бернулли</h3>
+    <div class="given">Дано: (а) \(y'-\dfrac{2y}{x+1}=e^{x}(x+1)^{2}\),
+    \(y(0)=1\); (б) \(y'+\dfrac{y}{x}=x\,y^{2}\), \(y(1)=1\).
+    Найти: решения задач Коши.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">(а) Уравнение линейное: \(y\) и \(y'\) входят в первой
+        степени. Решаем методом Бернулли — ищем решение в виде произведения
+        \(y=u(x)v(x)\), тогда \(u'v+u\left(v'-\frac{2v}{x+1}\right)=e^{x}(x+1)^2\).</div>
+        <div class="calc">\(y=uv,\qquad y'=u'v+uv'\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Функцию \(v\) выбираем так, чтобы скобка обратилась в
+        нуль. Это уравнение с разделяющимися переменными, и годится любое его
+        ненулевое решение — постоянную берём нулевой.</div>
+        <div class="calc">\(\dfrac{dv}{v}=\dfrac{2\,dx}{x+1}\ \Rightarrow\
+        \ln v=2\ln(x+1)\ \Rightarrow\ v=(x+1)^{2}\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Для \(u\) остаётся простое уравнение: множитель
+        \((x+1)^2\) сокращается.</div>
+        <div class="calc">\(u'(x+1)^{2}=e^{x}(x+1)^{2}\ \Rightarrow\ u'=e^{x}
+        \ \Rightarrow\ u=e^{x}+C\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Общее решение и начальное условие \(y(0)=1\).</div>
+        <div class="calc">\(y=(x+1)^{2}(e^{x}+C)\), \(y(0)=1\cdot(1+C)\) =
+        <span class="sub">1 = 1 + C</span> = <b>\(C=0\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">(б) Уравнение Бернулли с показателем \(n=2\). Делим
+        на \(y^{2}\) и вводим \(z=y^{\,1-n}=y^{-1}\), для которого
+        \(z'=-y^{-2}y'\).</div>
+        <div class="calc">\(y^{-2}y'+\dfrac{y^{-1}}{x}=x\ \Rightarrow\
+        -z'+\dfrac{z}{x}=x\ \Rightarrow\ z'-\dfrac{z}{x}=-x\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Получилось линейное уравнение. Снова \(z=uv\):
+        из \(v'-v/x=0\) находим \(v=x\), затем \(u'x=-x\).</div>
+        <div class="calc">\(u'=-1\ \Rightarrow\ u=-x+C\ \Rightarrow\
+        z=x(C-x)\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Возвращаемся к \(y=1/z\) и подставляем \(y(1)=1\).
+        Отдельно отмечаем потерянное при делении решение \(y\equiv 0\).</div>
+        <div class="calc">\(y=\dfrac{1}{Cx-x^{2}}\), \(\dfrac{1}{C-1}=1\) =
+        <span class="sub">C − 1 = 1</span> = <b>\(C=2\)</b></div>
+      </div>
+    </div>
+    <div class="answer">(а) \(y=(x+1)^{2}e^{x}\); (б) \(y=\dfrac{1}{2x-x^{2}}\)
+    на интервале \(0&lt;x&lt;2\), кроме того уравнение (б) имеет решение
+    \(y\equiv 0\).</div>
+    <div class="check">(а) \(y'=2(x+1)e^{x}+(x+1)^{2}e^{x}\), тогда
+    \(y'-\dfrac{2y}{x+1}=2(x+1)e^{x}+(x+1)^{2}e^{x}-2(x+1)e^{x}=(x+1)^{2}e^{x}\)
+    — совпало; \(y(0)=1\cdot 1=1\).
+    (б) \(y'=\dfrac{2x-2}{(2x-x^{2})^{2}}\), и
+    \(y'+\dfrac{y}{x}=\dfrac{x(2x-2)+(2x-x^{2})}{x(2x-x^{2})^{2}}
+    =\dfrac{x^{2}}{x(2x-x^{2})^{2}}=\dfrac{x}{(2x-x^{2})^{2}}=x\,y^{2}\);
+    \(y(1)=1/(2-1)=1\).</div>
+  </div>
+
+  <svg viewBox="0 0 640 292" class="geo-board" style="max-width:640px">
+    <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Решение задачи Коши y′ + y/x = xy², y(1) = 1 и соседние ветви семейства</text>
+    <path d="M62 154 L 612 154" stroke="#16161a" stroke-width="1.2"/>
+    <path d="M618 154 l -9 -4.5 v 9 z" fill="#16161a"/>
+    <path d="M201 258 L 201 32" stroke="#16161a" stroke-width="1.2"/>
+    <path d="M201 26 l -4.5 9 h 9 z" fill="#16161a"/>
+    <path d="M479 26 L 479 258" stroke="#9a9aa2" stroke-width="1.2" stroke-dasharray="6 4"/>
+    <path d="M181 229 L174 210 L167 198 L160 189 L152 182 L144 178 L135 174 L126 171 L118 169 L109 167 L101 166 L94 165 L87 164 L81 163 L75 163 L70 162 L67 162 L64 162 L63 162 L62 162" stroke="#155e75" stroke-width="1.4" fill="none"/>
+    <path d="M499 229 L506 210 L513 198 L520 189 L528 182 L536 178 L545 174 L554 171 L562 169 L571 167 L579 166 L586 165 L593 164 L599 163 L605 163 L610 162 L613 162 L616 162 L617 162 L618 162" stroke="#155e75" stroke-width="1.4" fill="none"/>
+    <path d="M218 50 L222 68 L226 82 L231 92 L236 100 L241 106 L247 111 L253 115 L260 118 L267 121 L274 123 L281 125 L288 126 L296 128 L304 128 L312 129 L320 130 L328 130 L336 130 L344 130 L352 130 L360 130 L368 129 L376 128 L384 128 L392 126 L399 125 L406 123 L413 121 L420 118 L427 115 L433 111 L439 106 L444 100 L449 92 L454 82 L458 68 L462 50" stroke="#b3382e" stroke-width="2.4" fill="none"/>
+    <path d="M198 106 h 6 M198 59 h 6" stroke="#16161a" stroke-width="1"/>
+    <path d="M340 151 v 6 M479 151 v 6 M618 151 v 6 M62 151 v 6" stroke="#16161a" stroke-width="1"/>
+    <circle cx="340" cy="130" r="4" fill="#b3382e"/>
+    <text x="186" y="110" style="font:11px system-ui;fill:#6b6b74;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">2</text>
+    <text x="186" y="63" style="font:11px system-ui;fill:#6b6b74;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">4</text>
+    <text x="337" y="172" style="font:11px system-ui;fill:#6b6b74">1</text>
+    <text x="466" y="172" style="font:11px system-ui;fill:#6b6b74">2</text>
+    <text x="613" y="172" style="font:11px system-ui;fill:#6b6b74">3</text>
+    <text x="55" y="172" style="font:11px system-ui;fill:#6b6b74">−1</text>
+    <text x="250" y="224" style="font:11px system-ui;fill:#155e75;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">синие ветви — другие решения</text>
+    <text x="250" y="80" style="font:11px system-ui;fill:#b3382e;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">y = 1/(2x − x²)</text>
+    <text x="348" y="124" style="font:11px system-ui;fill:#b3382e;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">M(1; 1)</text>
+    <text x="486" y="46" style="font:11px system-ui;fill:#6b6b74;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">асимптота x = 2</text>
+    <text x="600" y="144" style="font:11px system-ui;fill:#16161a">x</text>
+    <text x="208" y="38" style="font:11px system-ui;fill:#16161a">y</text>
+    <text x="16" y="282" style="font:11px system-ui;fill:#6b6b74">ось Oy — вторая асимптота: решение задачи Коши живёт только при 0 &lt; x &lt; 2</text>
+  </svg>
+  <div class="caption">Решение задачи 3 (б). Прямые \(x=0\) и \(x=2\) —
+  вертикальные асимптоты: знаменатель \(2x-x^{2}\) обращается в нуль. Решение
+  задачи Коши существует только на интервале \(0&lt;x&lt;2\), содержащем
+  начальную точку. Это типичная особенность нелинейных уравнений: у линейного
+  уравнения решение продолжается на весь интервал непрерывности коэффициентов,
+  у нелинейного — может «уйти в бесконечность» за конечное время.</div>
+
+  <div class="task">
+    <h3>Задача 4. Уравнение в полных дифференциалах</h3>
+    <div class="given">Дано:
+    \(x\,e^{y^{2}}dx+\left(x^{2}y\,e^{y^{2}}-\operatorname{tg}2y\right)dy=0\).
+    Найти: общий интеграл.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Выписываем \(M\) и \(N\) и проверяем условие полноты
+        \(\partial M/\partial y=\partial N/\partial x\).</div>
+        <div class="calc">\(M=x\,e^{y^{2}},\quad N=x^{2}y\,e^{y^{2}}-\operatorname{tg}2y\);
+        \(\ \dfrac{\partial M}{\partial y}=2xy\,e^{y^{2}}\) =
+        <span class="sub">\(\partial N/\partial x = 2xy\,e^{y^{2}}\)</span> =
+        <b>условие выполнено</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Интегрируем \(\partial u/\partial x=M\) по \(x\),
+        считая \(y\) замороженным. «Постоянная» интегрирования может зависеть
+        от \(y\).</div>
+        <div class="calc">\(u=\displaystyle\int x\,e^{y^{2}}dx
+        =\frac{x^{2}}{2}e^{y^{2}}+\psi(y)\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Дифференцируем по \(y\) и приравниваем к \(N\).
+        Слагаемые с \(x\) обязаны сократиться — это встроенный контроль
+        правильности.</div>
+        <div class="calc">\(x^{2}y\,e^{y^{2}}+\psi'(y)=x^{2}y\,e^{y^{2}}
+        -\operatorname{tg}2y\ \Rightarrow\ \psi'(y)=-\operatorname{tg}2y\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Находим \(\psi\) и записываем общий интеграл
+        \(u(x,y)=C\).</div>
+        <div class="calc">\(\psi=-\displaystyle\int\operatorname{tg}2y\,dy
+        =\frac12\ln|\cos 2y|\)</div>
+      </div>
+    </div>
+    <div class="answer">\(x^{2}e^{y^{2}}+\ln|\cos 2y|=C\) (постоянная удвоена по
+    сравнению с \(u=C\), что допустимо).</div>
+    <div class="check">берём полный дифференциал найденной функции
+    \(\Phi=x^{2}e^{y^{2}}+\ln|\cos 2y|\):
+    \(\Phi_x'=2x\,e^{y^{2}}\), \(\Phi_y'=2x^{2}y\,e^{y^{2}}-2\operatorname{tg}2y\),
+    то есть \(d\Phi=2\left(M\,dx+N\,dy\right)\). Равенство \(d\Phi=0\)
+    равносильно исходному уравнению, значит общий интеграл найден верно.</div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 5. Понижение порядка</h3>
+    <div class="given">Дано: \(y''=50\sin^{3}y\cos y\), \(y(1)=\pi/2\),
+    \(y'(1)=5\). Найти: решение задачи Коши.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Уравнение не содержит независимой переменной \(x\) —
+        это третий тип. Полагаем \(p=y'\), считая \(p\) функцией от \(y\); тогда
+        \(y''=p\,dp/dy\).</div>
+        <div class="calc">\(p\,\dfrac{dp}{dy}=50\sin^{3}y\cos y\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Переменные разделились. Справа
+        \(\cos y\,dy=d(\sin y)\), поэтому интеграл берётся как степенной.</div>
+        <div class="calc">\(\displaystyle\int p\,dp=50\int\sin^{3}y\,d(\sin y)
+        \ \Rightarrow\ \frac{p^{2}}{2}=\frac{50\sin^{4}y}{4}+C
+        \ \Rightarrow\ p^{2}=25\sin^{4}y+C_1\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Первое начальное условие используем сразу, до второго
+        интегрирования: при \(y=\pi/2\) производная равна 5.</div>
+        <div class="calc">\(5^{2}=25\sin^{4}\dfrac{\pi}{2}+C_1\) =
+        <span class="sub">25 = 25 + C₁</span> = <b>\(C_1=0\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Извлекаем корень. Знак выбираем по условию
+        \(y'(1)=5&gt;0\): берём плюс.</div>
+        <div class="calc">\(p=5\sin^{2}y\ \Rightarrow\
+        \dfrac{dy}{\sin^{2}y}=5\,dx\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Интегрируем ещё раз и находим вторую постоянную из
+        условия \(y(1)=\pi/2\).</div>
+        <div class="calc">\(-\operatorname{ctg}y=5x+C_2\);
+        \(\ -\operatorname{ctg}\dfrac{\pi}{2}=5+C_2\) =
+        <span class="sub">0 = 5 + C₂</span> = <b>\(C_2=-5\)</b></div>
+      </div>
+    </div>
+    <div class="answer">\(\operatorname{ctg}y=5(1-x)\), то есть
+    \(y=\operatorname{arcctg}\bigl(5(1-x)\bigr)\); решение монотонно растёт от
+    \(0\) до \(\pi\).</div>
+    <div class="check">начальные условия: при \(x=1\) получаем
+    \(\operatorname{ctg}y=0\), то есть \(y=\pi/2\); дифференцируя
+    \(\operatorname{ctg}y=5-5x\), имеем \(-y'/\sin^{2}y=-5\), откуда
+    \(y'=5\sin^{2}y\) и \(y'(1)=5\sin^{2}(\pi/2)=5\). Подстановка в уравнение:
+    \(y''=\left(5\sin^{2}y\right)'=10\sin y\cos y\cdot y'
+    =10\sin y\cos y\cdot 5\sin^{2}y=50\sin^{3}y\cos y\) — исходное
+    уравнение.</div>
+  </div>
+
+  <svg viewBox="0 0 640 292" class="geo-board" style="max-width:640px">
+    <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Решение задачи Коши y″ = 50sin³y·cos y, y(1) = π/2, y′(1) = 5</text>
+    <path d="M62 41 L618 41" stroke="#9a9aa2" stroke-width="1.2" stroke-dasharray="6 4" fill="none"/>
+    <path d="M62 250 L 612 250" stroke="#16161a" stroke-width="1.2"/>
+    <path d="M618 250 l -9 -4.5 v 9 z" fill="#16161a"/>
+    <path d="M141 250 L 141 42" stroke="#16161a" stroke-width="1.2"/>
+    <path d="M141 36 l -4.5 9 h 9 z" fill="#16161a"/>
+    <path d="M280 245 L400 45" stroke="#1a7f37" stroke-width="1.5" stroke-dasharray="6 4" fill="none"/>
+    <path d="M62 241 L73 240 L85 240 L96 239 L107 239 L119 238 L130 238 L141 237 L153 236 L164 235 L175 234 L187 233 L198 232 L210 230 L221 229 L232 226 L244 224 L255 221 L266 217 L278 212 L289 206 L300 198 L312 187 L323 172 L334 155 L346 136 L357 118 L368 104 L380 93 L391 85 L402 78 L414 73 L425 70 L436 67 L448 64 L459 62 L470 60 L482 59 L493 57 L505 56 L516 55 L527 54 L539 54 L550 53 L561 52 L573 52 L584 51 L595 51 L607 50 L618 50" stroke="#b3382e" stroke-width="2.4" fill="none"/>
+    <path d="M340 247 v 6 M539 247 v 6" stroke="#16161a" stroke-width="1"/>
+    <circle cx="340" cy="145" r="4" fill="#b3382e"/>
+    <text x="66" y="34" style="font:11px system-ui;fill:#6b6b74">y = π — асимптота, она же решение уравнения</text>
+    <text x="348" y="140" style="font:11px system-ui;fill:#b3382e;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">M(1; π/2)</text>
+    <text x="240" y="110" style="font:11px system-ui;fill:#1a7f37;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">касательная: y′(1) = 5</text>
+    <text x="430" y="128" style="font:11px system-ui;fill:#b3382e;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">y = arcctg 5(1 − x)</text>
+    <text x="337" y="266" style="font:11px system-ui;fill:#6b6b74">1</text>
+    <text x="536" y="266" style="font:11px system-ui;fill:#6b6b74">2</text>
+    <text x="604" y="242" style="font:11px system-ui;fill:#16161a">x</text>
+    <text x="149" y="48" style="font:11px system-ui;fill:#16161a">y</text>
+    <text x="16" y="282" style="font:11px system-ui;fill:#6b6b74">оба начальных условия видны на чертеже: высота точки M и наклон касательной в ней</text>
+  </svg>
+  <div class="caption">Решение задачи 5. Кривая монотонно поднимается от
+  асимптоты \(y=0\) к асимптоте \(y=\pi\), проходя через точку \(M(1;\,\pi/2)\)
+  с угловым коэффициентом 5 — оба начальных условия видны на чертеже. Прямые
+  \(y=0\) и \(y=\pi\) сами являются решениями уравнения: при этих значениях
+  \(\sin y=0\).</div>
+
+  <div class="task">
+    <h3>Задача 6. ЛОДУ второго порядка: три случая корней</h3>
+    <div class="given">Дано: (а) \(y''+26y'+25y=0\); (б) \(y''+10y'+25y=0\);
+    (в) \(y''+2y'+26y=0\); во всех случаях \(y(0)=0\), \(y'(0)=1\).
+    Найти: решения задач Коши.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">(а) Составляем характеристическое уравнение.
+        Дискриминант положителен — корни вещественные и различные.</div>
+        <div class="calc">\(\lambda^{2}+26\lambda+25=0\) =
+        <span class="sub">D = 676 − 100 = 576</span> =
+        <b>\(\lambda_1=-1,\ \lambda_2=-25\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Фундаментальная система — две экспоненты; их линейная
+        независимость видна по вронскиану
+        \(W=(\lambda_2-\lambda_1)e^{(\lambda_1+\lambda_2)t}\neq 0\). Начальные
+        условия дают систему для постоянных.</div>
+        <div class="calc">\(y=C_1e^{-t}+C_2e^{-25t}\);
+        \(\ C_1+C_2=0,\ -C_1-25C_2=1\) =
+        <span class="sub">24C₁ = 1</span> =
+        <b>\(C_1=\tfrac1{24},\ C_2=-\tfrac1{24}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">(б) Дискриминант равен нулю — корень кратный. Второе
+        решение получается умножением первого на \(t\).</div>
+        <div class="calc">\(\lambda^{2}+10\lambda+25=(\lambda+5)^{2}=0\) =
+        <span class="sub">λ = −5 кратности 2</span> =
+        <b>\(y=(C_1+C_2t)e^{-5t}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Начальные условия: \(y(0)=C_1=0\), а
+        \(y'=C_2e^{-5t}(1-5t)\) даёт \(y'(0)=C_2=1\).</div>
+        <div class="calc">\(y=t\,e^{-5t}\)</div>
+      </div>
+      <div class="step">
+        <div class="what">(в) Дискриминант отрицателен — корни комплексно
+        сопряжённые, и фундаментальная система строится из
+        \(e^{\alpha t}\cos\beta t\) и \(e^{\alpha t}\sin\beta t\).</div>
+        <div class="calc">\(\lambda^{2}+2\lambda+26=0\) =
+        <span class="sub">D = 4 − 104 = −100</span> =
+        <b>\(\lambda=-1\pm 5i\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Из \(y(0)=0\) следует \(C_1=0\); дифференцируя
+        \(y=C_2e^{-t}\sin 5t\), получаем \(y'(0)=5C_2=1\).</div>
+        <div class="calc">\(y=\tfrac15\,e^{-t}\sin 5t\)</div>
+      </div>
+    </div>
+    <div class="answer">(а) \(y=\dfrac{e^{-t}-e^{-25t}}{24}\);
+    (б) \(y=t\,e^{-5t}\); (в) \(y=\dfrac15 e^{-t}\sin 5t\).</div>
+    <div class="check">все три функции обращаются в нуль при \(t=0\), и у всех
+    трёх \(y'(0)=1\): в (а) \(y'=\frac{-e^{-t}+25e^{-25t}}{24}\), при \(t=0\)
+    это \(24/24=1\); в (б) \(y'=e^{-5t}(1-5t)\to 1\); в (в)
+    \(y'=\frac15 e^{-t}(5\cos 5t-\sin 5t)\to 1\). Подстановка в уравнение (б):
+    \(y'=(1-5t)e^{-5t}\), \(y''=(25t-10)e^{-5t}\), и
+    \(y''+10y'+25y=(25t-10+10-50t+25t)e^{-5t}=0\). Согласуется и качественная картина:
+    в (а) и (в) медленная составляющая одна и та же, \(e^{-t}\), а критический
+    случай (б) с корнем \(\lambda=-5\) затухает быстрее всех — см. чертёж трёх
+    режимов в <a href="t-diffeq">параграфе 8.6</a>.</div>
+  </div>
+
+
+  <div class="task">
+    <h3>Задача 7. Неоднородное уравнение: подбор без резонанса и с резонансом</h3>
+    <div class="given">Дано: (а) \(y''-6y'+13y=e^{3x}\cos 5x\); (б)
+    \(y''+9y=6\cos 3x\), \(y(0)=0\), \(y'(0)=0\). Найти: (а) общее решение;
+    (б) решение задачи Коши.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">(а) Сначала однородное уравнение. Корни комплексные,
+        общее решение однородного уравнения известно.</div>
+        <div class="calc">\(\lambda^{2}-6\lambda+13=0\) =
+        <span class="sub">D = 36 − 52 = −16</span> =
+        <b>\(\lambda=3\pm 2i\)</b>, \(\ y_{\text{оо}}=e^{3x}(C_1\cos 2x+C_2\sin 2x)\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Правая часть специального вида с \(a=3\), \(b=5\).
+        Контрольное число \(\gamma=3+5i\) корнем характеристического уравнения
+        не является, поэтому \(s=0\) — резонанса нет.</div>
+        <div class="calc">\(y_{\text{чн}}=e^{3x}\left(A\cos 5x+B\sin 5x\right)\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Подставляем. Удобно вынести экспоненту: для
+        \(y=e^{3x}u\) выполняется \(y''-6y'+13y=e^{3x}\left(u''+4u\right)\), а
+        для \(u=A\cos 5x+B\sin 5x\) имеем \(u''=-25u\).</div>
+        <div class="calc">\(e^{3x}(-25u+4u)=-21e^{3x}u\) =
+        <span class="sub">−21(A cos 5x + B sin 5x) = cos 5x</span> =
+        <b>\(A=-\tfrac1{21},\ B=0\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">(б) Здесь \(\lambda=\pm 3i\), а контрольное число
+        правой части \(\gamma=3i\) совпадает с корнем: \(s=1\). Это резонанс, и
+        пробное решение обязано содержать множитель \(x\).</div>
+        <div class="calc">\(y_{\text{оо}}=C_1\cos 3x+C_2\sin 3x\);
+        \(\ y_{\text{чн}}=x\left(A\cos 3x+B\sin 3x\right)\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Подстановка: при дифференцировании произведения
+        слагаемые без \(x\) складываются, а слагаемые с \(x\) взаимно
+        уничтожаются вместе с \(9y\).</div>
+        <div class="calc">\(y''+9y=-6A\sin 3x+6B\cos 3x\) =
+        <span class="sub">6B = 6, −6A = 0</span> =
+        <b>\(y_{\text{чн}}=x\sin 3x\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Начальные условия применяем к полному решению
+        \(y=C_1\cos 3x+C_2\sin 3x+x\sin 3x\), а не к однородной части.</div>
+        <div class="calc">\(y(0)=C_1=0\);
+        \(\ y'=3C_2\cos 3x+\sin 3x+3x\cos 3x\), \(y'(0)=3C_2\) =
+        <span class="sub">3C₂ = 0</span> = <b>\(C_2=0\)</b></div>
+      </div>
+    </div>
+    <div class="answer">(а) \(y=e^{3x}(C_1\cos 2x+C_2\sin 2x)
+    -\dfrac{1}{21}e^{3x}\cos 5x\); (б) \(y=x\sin 3x\).</div>
+    <div class="check">(а) для \(y_{\text{чн}}=-\frac1{21}e^{3x}\cos 5x\) имеем
+    \(u=-\frac1{21}\cos 5x\), \(u''+4u=\left(\frac{25}{21}-\frac{4}{21}\right)\cos 5x
+    =\cos 5x\), значит \(y''-6y'+13y=e^{3x}\cos 5x\) — совпало с правой частью.
+    (б) \(y=x\sin 3x\): \(y'=\sin 3x+3x\cos 3x\),
+    \(y''=6\cos 3x-9x\sin 3x\), поэтому \(y''+9y=6\cos 3x\); начальные условия
+    \(y(0)=0\) и \(y'(0)=0\) выполнены. Дополнительный контроль — рост решения:
+    амплитуда \(|y|\le x\) неограниченно растёт, чего и следует ожидать при
+    резонансе.</div>
+  </div>
+
+  <svg viewBox="0 0 640 284" class="geo-board" style="max-width:640px">
+    <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Резонанс: решение задачи Коши y″ + 9y = 6cos3x, y(0) = y′(0) = 0</text>
+    <path d="M62 136 L618 33" stroke="#9a9aa2" stroke-width="1.2" stroke-dasharray="6 4" fill="none"/>
+    <path d="M62 136 L618 239" stroke="#9a9aa2" stroke-width="1.2" stroke-dasharray="6 4" fill="none"/>
+    <path d="M62 136 L 612 136" stroke="#16161a" stroke-width="1.2"/>
+    <path d="M618 136 l -9 -4.5 v 9 z" fill="#16161a"/>
+    <path d="M62 246 L 62 38" stroke="#16161a" stroke-width="1.2"/>
+    <path d="M62 32 l -4.5 9 h 9 z" fill="#16161a"/>
+    <path d="M62 136 L69 136 L75 135 L82 134 L88 132 L95 131 L101 129 L108 128 L114 126 L121 126 L127 126 L134 126 L140 128 L147 130 L154 133 L160 137 L167 141 L173 145 L180 150 L186 154 L193 158 L199 161 L206 163 L212 164 L219 163 L226 161 L232 158 L239 154 L245 148 L252 141 L258 133 L265 126 L271 118 L278 110 L284 103 L291 98 L297 93 L304 91 L311 91 L317 93 L324 96 L330 102 L337 110 L343 120 L350 130 L356 142 L363 153 L369 165 L376 175 L383 184 L389 192 L396 197 L402 199 L409 199 L415 195 L422 189 L428 180 L435 169 L441 156 L448 141 L454 126 L461 111 L468 96 L474 83 L481 71 L487 63 L494 57 L500 55 L507 56 L513 62 L520 70 L526 82 L533 97 L540 114 L546 133 L553 152 L559 171 L566 189 L572 205 L579 218 L585 228 L592 233 L598 235 L605 232 L611 225 L618 213" stroke="#b3382e" stroke-width="2" fill="none"/>
+    <path d="M59 67 h 6 M59 205 h 6" stroke="#16161a" stroke-width="1"/>
+    <path d="M247 133 v 6 M433 133 v 6" stroke="#16161a" stroke-width="1"/>
+    <text x="44" y="71" style="font:11px system-ui;fill:#6b6b74">4</text>
+    <text x="38" y="209" style="font:11px system-ui;fill:#6b6b74">−4</text>
+    <text x="244" y="152" style="font:11px system-ui;fill:#6b6b74;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">2</text>
+    <text x="430" y="152" style="font:11px system-ui;fill:#6b6b74;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">4</text>
+    <text x="140" y="42" style="font:11px system-ui;fill:#b3382e;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">y = x·sin3x</text>
+    <text x="300" y="44" style="font:11px system-ui;fill:#6b6b74;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">огибающие y = ±x</text>
+    <text x="596" y="160" style="font:11px system-ui;fill:#16161a">x</text>
+    <text x="70" y="48" style="font:11px system-ui;fill:#16161a">y</text>
+    <text x="16" y="270" style="font:11px system-ui;fill:#6b6b74">амплитуда растёт линейно — это и есть множитель x в частном решении</text>
+  </svg>
+  <div class="caption">Решение задачи 7 (б). Множитель \(x\), появившийся из-за
+  резонанса, даёт линейно растущие огибающие \(y=\pm x\): при точном совпадении
+  частоты внешней силы с собственной частотой системы и полном отсутствии
+  трения амплитуда не ограничена. Именно поэтому в расчёте конструкции
+  собственные частоты стараются отвести от частот возбуждения.</div>
+
+  <div class="task">
+    <h3>Задача 8. Метод вариации произвольных постоянных</h3>
+    <div class="given">Дано: \(y''-2y'+y=\dfrac{e^{x}}{x}\), \(x&gt;0\).
+    Найти: общее решение.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Правая часть не относится к специальному виду: деление
+        на \(x\) выводит её из класса «многочлен на экспоненту». Значит, подбор
+        неприменим и нужен метод Лагранжа. Сначала — фундаментальная система
+        решений однородного уравнения.</div>
+        <div class="calc">\(\lambda^{2}-2\lambda+1=(\lambda-1)^{2}=0\) =
+        <span class="sub">λ = 1 кратности 2</span> =
+        <b>\(y_1=e^{x},\ y_2=x e^{x}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Вычисляем определитель Вронского — он же определитель
+        системы для \(C_1',C_2'\).</div>
+        <div class="calc">\(W=\begin{vmatrix}e^{x} & xe^{x}\\
+        e^{x} & (x+1)e^{x}\end{vmatrix}\) =
+        <span class="sub">(x+1)e²ˣ − x e²ˣ</span> = <b>\(e^{2x}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Записываем систему для производных неизвестных функций
+        и решаем её.</div>
+        <div class="calc">\(C_1'=-\dfrac{y_2f}{W}=-\dfrac{xe^{x}\cdot e^{x}/x}{e^{2x}}\)
+        = <span class="sub">−1</span> = <b>\(C_1=-x+\widetilde C_1\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Вторая производная — и здесь появляется логарифм,
+        которого никакой подбор дать не мог бы.</div>
+        <div class="calc">\(C_2'=\dfrac{y_1f}{W}=\dfrac{e^{x}\cdot e^{x}/x}{e^{2x}}\)
+        = <span class="sub">1/x</span> = <b>\(C_2=\ln x+\widetilde C_2\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Собираем общее решение. Произвольные постоянные,
+        возникшие при интегрировании, дают в точности \(y_{\text{оо}}\).</div>
+        <div class="calc">\(y=(-x+\widetilde C_1)e^{x}+(\ln x+\widetilde C_2)xe^{x}\)</div>
+      </div>
+    </div>
+    <div class="answer">\(y=\widetilde C_1e^{x}+\widetilde C_2xe^{x}
+    +xe^{x}\left(\ln x-1\right)\); слагаемое \(-xe^x\) можно отбросить, отнеся
+    его к \(\widetilde C_2xe^{x}\).</div>
+    <div class="check">подставим \(y_{\text{чн}}=xe^{x}(\ln x-1)\):
+    $$y_{\text{чн}}'=e^{x}\left[(x+1)(\ln x-1)+1\right],\qquad
+    y_{\text{чн}}''=e^{x}\left[(x+2)(\ln x-1)+1+\frac{x+1}{x}\right].$$
+    Складывая с весами \(1,\,-2,\,1\), видим, что коэффициент при
+    \((\ln x-1)\) равен \((x+2)-2(x+1)+x=0\), а остаток равен
+    \(1+\dfrac{x+1}{x}-2=\dfrac{1}{x}\). Итого
+    \(y''-2y'+y=\dfrac{e^{x}}{x}\) — исходное уравнение. Численно при
+    \(x=2\): \(y_{\text{чн}}=2e^{2}(\ln 2-1)=-4{,}535\), а левая часть равна
+    \(3{,}694=e^{2}/2\).</div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 9. Система двух уравнений первого порядка</h3>
+    <div class="given">Дано: \(x'=2x+y\), \(y'=3x+4y\), \(x(0)=2\), \(y(0)=2\).
+    Найти: решение задачи Коши двумя способами.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Способ 1 — сведение к одному уравнению.
+        Дифференцируем первое уравнение и подставляем в него \(y'\) из второго,
+        а затем \(y=x'-2x\) из первого.</div>
+        <div class="calc">\(x''=2x'+y'=2x'+3x+4y=2x'+3x+4(x'-2x)\) =
+        <span class="sub">x″ = 6x′ − 5x</span> =
+        <b>\(x''-6x'+5x=0\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Способ 2 — метод Эйлера. Характеристическое уравнение
+        матрицы системы совпадает с только что полученным, и это не совпадение:
+        \(\det(A-\lambda E)\) — тот же многочлен.</div>
+        <div class="calc">\(\begin{vmatrix}2-\lambda & 1\\
+        3 & 4-\lambda\end{vmatrix}=\lambda^{2}-6\lambda+5\) =
+        <span class="sub">λ² − 6λ + 5 = 0</span> =
+        <b>\(\lambda_1=1,\ \lambda_2=5\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Для каждого собственного числа решаем систему
+        \((A-\lambda E)\mathbf R=\mathbf 0\). Уравнения системы линейно зависимы,
+        поэтому одну компоненту выбираем произвольно.</div>
+        <div class="calc">\(\lambda_1=1:\ \xi_1+\xi_2=0\Rightarrow
+        \mathbf R_1=(1;-1)\); \(\ \lambda_2=5:\ -3\xi_1+\xi_2=0\Rightarrow
+        \mathbf R_2=(1;3)\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Общее решение системы — линейная комбинация. Решения
+        линейно независимы: вронскиан \(W=3e^{6t}+e^{6t}=4e^{6t}\neq 0\).</div>
+        <div class="calc">\(x=C_1e^{t}+C_2e^{5t}\),
+        \(\ y=-C_1e^{t}+3C_2e^{5t}\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Начальные условия дают систему линейных алгебраических
+        уравнений относительно \(C_1,C_2\).</div>
+        <div class="calc">\(C_1+C_2=2,\ -C_1+3C_2=2\) =
+        <span class="sub">4C₂ = 4</span> = <b>\(C_1=1,\ C_2=1\)</b></div>
+      </div>
+    </div>
+    <div class="answer">\(x(t)=e^{t}+e^{5t}\), \(y(t)=-e^{t}+3e^{5t}\).</div>
+    <div class="check">начальные условия: \(x(0)=1+1=2\), \(y(0)=-1+3=2\).
+    Подстановка в первое уравнение:
+    \(x'=e^{t}+5e^{5t}\), а \(2x+y=2e^{t}+2e^{5t}-e^{t}+3e^{5t}=e^{t}+5e^{5t}\)
+    — совпало. Во второе: \(y'=-e^{t}+15e^{5t}\), а
+    \(3x+4y=3e^{t}+3e^{5t}-4e^{t}+12e^{5t}=-e^{t}+15e^{5t}\) — совпало.</div>
+  </div>
+
+  <svg viewBox="0 0 640 304" class="geo-board" style="max-width:640px">
+    <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Фазовый портрет системы x′ = 2x + y, y′ = 3x + 4y — неустойчивый узел</text>
+    <path d="M214 152 L 466 152 M340 26 L 340 278" stroke="#9a9aa2" stroke-width="1"/>
+    <text x="452" y="166" style="font:11px system-ui;fill:#6b6b74;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">x</text>
+    <text x="346" y="40" style="font:11px system-ui;fill:#6b6b74;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">y</text>
+    <path d="M214 26 L466 278" stroke="#1a7f37" stroke-width="1.5" stroke-dasharray="6 4" fill="none"/>
+    <path d="M298 278 L382 26" stroke="#b3382e" stroke-width="1.5" stroke-dasharray="6 4" fill="none"/>
+    <path d="M462 152 L455 161 L449 169 L443 177 L437 183 L430 190 L422 196 L413 200 L403 201 L393 198 L385 194 L377 188 L369 181 L362 174 L355 167 L348 160 L341 153" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M450 99 L444 110 L440 118 L435 127 L429 137 L424 145 L419 154 L413 162 L407 170 L400 176 L391 182 L381 184 L372 181 L363 175 L356 168 L348 160 L341 153" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M416 57 L412 66 L408 75 L405 84 L402 91 L398 100 L394 108 L391 115 L387 124 L383 132 L379 140 L374 148 L369 155 L363 162 L355 164 L348 160 L341 153" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M367 33 L364 42 L362 50 L360 55 L358 63 L355 71 L354 77 L351 86 L349 92 L347 99 L345 107 L343 114 L341 121 L339 129 L337 136 L336 144 L339 151" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M313 33 L312 42 L311 49 L309 58 L309 65 L308 74 L308 82 L307 89 L308 97 L309 105 L311 113 L313 120 L317 127 L322 134 L328 139 L333 145 L339 151" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M264 57 L267 64 L270 71 L274 77 L278 84 L282 90 L287 96 L291 102 L297 108 L302 113 L307 119 L312 124 L317 129 L323 135 L328 140 L333 145 L339 151" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M230 99 L238 94 L246 91 L254 90 L262 90 L270 92 L277 95 L284 100 L291 105 L297 110 L303 116 L309 122 L315 127 L321 133 L327 139 L333 145 L339 151" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M218 152 L225 143 L231 135 L237 127 L243 121 L250 114 L258 108 L267 104 L277 103 L287 106 L295 110 L303 116 L311 123 L318 130 L325 137 L332 144 L339 151" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M230 205 L236 194 L240 186 L245 177 L251 167 L256 159 L261 150 L267 142 L273 134 L280 128 L289 122 L299 120 L308 123 L317 129 L324 136 L332 144 L339 151" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M264 247 L268 238 L272 229 L275 220 L278 213 L282 204 L286 196 L289 189 L293 180 L297 172 L301 164 L306 156 L311 149 L317 142 L325 140 L332 144 L339 151" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M313 271 L316 262 L318 254 L320 249 L322 241 L325 233 L326 227 L329 218 L331 212 L333 205 L335 197 L337 190 L339 183 L341 175 L343 168 L344 160 L341 153" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M367 271 L368 262 L369 255 L371 246 L371 239 L372 230 L372 222 L373 215 L372 207 L371 199 L369 191 L367 184 L363 177 L358 170 L352 165 L347 159 L341 153" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M416 247 L413 240 L410 233 L406 227 L402 220 L398 214 L393 208 L389 202 L383 196 L378 191 L373 185 L368 180 L363 175 L357 169 L352 164 L347 159 L341 153" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M450 205 L442 210 L434 213 L426 214 L418 214 L410 212 L403 209 L396 204 L389 199 L383 194 L377 188 L371 182 L365 177 L359 171 L353 165 L347 159 L341 153" stroke="#155e75" stroke-width="1.2" fill="none"/>
+    <path d="M396 96 L392 104 L389 112 L386 118 L384 124 L380 131 L377 137 L373 144 L369 150 L365 157 L360 162 L353 163 L347 158 L341 153 M396 96 L399 89 L403 80 L406 71 L410 62 L415 51 L419 39 L424 26" stroke="#b3382e" stroke-width="2.4" fill="none"/>
+    <circle cx="340" cy="152" r="3.6" fill="#16161a"/>
+    <circle cx="396" cy="96" r="4" fill="#b3382e"/>
+    <text x="404" y="88" style="font:11px system-ui;fill:#b3382e;paint-order:stroke;stroke:#ffffffcc;stroke-width:3px">M(2; 2)</text>
+    <text x="14" y="70" style="font:11px system-ui;fill:#1a7f37">λ₁ = 1, вектор (1; −1):</text>
+    <text x="14" y="86" style="font:11px system-ui;fill:#1a7f37">вдоль него решение</text>
+    <text x="14" y="102" style="font:11px system-ui;fill:#1a7f37">растёт медленнее</text>
+    <text x="476" y="70" style="font:11px system-ui;fill:#b3382e">λ₂ = 5, вектор (1; 3):</text>
+    <text x="476" y="86" style="font:11px system-ui;fill:#b3382e">быстрое направление,</text>
+    <text x="476" y="102" style="font:11px system-ui;fill:#b3382e">к нему прижимаются</text>
+    <text x="476" y="118" style="font:11px system-ui;fill:#b3382e">все траектории</text>
+    <text x="14" y="292" style="font:11px system-ui;fill:#6b6b74">оба собственных числа положительны, поэтому все траектории уходят от начала координат</text>
+  </svg>
+  <div class="caption">Фазовый портрет системы задачи 9. Оба собственных числа
+  положительны, поэтому точка покоя — неустойчивый узел: все траектории уходят
+  от начала координат. Пунктиром показаны собственные направления: вдоль
+  \((1;-1)\) решение растёт как \(e^{t}\), вдоль \((1;3)\) — как \(e^{5t}\),
+  поэтому вдали от начала координат все траектории идут почти параллельно
+  «быстрому» направлению. Красным отмечена траектория задачи Коши, выходящая из
+  точки \((2;\,2)\).</div>
+
+  <div class="note warn"><b>Что проверять в своём варианте.</b> Числа в
+  вариантах отличаются, а иногда отличается и метод. Три места, где ошибка
+  случается чаще всего: потерянное при делении решение \(g(y)=0\); знак при
+  извлечении корня в задачах на понижение порядка (его выбирают по начальному
+  условию, а не «по умолчанию»); забытый множитель \(x^{s}\) при резонансе.
+  Все три ловятся подстановкой найденной функции в исходное уравнение — она
+  занимает минуту и надёжнее любой сверки с ответом.</div>
+
+  <h2>Что дальше</h2>
+  <ul>
+    <li>Теория к этим задачам — <a href="t-diffeq">глава 8</a>: поле
+    направлений, характеристическое уравнение, таблица подбора частного решения,
+    фазовые портреты.</li>
+    <li>Интегралы, которые встречаются на каждом шаге, —
+    <a href="t-integral">глава 4</a>; определитель и собственные числа матрицы
+    системы — <a href="t-linear">глава 1</a>.</li>
+    <li>Полный список глав — <a href="theory">курс теории</a>, другие разборы —
+    <a href="tasks">задачи курса</a>, происхождение задач и литература —
+    <a href="sources">Источники</a>.</li>
+  </ul>
 </main>
 </body>
 </html>

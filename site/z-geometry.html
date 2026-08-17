@@ -3,34 +3,902 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Задачи: аналитическая геометрия</title>
-<meta name="description" content="Разборы задач по векторам, прямым, плоскостям и поверхностям второго порядка.">
+<title>ТР‑1. Векторы и геометрия</title>
+<meta name="description" content="Разбор заданий типового расчёта по аналитической геометрии: пирамида по координатам вершин, проекция и разложение вектора, коллинеарность и компланарность, прямая на плоскости, плоскость и прямая в пространстве, скрещивающиеся прямые, кривая и поверхность второго порядка, полярные координаты.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📐</text></svg>">
 <link rel="stylesheet" href="assets/style.css">
-<style>
-.tldr { background:#f2f6fb; border-left:4px solid #155e75; border-radius:0 10px 10px 0;
-  padding:10px 16px; margin:16px 0; font-size:15.5px; }
-.tldr ul { margin:6px 0 2px; padding-left:20px; }
-</style>
 </head>
 <body>
 <script src="assets/site.js" data-root="./" data-page="tasks"></script>
 <main class="wrap">
-  <h1>Задачи: аналитическая геометрия</h1>
-  <p class="lead">Разборы задач по векторам, прямым, плоскостям и поверхностям второго порядка.</p>
-  <div class="tldr">
-    <b>Что будет в этой главе.</b>
+  <h1>Задачи: ТР‑1, векторы и геометрия</h1>
+  <p class="lead">Вторая половина первого типового расчёта — аналитическая
+  геометрия. Почти каждое задание сводится к одному из трёх произведений
+  векторов: скалярное отвечает за углы и проекции, векторное — за площади и
+  нормали, смешанное — за объёмы и компланарность. Разобраны девять заданий: от
+  сквозной задачи о пирамиде до приведения кривой и поверхности второго порядка
+  к каноническому виду. Теория — в <a href="t-geometry">главе 2</a>.</p>
+
+  <div class="short">
+    <h2>Коротко</h2>
+    <p>Задачи идут по нарастанию: сначала вычисления с координатами векторов,
+    затем уравнения прямых и плоскостей, затем приведение уравнений второго
+    порядка к каноническому виду.</p>
     <ul>
-      <li>скалярное, векторное и смешанное произведения в задачах на площади и объёмы</li>
-      <li>уравнение прямой и плоскости по заданным условиям</li>
-      <li>расстояние от точки до прямой и до плоскости</li>
-      <li>приведение уравнения кривой второго порядка к каноническому виду</li>
+      <li>Пирамида по четырём вершинам: рёбра, угол, площадь грани, объём,
+      высота и её уравнение, угол ребра с гранью — задача 1.</li>
+      <li>Проекция и разложение вектора — задача 2; коллинеарность и
+      компланарность — задача 3.</li>
+      <li>Прямая на плоскости — задача 4; плоскость и прямая в пространстве —
+      задача 5; скрещивающиеся прямые — задача 6.</li>
+      <li>Выделение полных квадратов: кривая — задача 7, поверхность и метод
+      сечений — задача 8.</li>
+      <li>Переход между декартовыми и полярными координатами — задача 9.</li>
     </ul>
+    <p class="keyf">Ключевые формулы:</p>
+    $$\cos\varphi=\frac{(\mathbf a,\mathbf b)}{|\mathbf a||\mathbf b|},\quad
+    S_{\triangle}=\tfrac12\big|[\mathbf a,\mathbf b]\big|,\quad
+    V=\tfrac16\big|(\mathbf a,\mathbf b,\mathbf c)\big|,\quad
+    d=\frac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}.$$
   </div>
-  <p>Глава готовится: текст пишется по конспектам и методическим материалам
-  кафедры, схемы и числовые примеры делаются заново. Пока она не готова,
-  соседние главы курса уже доступны — их список в разделе
-  <a href="theory">«Теория»</a>.</p>
-  <p><a href="theory">← Оглавление курса</a></p>
+
+  <h2>Векторная алгебра в координатах</h2>
+
+  <div class="task">
+    <h3>Задача 1. Пирамида по координатам четырёх вершин</h3>
+    <div class="given">Дано: \(A(0;0;1)\), \(B(2;3;5)\), \(C(6;2;3)\),
+    \(D(3;7;2)\). Найти: рёбра из вершины \(A\), угол \(\angle BAC\), площадь
+    грани \(ACD\), объём, уравнение плоскости \(ACD\), длину и уравнение высоты
+    из \(B\), угол ребра \(AB\) с гранью \(ACD\).</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Рёбра — «конец минус начало»; дальше работаем только с
+        векторами.</div>
+        <div class="calc">\(\overline{AB}\) = <span class="sub">{2−0; 3−0; 5−1}</span>
+          = <b>{2; 3; 4}</b>, \(\overline{AC}\) = <b>{6; 2; 2}</b>,
+          \(\overline{AD}\) = <b>{3; 7; 1}</b></div>
+        <div class="calc">\(|\mathbf a|=\sqrt{a_x^2+a_y^2+a_z^2}\):
+          <span class="sub">√29; √44; √59</span> = <b>\(\sqrt{29}\approx5{,}39\);
+          \(2\sqrt{11}\approx6{,}63\); \(\sqrt{59}\approx7{,}68\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Угол между рёбрами даёт скалярное произведение.</div>
+        <div class="calc">\(\cos\angle BAC=\dfrac{(\overline{AB},\overline{AC})}
+          {|\overline{AB}||\overline{AC}|}\) =
+          <span class="sub">(12+6+8) / (√29·2√11)</span> =
+          <b>\(13/\sqrt{319}\approx0{,}728\)</b>, \(\angle BAC\approx43^\circ18'\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Векторное произведение даёт сразу площадь грани и
+        нормаль к ней, а вместе со третьим вектором — объём.</div>
+        <div class="calc">\([\overline{AC},\overline{AD}]=\begin{vmatrix}
+          \mathbf i&\mathbf j&\mathbf k\\ 6&2&2\\ 3&7&1\end{vmatrix}\) =
+          <span class="sub">{2−14; 6−6; 42−6}</span> = <b>{−12; 0; 36}</b></div>
+        <div class="calc">\(S_{ACD}=\tfrac12\big|[\overline{AC},\overline{AD}]\big|\)
+          = <span class="sub">½·12√10</span> = <b>\(6\sqrt{10}\approx18{,}97\)</b></div>
+        <div class="calc">\(V=\tfrac16\big|(\overline{AB},[\overline{AC},\overline{AD}])\big|\)
+          = <span class="sub">|−24 + 0 + 144| / 6</span> = <b>20</b>; знак «+» —
+          тройка правая</div>
+      </div>
+      <div class="step">
+        <div class="what">Нормаль уже найдена, её сокращаем и пишем уравнение
+        плоскости через точку; высота из \(B\) — расстояние до этой плоскости.</div>
+        <div class="calc">\(\mathbf n=\{-12;0;36\}\parallel\{1;0;-3\}\), через
+          \(A(0;0;1)\): <span class="sub">(x−0) − 3(z−1) = 0</span> →
+          <b>\(x-3z+3=0\)</b> (нет \(y\) — плоскость параллельна \(Oy\))</div>
+        <div class="calc">\(h=\dfrac{|x_B-3z_B+3|}{\sqrt{1+0+9}}\) =
+          <span class="sub">|2 − 15 + 3| / √10</span> =
+          <b>\(\sqrt{10}\approx3{,}16\)</b>, и \(3V/S_{ACD}\) =
+          <span class="sub">60/(6√10)</span> = <b>\(\sqrt{10}\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Высота как прямая: точка \(B\) и направляющий вектор,
+        равный нормали; подстановка в уравнение плоскости даёт основание.</div>
+        <div class="calc">\(\dfrac{x-2}{1}=\dfrac{y-3}{0}=\dfrac{z-5}{-3}\), в
+          параметрах <b>\(x=2+t,\ y=3,\ z=5-3t\)</b> (нулевой знаменатель —
+          сокращённая запись условия \(y=3\))</div>
+        <div class="calc">\((2+t)-3(5-3t)+3=0\) → <span class="sub">10t − 10 = 0</span>
+          → \(t=1\) → <b>\(H(3;3;2)\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Угол ребра с гранью дополняет до 90° угол между
+        \(\mathbf s\) и \(\mathbf n\) — потому синус.</div>
+        <div class="calc">\(\sin\psi=\dfrac{|(\overline{AB},\mathbf n)|}
+          {|\overline{AB}||\mathbf n|}\) = <span class="sub">|2 − 12| / (√29·√10)</span>
+          = <b>\(10/\sqrt{290}\approx0{,}587\)</b>, \(\psi\approx35^\circ58'\)</div>
+      </div>
+    </div>
+    <div class="answer">\(|AB|=\sqrt{29}\), \(|AC|=2\sqrt{11}\),
+    \(|AD|=\sqrt{59}\); \(\angle BAC\approx43^\circ18'\);
+    \(S_{ACD}=6\sqrt{10}\approx18{,}97\); \(V=20\); плоскость
+    \(x-3z+3=0\); высота \(\frac{x-2}{1}=\frac{y-3}{0}=\frac{z-5}{-3}\),
+    \(|BH|=\sqrt{10}\approx3{,}16\), \(H(3;3;2)\); угол ребра \(AB\) с гранью
+    \(ACD\) равен \(35^\circ58'\).</div>
+    <div class="check">вектор \(\overline{BH}=H-B=\{1;0;-3\}\) обязан быть
+    перпендикулярен обоим векторам грани:
+    \((\overline{BH},\overline{AC})=6-6=0\),
+    \((\overline{BH},\overline{AD})=3-3=0\), длина \(\sqrt{10}\). Обратный
+    пересчёт объёма: \(\tfrac13\cdot6\sqrt{10}\cdot\sqrt{10}=20\).</div>
+  </div>
+
+  <svg viewBox="0 0 640 292" class="geo-board" style="max-width:640px">
+  <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Пирамида ABCD: грань ACD, высота BH из вершины B и её основание H</text>
+  <path d="M176.2 118.2 150 254.8 450.3 266.5 Z" fill="rgba(21,94,117,.12)" stroke="#155e75" stroke-width="1.6"/>
+  <line x1="176.2" y1="118.2" x2="279.1" y2="64" stroke="#16161a" stroke-width="2"/>
+  <line x1="279.1" y1="64" x2="150" y2="254.8" stroke="#16161a" stroke-width="2"/>
+  <line x1="279.1" y1="64" x2="450.3" y2="266.5" stroke="#16161a" stroke-width="2"/>
+  <line x1="176.2" y1="118.2" x2="450.3" y2="266.5" stroke="#16161a" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <line x1="279.1" y1="64" x2="258.8" y2="213.1" stroke="#1a7f37" stroke-width="2.6"/>
+  <path d="M260.6 200.3 273.1 203.7 271.3 216.6" fill="none" stroke="#1a7f37" stroke-width="1.4"/>
+  <text x="160.2" y="113.2" style="font:11px system-ui;fill:#16161a">A</text>
+  <circle cx="176.2" cy="118.2" r="3.6" fill="#16161a"/>
+  <text x="274.1" y="52" style="font:11px system-ui;fill:#16161a">B</text>
+  <circle cx="279.1" cy="64" r="3.6" fill="#16161a"/>
+  <text x="133" y="265.8" style="font:11px system-ui;fill:#16161a">C</text>
+  <circle cx="150" cy="254.8" r="3.6" fill="#16161a"/>
+  <text x="459.3" y="273.5" style="font:11px system-ui;fill:#16161a">D</text>
+  <circle cx="450.3" cy="266.5" r="3.6" fill="#16161a"/>
+  <text x="266.8" y="230.1" style="font:11px system-ui;fill:#1a7f37">H</text>
+  <circle cx="258.8" cy="213.1" r="3.6" fill="#1a7f37"/>
+  <line x1="66" y1="124" x2="51.2" y2="146.9" stroke="#6b6b74" stroke-width="1.1"/>
+  <path d="M51.2 146.9 52.4 139.4 57.5 142.7 Z" fill="#6b6b74"/>
+  <text x="37.2" y="157.9" style="font:11px system-ui;fill:#6b6b74">x</text>
+  <line x1="66" y1="124" x2="101" y2="133.7" stroke="#6b6b74" stroke-width="1.1"/>
+  <path d="M101 133.7 93.4 134.8 95 129 Z" fill="#6b6b74"/>
+  <text x="107" y="137.7" style="font:11px system-ui;fill:#6b6b74">y</text>
+  <line x1="66" y1="124" x2="66" y2="95.3" stroke="#6b6b74" stroke-width="1.1"/>
+  <path d="M66 95.3 69 102.3 63 102.3 Z" fill="#6b6b74"/>
+  <text x="53" y="92.3" style="font:11px system-ui;fill:#6b6b74">z</text>
+  <text x="498" y="98" style="font:11px system-ui;fill:#16161a">A(0; 0; 1)</text>
+  <text x="498" y="115" style="font:11px system-ui;fill:#16161a">B(2; 3; 5)</text>
+  <text x="498" y="132" style="font:11px system-ui;fill:#16161a">C(6; 2; 3)</text>
+  <text x="498" y="149" style="font:11px system-ui;fill:#16161a">D(3; 7; 2)</text>
+  <text x="498" y="190" style="font:11px system-ui;fill:#155e75">ACD:  x − 3z + 3 = 0</text>
+  <text x="498" y="208" style="font:11px system-ui;fill:#1a7f37">H(3; 3; 2)</text>
+  <text x="498" y="226" style="font:11px system-ui;fill:#1a7f37">|BH| = √10 ≈ 3,16</text>
+  <text x="498" y="244" style="font:11px system-ui;fill:#16161a">V = 20</text>
+</svg>
+  <div class="caption">Грань \(ACD\) закрашена, невидимое ребро \(AD\) показано
+  штрихом. Высота \(BH\) идёт внутри пирамиды по нормали к грани; её основание
+  \(H(3;3;2)\) попало внутрь треугольника — при других данных оно может
+  оказаться и вне грани.</div>
+
+  <div class="note warn"><b>Типичная ошибка.</b> Множитель \(\tfrac16\)
+  относится к <b>тетраэдру</b>, а модуль смешанного произведения без него — к
+  параллелепипеду на тех же векторах: потеря \(\tfrac16\) увеличивает ответ
+  ровно в шесть раз. Так же часто теряют \(\tfrac12\) в площади треугольника.</div>
+
+  <details class="q"><summary>Вывод: почему объём тетраэдра — шестая часть смешанного произведения</summary>
+  <p>Параллелепипед на векторах \(\mathbf a,\mathbf b,\mathbf c\) имеет объём
+  \(S_\text{осн}h\), где основание — параллелограмм на \(\mathbf a\) и
+  \(\mathbf b\) площадью \(|[\mathbf a,\mathbf b]|\), а высота — проекция
+  \(\mathbf c\) на нормаль \([\mathbf a,\mathbf b]\). Произведение площади на
+  проекцию и есть \(|([\mathbf a,\mathbf b],\mathbf c)|\).</p>
+  <p>Диагональное сечение делит параллелепипед на две призмы, значит призма на
+  треугольнике даёт \(\tfrac12V_\text{пар}\); пирамида с тем же основанием и той
+  же высотой составляет треть призмы. Отсюда
+  \(\tfrac12\cdot\tfrac13=\tfrac16\):</p>
+  $$V_{\text{тетр}}=\tfrac16\big|(\mathbf a,\mathbf b,\mathbf c)\big| .$$
+  <p>Модуль нужен потому, что определитель меняет знак при перестановке двух
+  векторов, а объём — нет; знак несёт отдельную информацию об ориентации тройки.</p>
+  </details>
+
+  <div class="task">
+    <h3>Задача 2. Проекция вектора и разложение по базису</h3>
+    <div class="given">Дано: \(A(1;2;-1)\), \(B(5;3;0)\),
+    \(\mathbf b=\{4;-2;4\}\); базис \(\mathbf p=\{2;1;0\}\),
+    \(\mathbf q=\{1;-1;2\}\), \(\mathbf r=\{0;3;1\}\) и \(\mathbf d=\{3;12;1\}\).
+    Найти: проекцию \(\overline{AB}\) на направление \(\mathbf b\), разложение
+    \(\overline{AB}\) на составляющие вдоль \(\mathbf b\) и перпендикулярно ему,
+    разложение \(\mathbf d\) по базису.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Вектор по концам, длины и проекция: скалярное
+        произведение, делённое на длину того вектора, на который проецируем.</div>
+        <div class="calc">\(\mathbf a=\overline{AB}\) =
+          <span class="sub">{5−1; 3−2; 0+1}</span> = <b>{4; 1; 1}</b>,
+          \(|\mathbf a|=3\sqrt2\), \(|\mathbf b|\) =
+          <span class="sub">√(16+4+16)</span> = <b>6</b></div>
+        <div class="calc">\(\operatorname{пр}_{\mathbf b}\mathbf a
+          =\dfrac{(\mathbf a,\mathbf b)}{|\mathbf b|}\) =
+          <span class="sub">(16 − 2 + 4) / 6</span> = <b>3</b>;
+          \(\cos\varphi=\dfrac{18}{3\sqrt2\cdot6}=\dfrac{\sqrt2}{2}\),
+          \(\varphi=45^\circ\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Составляющая вдоль \(\mathbf b\) — уже вектор:
+        проекцию умножаем на единичный вектор направления.</div>
+        <div class="calc">\(\mathbf a_{\parallel}=\dfrac{(\mathbf a,\mathbf b)}
+          {|\mathbf b|^2}\mathbf b\) = <span class="sub">(18/36)·{4; −2; 4}</span>
+          = <b>{2; −1; 2}</b>; \(\mathbf a_{\perp}=\mathbf a-\mathbf a_{\parallel}\)
+          = <b>{2; 2; −1}</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Разложение по базису — система трёх уравнений на
+        координаты; базис годится, если смешанное произведение не нуль.</div>
+        <div class="calc">\(\Delta=\begin{vmatrix}2&1&0\\1&-1&2\\0&3&1\end{vmatrix}\)
+          = <span class="sub">2(−1−6) − 1(1−0)</span> = <b>−15 ≠ 0</b></div>
+        <div class="calc">\(\mathbf d=x\mathbf p+y\mathbf q+z\mathbf r\):
+          \(\begin{cases}2x+y=3\\ x-y+3z=12\\ 2y+z=1\end{cases}\), по Крамеру
+          <span class="sub">Δx = −30, Δy = 15, Δz = −45</span> →
+          <b>\(x=2,\ y=-1,\ z=3\)</b></div>
+      </div>
+    </div>
+    <div class="answer">\(\operatorname{пр}_{\mathbf b}\overline{AB}=3\),
+    \(\varphi=45^\circ\); \(\overline{AB}=\{2;-1;2\}+\{2;2;-1\}\), где первое
+    слагаемое коллинеарно \(\mathbf b\), второе ему перпендикулярно;
+    \(\mathbf d=2\mathbf p-\mathbf q+3\mathbf r\).</div>
+    <div class="check">\((\mathbf a_{\perp},\mathbf b)=8-4-4=0\), и по теореме
+    Пифагора \(|\mathbf a_{\parallel}|^2+|\mathbf a_{\perp}|^2=9+9=18=|\mathbf a|^2\).
+    Восстановление вектора: \(2\mathbf p-\mathbf q+3\mathbf r
+    =\{4;2;0\}-\{1;-1;2\}+\{0;9;3\}=\{3;12;1\}=\mathbf d\).</div>
+  </div>
+
+  <svg viewBox="0 0 640 300" class="geo-board" style="max-width:640px">
+  <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Разложение вектора a на составляющую вдоль b и перпендикулярную ей</text>
+  <line x1="56" y1="250" x2="324" y2="250" stroke="#c8cfce" stroke-width="1"/>
+  <line x1="70" y1="250" x2="274" y2="250" stroke="#155e75" stroke-width="2.6"/>
+  <path d="M274 250 263.5 254 263.5 246 Z" fill="#155e75"/>
+  <text x="234" y="268" style="font:11px system-ui;fill:#155e75">b,  |b| = 6</text>
+  <line x1="70" y1="250" x2="172" y2="148" stroke="#b3382e" stroke-width="2.6"/>
+  <path d="M172 148 167.4 158.3 161.7 152.6 Z" fill="#b3382e"/>
+  <text x="102" y="139" style="font:11px system-ui;fill:#b3382e">a,  |a| = 3√2</text>
+  <line x1="70" y1="250" x2="172" y2="250" stroke="#1a7f37" stroke-width="4"/>
+  <text x="76" y="286" style="font:11px system-ui;fill:#1a7f37">a∥ = {2; −1; 2},  |a∥| = 3</text>
+  <line x1="172" y1="250" x2="172" y2="148" stroke="#1a7f37" stroke-width="2.6"/>
+  <path d="M172 148 176 158.5 168 158.5 Z" fill="#1a7f37"/>
+  <text x="181" y="192.2" style="font:11px system-ui;fill:#1a7f37">a⊥ = {2; 2; −1}</text>
+  <text x="181" y="207.2" style="font:11px system-ui;fill:#1a7f37">|a⊥| = 3</text>
+  <path d="M172 237 159 237 159 250" fill="none" stroke="#1a7f37" stroke-width="1.4"/>
+  <path d="M 100 250 A 30 30 0 0 0 91.2 228.8" fill="none" stroke="#6b6b74" stroke-width="1.2"/>
+  <text x="106" y="235" style="font:11px system-ui;fill:#6b6b74">φ = 45°</text>
+  <text x="348" y="52" style="font:11px system-ui;fill:#155e75">d = 2p − q + 3r — диагональ параллелепипеда,</text>
+  <text x="348" y="68" style="font:11px system-ui;fill:#155e75">построенного на базисных векторах</text>
+  <path d="M507 92 406 122M507 92 543 155M507 92 567 102M406 122 441 185M406 122 465 132M543 155 441 185M543 155 602 165M441 185 501 195M567 102 465 132M567 102 602 165M465 132 501 195M602 165 501 195" fill="none" stroke="#c8cfce" stroke-width="1.2"/>
+  <line x1="507.3" y1="92" x2="406" y2="122" stroke="#16161a" stroke-width="2"/>
+  <text x="436.6" y="103" style="font:11px system-ui;fill:#16161a">2p</text>
+  <line x1="507.3" y1="92" x2="542.5" y2="154.7" stroke="#16161a" stroke-width="2"/>
+  <text x="502.9" y="133.4" style="font:11px system-ui;fill:#16161a">−q</text>
+  <line x1="507.3" y1="92" x2="566.8" y2="102" stroke="#16161a" stroke-width="2"/>
+  <text x="529" y="91" style="font:11px system-ui;fill:#16161a">3r</text>
+  <line x1="507.3" y1="92" x2="500.7" y2="194.8" stroke="#b3382e" stroke-width="2.6"/>
+  <path d="M500.7 194.8 497.4 184 505.4 184.6 Z" fill="#b3382e"/>
+  <text x="474.7" y="208.8" style="font:11px system-ui;fill:#b3382e">d</text>
+</svg>
+  <div class="caption">Слева: проекция \(\mathbf a\) на \(\mathbf b\) равна 3 —
+  это длина катета, а не всего вектора \(\mathbf b\). Справа: коэффициенты
+  разложения показывают, сколько раз надо отложить каждое ребро, чтобы попасть в
+  конец диагонали \(\mathbf d\); \(\Delta\ne0\) гарантирует единственность
+  такого набора.</div>
+
+  <div class="task">
+    <h3>Задача 3. Коллинеарность и компланарность</h3>
+    <div class="given">Дано: \(\mathbf a=\{2;-1;3\}\), \(\mathbf b=\{1;2;-1\}\),
+    \(\mathbf m=\{\lambda;-2;6\}\), \(\mathbf c=\{3;\lambda;2\}\). Найти: при
+    каком \(\lambda\) векторы \(\mathbf a\) и \(\mathbf m\) коллинеарны; при
+    каком компланарна тройка \(\mathbf a,\mathbf b,\mathbf c\); объём
+    параллелепипеда на ней при \(\lambda=3\).</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Коллинеарность — пропорциональность координат;
+        равносильная проверка без деления — векторное произведение.</div>
+        <div class="calc">\(\dfrac{m_x}{a_x}=\dfrac{m_y}{a_y}=\dfrac{m_z}{a_z}\):
+          <span class="sub">(−2)/(−1) = 6/3 = 2</span> → <b>\(\lambda=4\)</b>,
+          то есть \(\mathbf m=2\mathbf a\)</div>
+        <div class="calc">\([\mathbf a,\mathbf m]\) =
+          <span class="sub">{−6+6; 12−12; −4+4}</span> = <b>{0; 0; 0}</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Компланарность трёх векторов — равенство нулю
+        смешанного произведения; при остальных \(\lambda\) его модуль равен
+        объёму параллелепипеда.</div>
+        <div class="calc">\((\mathbf a,\mathbf b,\mathbf c)=
+          \begin{vmatrix}2&-1&3\\1&2&-1\\3&\lambda&2\end{vmatrix}\) =
+          <span class="sub">2(4+λ) + 1(2+3) + 3(λ−6)</span> = <b>\(5\lambda-5\)</b>
+          → <b>\(\lambda=1\)</b></div>
+        <div class="calc">\(\lambda=3\): \((\mathbf a,\mathbf b,\mathbf c)\) =
+          <span class="sub">5·3 − 5</span> = <b>10</b> (тройка правая),
+          \(V_{\text{пар}}=10\), \(V_{\text{тетр}}=\tfrac53\)</div>
+      </div>
+    </div>
+    <div class="answer">\(\mathbf a\parallel\mathbf m\) при \(\lambda=4\); тройка
+    компланарна при \(\lambda=1\); при \(\lambda=3\) объём параллелепипеда равен
+    10, тройка правая.</div>
+    <div class="check">компланарность означает, что один вектор выражается через
+    два других. При \(\lambda=1\): \(\mathbf a+\mathbf b=\{3;1;2\}=\mathbf c\) —
+    разложение найдено явно. При \(\lambda=3\) его нет: система
+    \(3=2\alpha+\beta\), \(3=-\alpha+2\beta\), \(2=3\alpha-\beta\) из первого и
+    третьего уравнений даёт \(\alpha=\beta=1\), а второе превращается в
+    \(3=1\) — противоречие.</div>
+  </div>
+
+  <h2>Прямые и плоскости</h2>
+
+  <div class="task">
+    <h3>Задача 4. Прямая на плоскости</h3>
+    <div class="given">Дано: \(A(4;0)\), \(B(0;3)\), \(M(6;7)\). Найти:
+    уравнение прямой \(AB\) в каноническом и общем виде и с угловым
+    коэффициентом; расстояние от \(M\) и основание перпендикуляра; прямые через
+    \(M\) параллельно и перпендикулярно \(AB\); угол \(AB\) с прямой \(x=2\).</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Направляющий вектор — разность координат, отсюда
+        каноническое уравнение и переход к общему виду.</div>
+        <div class="calc">\(\mathbf s=\overline{AB}\) =
+          <span class="sub">{0−4; 3−0}</span> = <b>{−4; 3}</b>;
+          \(\dfrac{x-4}{-4}=\dfrac{y}{3}\) → <span class="sub">3(x−4) = −4y</span>
+          → <b>\(3x+4y-12=0\)</b>, \(y=-\tfrac34x+3\), \(k=-3/4\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Расстояние: подставляем точку в левую часть общего
+        уравнения и делим модуль на длину нормали; сдвиг вдоль нормали даёт
+        основание перпендикуляра.</div>
+        <div class="calc">\(d=\dfrac{|Ax_0+By_0+C|}{\sqrt{A^2+B^2}}\) =
+          <span class="sub">|18 + 28 − 12| / 5</span> = <b>34/5 = 6,8</b></div>
+        <div class="calc">\(H=M-\dfrac{Ax_0+By_0+C}{A^2+B^2}\mathbf n\) =
+          <span class="sub">(6; 7) − (34/25)·{3; 4}</span> = <b>(1,92; 1,56)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">У параллельной прямой та же нормаль — меняется только
+        свободный член; у перпендикулярной коэффициенты меняются местами со
+        сменой знака.</div>
+        <div class="calc">параллельно: <span class="sub">3·6 + 4·7 + C = 0</span>
+          → <b>\(3x+4y-46=0\)</b>; перпендикулярно:
+          <span class="sub">4·6 − 3·7 + C = 0</span> → <b>\(4x-3y-3=0\)</b>,
+          \(k_1k_2=-\tfrac34\cdot\tfrac43=-1\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Угол ищем по нормалям: у вертикальной прямой углового
+        коэффициента нет, и формула с тангенсами неприменима.</div>
+        <div class="calc">\(\cos\varphi=\dfrac{|(\mathbf n_1,\mathbf n_2)|}
+          {|\mathbf n_1||\mathbf n_2|}\), \(\mathbf n_1=\{3;4\}\),
+          \(\mathbf n_2=\{1;0\}\): <span class="sub">3 / (5·1)</span> = <b>0,6</b>,
+          \(\varphi\approx53^\circ8'\)</div>
+      </div>
+    </div>
+    <div class="answer">\(3x+4y-12=0\), каноническое
+    \(\frac{x-4}{-4}=\frac{y}{3}\), \(k=-3/4\); \(d(M,AB)=6{,}8\),
+    \(H(1{,}92;\,1{,}56)\); параллельная \(3x+4y-46=0\), перпендикулярная
+    \(4x-3y-3=0\); угол с прямой \(x=2\) равен \(53^\circ8'\).</div>
+    <div class="check">точка \(H\) лежит на прямой:
+    \(3\cdot1{,}92+4\cdot1{,}56-12=0\); длина отрезка считается независимо от
+    формулы расстояния: \(\sqrt{(6-1{,}92)^2+(7-1{,}56)^2}=\sqrt{46{,}24}=6{,}8\).
+    Наконец, расстояние между параллельными \(3x+4y-12=0\) и \(3x+4y-46=0\)
+    равно \(|{-12}+46|/5=6{,}8\) — то же число, ведь вторая проходит через \(M\).</div>
+  </div>
+
+  <svg viewBox="0 0 640 288" class="geo-board" style="max-width:640px">
+  <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Расстояние от точки M до прямой 3x + 4y − 12 = 0 и угол этой прямой с вертикалью x = 2</text>
+  <path d="M46 278V58M46 278H266M68 278V58M46 256H266M90 278V58M46 234H266M112 278V58M46 212H266M134 278V58M46 190H266M156 278V58M46 168H266M178 278V58M46 146H266M200 278V58M46 124H266M222 278V58M46 102H266M244 278V58M46 80H266M266 278V58M46 58H266" fill="none" stroke="#e6eaea" stroke-width="1"/>
+  <line x1="41.6" y1="256" x2="270.4" y2="256" stroke="#16161a" stroke-width="1.2"/>
+  <path d="M270.4 256 261.4 259.5 261.4 252.5 Z" fill="#16161a"/>
+  <line x1="68" y1="282.4" x2="68" y2="53.6" stroke="#16161a" stroke-width="1.2"/>
+  <path d="M68 53.6 71.5 62.6 64.5 62.6 Z" fill="#16161a"/>
+  <text x="267.4" y="272" style="font:11px system-ui;fill:#16161a">x</text>
+  <text x="54" y="57.6" style="font:11px system-ui;fill:#16161a">y</text>
+  <text x="56" y="270" style="font:11px system-ui;fill:#16161a">O</text>
+  <line x1="54.8" y1="180.1" x2="173.6" y2="269.2" stroke="#155e75" stroke-width="2.2"/>
+  <text x="123" y="242.8" style="font:11px system-ui;fill:#155e75">3x + 4y − 12 = 0</text>
+  <line x1="147.2" y1="62.4" x2="263.8" y2="149.3" stroke="#155e75" stroke-width="1.8" stroke-dasharray="6 4"/>
+  <text x="197.8" y="88.8" style="font:11px system-ui;fill:#155e75">3x + 4y − 46 = 0</text>
+  <line x1="200" y1="102" x2="110.2" y2="221.7" stroke="#1a7f37" stroke-width="2.6"/>
+  <circle cx="200" cy="102" r="4.4" fill="#b3382e"/>
+  <circle cx="110.2" cy="221.7" r="4" fill="#1a7f37"/>
+  <text x="208" y="116" style="font:11px system-ui;fill:#b3382e">M(6; 7)</text>
+  <text x="22.2" y="236.7" style="font:11px system-ui;fill:#1a7f37">H(1,92; 1,56)</text>
+  <path d="M117.4 212.1 127 219.3 119.8 228.9" fill="none" stroke="#1a7f37" stroke-width="1.4"/>
+  <text x="165.1" y="159.8" style="font:11px system-ui;fill:#1a7f37">d = 34/5 = 6,8</text>
+  <path d="M376 278V80M398 278V80M420 278V80M442 278V80M464 278V80M486 278V80M508 278V80M530 278V80M552 278V80M376 278H552M376 256H552M376 234H552M376 212H552M376 190H552M376 168H552M376 146H552M376 124H552M376 102H552M376 80H552" fill="none" stroke="#e6eaea" stroke-width="1"/>
+  <line x1="371.6" y1="256" x2="556.4" y2="256" stroke="#16161a" stroke-width="1.2"/>
+  <path d="M556.4 256 547.4 259.5 547.4 252.5 Z" fill="#16161a"/>
+  <line x1="398" y1="282.4" x2="398" y2="75.6" stroke="#16161a" stroke-width="1.2"/>
+  <path d="M398 75.6 401.5 84.6 394.5 84.6 Z" fill="#16161a"/>
+  <text x="553.4" y="272" style="font:11px system-ui;fill:#16161a">x</text>
+  <text x="384" y="79.6" style="font:11px system-ui;fill:#16161a">y</text>
+  <line x1="384.8" y1="180.1" x2="503.6" y2="269.2" stroke="#155e75" stroke-width="2.2"/>
+  <line x1="442" y1="273.6" x2="442" y2="86.6" stroke="#b3382e" stroke-width="2.2"/>
+  <text x="426" y="80.6" style="font:11px system-ui;fill:#b3382e">x = 2</text>
+  <path d="M 442 187 A 36 36 0 0 1 470.8 201.4" fill="none" stroke="#6b6b74" stroke-width="1.3"/>
+  <text x="458" y="181" style="font:11px system-ui;fill:#6b6b74">φ ≈ 53°8′</text>
+</svg>
+  <div class="caption">Слева: перпендикуляр из \(M\) и параллельная прямая через
+  \(M\) — расстояние от точки до прямой и расстояние между этими двумя прямыми
+  есть одно и то же число. Справа: с вертикалью \(x=2\) угол находится по
+  нормалям сразу, тогда как формула через тангенсы здесь не определена.</div>
+
+  <div class="task">
+    <h3>Задача 5. Плоскость и прямая в пространстве</h3>
+    <div class="given">Дано: \(M_1(3;0;1)\), \(M_2(0;2;3)\), \(M_3(6;2;1)\),
+    точка \(P(4;0;3)\), вектор \(\mathbf n_2=\{1;2;2\}\); прямые
+    \(L_1\colon\frac{x-1}{1}=\frac{y}{2}=\frac{z-2}{1}\),
+    \(L_2\colon\frac{x-1}{3}=\frac{y}{4}=\frac{z-2}{1}\),
+    \(L_3\colon\frac{x-3}{3}=\frac{y}{4}=\frac{z-1}{1}\). Найти: плоскость
+    \(\alpha\) через три точки и плоскость \(\beta\) через \(P\) с нормалью
+    \(\mathbf n_2\); расстояние от \(P\) до \(\alpha\); угол между плоскостями;
+    расположение каждой прямой относительно \(\alpha\).</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Два вектора в плоскости дают нормаль как векторное
+        произведение, дальше — уравнение через точку.</div>
+        <div class="calc">\(\overline{M_1M_2}\) = <b>{−3; 2; 2}</b>,
+          \(\overline{M_1M_3}\) = <b>{3; 2; 0}</b>,
+          \([\overline{M_1M_2},\overline{M_1M_3}]\) =
+          <span class="sub">{0−4; 6−0; −6−6}</span> = <b>{−4; 6; −12}</b>
+          \(\parallel\) <b>{2; −3; 6}</b></div>
+        <div class="calc">через \(M_1(3;0;1)\):
+          <span class="sub">2(x−3) − 3y + 6(z−1) = 0</span> →
+          <b>\(\alpha\colon2x-3y+6z-12=0\)</b>, \(|\mathbf n|=7\)</div>
+      </div>
+      <div class="step">
+        <div class="what">По точке и нормали уравнение пишется сразу; расстояние
+        и угол между плоскостями — те же формулы, что и на плоскости.</div>
+        <div class="calc"><span class="sub">1(x−4) + 2y + 2(z−3) = 0</span> →
+          <b>\(\beta\colon x+2y+2z-10=0\)</b></div>
+        <div class="calc">\(d(P,\alpha)\) = <span class="sub">|8 − 0 + 18 − 12| / 7</span>
+          = <b>2</b>; \(\cos\theta=\dfrac{|(\mathbf n,\mathbf n_2)|}
+          {|\mathbf n||\mathbf n_2|}\) = <span class="sub">|2 − 6 + 12| / (7·3)</span>
+          = <b>\(8/21\)</b>, \(\theta\approx67^\circ36'\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Прямая и плоскость: всё решает \((\mathbf s,\mathbf n)\).
+        Не нуль — прямая пересекает плоскость, и точку даёт параметрическая
+        подстановка.</div>
+        <div class="calc">\(L_1\): \((\mathbf s_1,\mathbf n)\) =
+          <span class="sub">2 − 6 + 6</span> = <b>2 ≠ 0</b>; \(x=1+t,\ y=2t,\ z=2+t\):
+          <span class="sub">2 + 2t = 0</span> → \(t=-1\) → <b>\(K(0;-2;1)\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Если \((\mathbf s,\mathbf n)=0\), прямая параллельна
+        плоскости; лежит ли она в ней — показывает подстановка её точки.</div>
+        <div class="calc">\(L_2\): \((\mathbf s_2,\mathbf n)\) =
+          <span class="sub">6 − 12 + 6</span> = <b>0</b>, точка (1; 0; 2):
+          <span class="sub">2 + 12 − 12</span> = <b>2 ≠ 0</b> — параллельна на
+          расстоянии \(2/7\)</div>
+        <div class="calc">\(L_3\): тот же \(\mathbf s_2\), точка (3; 0; 1):
+          <span class="sub">6 + 6 − 12</span> = <b>0</b> — <b>лежит в плоскости</b></div>
+      </div>
+    </div>
+    <div class="answer">\(\alpha\colon2x-3y+6z-12=0\),
+    \(\beta\colon x+2y+2z-10=0\); \(d(P,\alpha)=2\); \(\theta\approx67^\circ36'\);
+    \(L_1\) пересекает \(\alpha\) в точке \(K(0;-2;1)\), \(L_2\) параллельна
+    \(\alpha\) на расстоянии \(2/7\), \(L_3\) лежит в \(\alpha\).</div>
+    <div class="check">исходные точки обращают уравнение \(\alpha\) в тождество:
+    \(6-0+6-12=0\), \(0-6+18-12=0\), \(12-6+6-12=0\). Точка \(K\) проверяется
+    дважды: она на \(L_1\), так как
+    \(\frac{0-1}{1}=\frac{-2}{2}=\frac{1-2}{1}=-1\), и в плоскости, так как
+    \(0+6+6-12=0\). Расстояние проверяется сдвигом: точка
+    \(P-2\frac{\mathbf n}{7}=\left(\frac{24}{7};\frac67;\frac97\right)\) даёт
+    \(\frac{48-18+54}{7}-12=0\) — она уже на плоскости, значит сдвинулись ровно
+    на 2.</div>
+  </div>
+
+  <div class="task">
+    <h3>Задача 6. Две прямые в пространстве</h3>
+    <div class="given">Дано:
+    \(L_1\colon\frac{x-1}{2}=\frac{y-2}{-1}=\frac{z+1}{3}\),
+    \(L_2\colon\frac{x-2}{1}=\frac{y-3}{2}=\frac{z-2}{-1}\). Найти: взаимное
+    расположение прямых, угол между ними, расстояние и основания общего
+    перпендикуляра.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Выписываем точки, направляющие векторы и соединяющий
+        вектор — дальше всё решают эти три вектора.</div>
+        <div class="calc">\(M_1(1;2;-1)\), \(\mathbf s_1\) = <b>{2; −1; 3}</b>;
+          \(M_2(2;3;2)\), \(\mathbf s_2\) = <b>{1; 2; −1}</b>;
+          \(\overline{M_1M_2}\) = <b>{1; 1; 3}</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Направляющие векторы не коллинеарны, значит прямые
+        либо пересекаются, либо скрещиваются; различает их смешанное
+        произведение.</div>
+        <div class="calc">\([\mathbf s_1,\mathbf s_2]\) =
+          <span class="sub">{1−6; 3+2; 4+1}</span> = <b>{−5; 5; 5}</b>,
+          \(\big|[\mathbf s_1,\mathbf s_2]\big|=5\sqrt3\)</div>
+        <div class="calc">\((\overline{M_1M_2},\mathbf s_1,\mathbf s_2)\) =
+          <span class="sub">−5 + 5 + 15</span> = <b>15 ≠ 0</b> — прямые
+          <b>скрещиваются</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Угол — между направляющими векторами; расстояние —
+        высота параллелепипеда: объём делим на площадь основания.</div>
+        <div class="calc">\(\cos\gamma=\dfrac{|(\mathbf s_1,\mathbf s_2)|}
+          {|\mathbf s_1||\mathbf s_2|}\) = <span class="sub">|2 − 2 − 3| / (√14·√6)</span>
+          = <b>\(3/(2\sqrt{21})\approx0{,}327\)</b>, \(\gamma\approx70^\circ54'\)</div>
+        <div class="calc">\(d=\dfrac{\big|(\overline{M_1M_2},\mathbf s_1,\mathbf s_2)\big|}
+          {\big|[\mathbf s_1,\mathbf s_2]\big|}\) = <span class="sub">15 / (5√3)</span>
+          = <b>\(\sqrt3\approx1{,}73\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Основания общего перпендикуляра: берём по точке на
+        каждой прямой и требуем, чтобы соединяющий вектор был коллинеарен
+        \([\mathbf s_1,\mathbf s_2]\).</div>
+        <div class="calc">\(P_1=M_1+t\mathbf s_1\), \(P_2=M_2+u\mathbf s_2\),
+          \(\overline{P_1P_2}\parallel\{-1;1;1\}\) →
+          <span class="sub">t = 4/5, u = −2/5</span></div>
+        <div class="calc">\(P_1\) = <span class="sub">(1; 2; −1) + 0,8·{2; −1; 3}</span>
+          = <b>(2,6; 1,2; 1,4)</b>, \(P_2\) =
+          <span class="sub">(2; 3; 2) − 0,4·{1; 2; −1}</span> = <b>(1,6; 2,2; 2,4)</b></div>
+      </div>
+    </div>
+    <div class="answer">прямые скрещиваются, угол между ними
+    \(\approx70^\circ54'\), расстояние \(d=\sqrt3\approx1{,}73\); общий
+    перпендикуляр опирается на точки \(P_1(2{,}6;\,1{,}2;\,1{,}4)\) и
+    \(P_2(1{,}6;\,2{,}2;\,2{,}4)\).</div>
+    <div class="check">\(\overline{P_1P_2}=\{-1;1;1\}\), его длина \(\sqrt3\)
+    совпадает с расстоянием по формуле, и он перпендикулярен обеим прямым:
+    \((\overline{P_1P_2},\mathbf s_1)=-2-1+3=0\),
+    \((\overline{P_1P_2},\mathbf s_2)=-1+2-1=0\). Точка \(P_1\) лежит на
+    \(L_1\): \(\frac{2{,}6-1}{2}=\frac{1{,}2-2}{-1}=\frac{1{,}4+1}{3}=0{,}8\).</div>
+  </div>
+
+  <svg viewBox="0 0 640 272" class="geo-board" style="max-width:640px">
+  <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Скрещивающиеся прямые: общий перпендикуляр P₁P₂ даёт кратчайшее расстояние</text>
+  <line x1="269.6" y1="218" x2="278.2" y2="222.8" stroke="#16161a" stroke-width="2.4"/>
+  <line x1="264.3" y1="215.1" x2="140" y2="145.9" stroke="#16161a" stroke-width="2.4"/>
+  <line x1="170.4" y1="50" x2="289.8" y2="250" stroke="#155e75" stroke-width="2.4"/>
+  <line x1="155.1" y1="154.3" x2="210.2" y2="116.7" stroke="#1a7f37" stroke-width="3"/>
+  <circle cx="155.1" cy="154.3" r="4" fill="#1a7f37"/>
+  <text x="131.1" y="174.4" style="font:11px system-ui;fill:#1a7f37">P₁</text>
+  <circle cx="210.2" cy="116.7" r="4" fill="#1a7f37"/>
+  <text x="219.2" y="111.7" style="font:11px system-ui;fill:#1a7f37">P₂</text>
+  <text x="124" y="157.9" style="font:11px system-ui;fill:#16161a">L₁</text>
+  <text x="295.8" y="256" style="font:11px system-ui;fill:#155e75">L₂</text>
+  <circle cx="215.3" cy="187.8" r="3.4" fill="#16161a"/>
+  <text x="199.3" y="181.8" style="font:11px system-ui;fill:#16161a">M₁</text>
+  <circle cx="230.1" cy="150" r="3.4" fill="#155e75"/>
+  <text x="238.1" y="144" style="font:11px system-ui;fill:#155e75">M₂</text>
+  <text x="418" y="92" style="font:11px system-ui;fill:#16161a">M₁(1; 2; −1),  s₁ = {2; −1; 3}</text>
+  <text x="418" y="110" style="font:11px system-ui;fill:#155e75">M₂(2; 3; 2),  s₂ = {1; 2; −1}</text>
+  <text x="418" y="136" style="font:11px system-ui;fill:#6b6b74">[s₁, s₂] = {−5; 5; 5},  |[s₁, s₂]| = 5√3</text>
+  <text x="412" y="154" style="font:10.5px system-ui;fill:#6b6b74">(M₁M₂, s₁, s₂) = 15 ≠ 0 — скрещиваются</text>
+  <text x="418" y="180" style="font:11px system-ui;fill:#1a7f37">d = 15 / (5√3) = √3 ≈ 1,73</text>
+  <text x="418" y="198" style="font:11px system-ui;fill:#1a7f37">P₁(2,6; 1,2; 1,4),  P₂(1,6; 2,2; 2,4)</text>
+</svg>
+  <div class="caption">На проекции прямые кажутся пересекающимися, но в
+  пространстве проходят одна за другой — разрыв на дальней линии показывает,
+  какая ближе к наблюдателю. Отрезок \(P_1P_2\) перпендикулярен обеим прямым и
+  потому короче любого другого отрезка с концами на них.</div>
+
+  <details class="q"><summary>Вывод формулы расстояния между скрещивающимися прямыми</summary>
+  <p>Отложим от точки \(M_1\) векторы \(\mathbf s_1\), \(\mathbf s_2\) и
+  \(\overline{M_1M_2}\) и построим на них параллелепипед. Основанием возьмём
+  параллелограмм на \(\mathbf s_1\) и \(\mathbf s_2\): он лежит в плоскости,
+  параллельной обеим прямым, и его площадь равна
+  \(\big|[\mathbf s_1,\mathbf s_2]\big|\).</p>
+  <p>Высота этого параллелепипеда — расстояние между двумя параллельными
+  плоскостями, в одной из которых лежит \(L_1\), в другой \(L_2\). Именно оно и
+  есть кратчайшее расстояние между прямыми: общий перпендикуляр направлен по
+  \([\mathbf s_1,\mathbf s_2]\), то есть по нормали к обеим плоскостям.
+  Приравнивая два выражения для объёма,</p>
+  $$\big|(\overline{M_1M_2},\mathbf s_1,\mathbf s_2)\big|
+  =\big|[\mathbf s_1,\mathbf s_2]\big|\cdot d
+  \ \Longrightarrow\
+  d=\frac{\big|(\overline{M_1M_2},\mathbf s_1,\mathbf s_2)\big|}
+  {\big|[\mathbf s_1,\mathbf s_2]\big|} .$$
+  <p>Отсюда виден и признак пересечения: смешанное произведение равно нулю —
+  объём вырождается, расстояние обращается в нуль, прямые лежат в одной
+  плоскости.</p>
+  </details>
+
+  <div class="applied"><b>Где это работает.</b> Кратчайшее расстояние между
+  скрещивающимися прямыми — это зазор между трубопроводом и валопроводом, между
+  балкой набора и кабельной трассой. Построение общего перпендикуляра —
+  стандартная задача курса
+  <a href="https://shadeswd.duckdns.org/descgeo/">начертательной геометрии</a>,
+  а расчёт линии вала и его опор — курса
+  <a href="https://shadeswd.duckdns.org/theormech/">теоретической механики</a>.</div>
+
+  <h2>Кривые, поверхности, полярные координаты</h2>
+
+  <div class="task">
+    <h3>Задача 7. Кривая второго порядка</h3>
+    <div class="given">Дано: \(9x^2-16y^2-54x-64y-127=0\). Найти: канонический
+    вид, тип кривой, центр, полуоси, эксцентриситет, фокусы, директрисы и
+    асимптоты.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Члена с \(xy\) нет — поворот осей не нужен, хватит
+        переноса начала. Группируем по переменным, выносим коэффициенты и
+        выделяем полные квадраты.</div>
+        <div class="calc">\(9(x^2-6x)-16(y^2+4y)-127=0\), где
+          <span class="sub">x² − 6x = (x−3)² − 9, y² + 4y = (y+2)² − 4</span></div>
+        <div class="calc">\(9(x-3)^2-16(y+2)^2\) =
+          <span class="sub">127 + 81 − 64</span> = <b>144</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Делим на свободный член: в осях \(x'=x-3\),
+        \(y'=y+2\) уравнение канонично.</div>
+        <div class="calc">\(\dfrac{x'^2}{16}-\dfrac{y'^2}{9}=1\) —
+          <b>гипербола</b>, \(a=4\), \(b=3\), центр <b>\(O'(3;-2)\)</b>,
+          вершины <b>\((-1;-2)\)</b> и <b>\((7;-2)\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Для гиперболы \(c^2=a^2+b^2\) (для эллипса было бы
+        \(c^2=a^2-b^2\)); отсюда эксцентриситет, фокусы, директрисы и асимптоты.</div>
+        <div class="calc">\(c\) = <span class="sub">√(16+9)</span> = <b>5</b>,
+          \(\varepsilon=c/a\) = <b>1,25</b> (\(&gt;1\)); фокусы \(x'=\pm5\) →
+          <b>\(F_1(-2;-2)\)</b>, <b>\(F_2(8;-2)\)</b></div>
+        <div class="calc">\(x'=\pm a^2/c\) = <span class="sub">±16/5</span> →
+          директрисы <b>\(x=-0{,}2\)</b> и <b>\(x=6{,}2\)</b>; асимптоты
+          \(y'=\pm\tfrac ba x'\) → <b>\(y+2=\pm\tfrac34(x-3)\)</b></div>
+      </div>
+    </div>
+    <div class="answer">гипербола \(\dfrac{(x-3)^2}{16}-\dfrac{(y+2)^2}{9}=1\) с
+    центром \(O'(3;-2)\), \(a=4\), \(b=3\), \(c=5\), \(\varepsilon=1{,}25\);
+    фокусы \((-2;-2)\) и \((8;-2)\); директрисы \(x=-0{,}2\) и \(x=6{,}2\);
+    асимптоты \(y+2=\pm\tfrac34(x-3)\).</div>
+    <div class="check">возьмём точку с абсциссой фокуса \(x=8\): из
+    канонического уравнения \(y'^2=9\left(\frac{25}{16}-1\right)=\frac{81}{16}\),
+    то есть \(y=0{,}25\). Подстановка в исходное уравнение даёт
+    \(576-1-432-16-127=0\). Фокальное свойство: \(r_2=2{,}25\),
+    \(r_1=\sqrt{100+5{,}0625}=10{,}25\), и \(|r_1-r_2|=8=2a\) — как требует
+    определение гиперболы; попутно \(r_2=b^2/a=9/4\).</div>
+  </div>
+
+  <svg viewBox="0 0 640 346" class="geo-board" style="max-width:640px">
+  <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Гипербола 9x² − 16y² − 54x − 64y − 127 = 0: центр O′(3; −2), фокусы, асимптоты, директрисы</text>
+  <line x1="56" y1="122" x2="461.6" y2="122" stroke="#16161a" stroke-width="1.2"/>
+  <path d="M461.6 122 452.6 125.5 452.6 118.5 Z" fill="#16161a"/>
+  <line x1="186" y1="311.8" x2="186" y2="49.2" stroke="#16161a" stroke-width="1.2"/>
+  <path d="M186 49.2 189.5 58.2 182.5 58.2 Z" fill="#16161a"/>
+  <text x="459.6" y="137" style="font:11px system-ui;fill:#16161a">x</text>
+  <text x="172" y="53.2" style="font:11px system-ui;fill:#16161a">y</text>
+  <text x="173" y="136" style="font:11px system-ui;fill:#16161a">O</text>
+  <line x1="63.8" y1="174" x2="456.4" y2="174" stroke="#6b6b74" stroke-width="1.1" stroke-dasharray="5 4"/>
+  <line x1="264" y1="309.2" x2="264" y2="57" stroke="#6b6b74" stroke-width="1.1" stroke-dasharray="5 4"/>
+  <text x="450.4" y="167" style="font:11px system-ui;fill:#6b6b74">x′</text>
+  <text x="269" y="61" style="font:11px system-ui;fill:#6b6b74">y′</text>
+  <line x1="423.5" y1="54.4" x2="83.7" y2="309.2" stroke="#c8cfce" stroke-width="1.4" stroke-dasharray="7 5"/>
+  <line x1="104.5" y1="54.4" x2="444.3" y2="309.2" stroke="#c8cfce" stroke-width="1.4" stroke-dasharray="7 5"/>
+  <line x1="347.2" y1="309.2" x2="347.2" y2="57" stroke="#1a7f37" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <line x1="180.8" y1="309.2" x2="180.8" y2="57" stroke="#1a7f37" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <path d="M517 1 498 17 481 31 465 45 451 57 439 69 427 80 417 90 408 99 400 108 393 117 387 125 382 132 378 140 374 147 371 154 370 161 368 167 368 174 368 181 370 187 371 194 374 201 378 208 382 216 387 223 393 231 400 240 408 249 417 258 427 268 439 279 451 291 465 303 481 317 498 331 517 347" fill="none" stroke="#155e75" stroke-width="2.4"/>
+  <path d="M11 1 30 17 47 31 63 45 77 57 89 69 101 80 111 90 120 99 128 108 135 117 141 125 146 132 150 140 154 147 157 154 158 161 160 167 160 174 160 181 158 187 157 194 154 201 150 208 146 216 141 223 135 231 128 240 120 249 111 258 101 268 89 279 77 291 63 303 47 317 30 331 11 347" fill="none" stroke="#155e75" stroke-width="2.4"/>
+  <circle cx="394" cy="174" r="4.2" fill="#b3382e"/>
+  <text x="390" y="163" style="font:11px system-ui;fill:#b3382e">F₂</text>
+  <circle cx="134" cy="174" r="4.2" fill="#b3382e"/>
+  <text x="118" y="170" style="font:11px system-ui;fill:#b3382e">F₁</text>
+  <circle cx="368" cy="174" r="3.2" fill="#155e75"/>
+  <circle cx="160" cy="174" r="3.2" fill="#155e75"/>
+  <circle cx="264" cy="174" r="3.4" fill="#6b6b74"/>
+  <text x="212" y="189" style="font:11px system-ui;fill:#6b6b74">O′(3; −2)</text>
+  <text x="66.4" y="288.4" style="font:11px system-ui;fill:#6b6b74">асимптоты</text>
+  <text x="303" y="301.4" style="font:11px system-ui;fill:#1a7f37">директрисы x = 3 ± 3,2</text>
+  <text x="486" y="72" style="font:11px system-ui;fill:#155e75">(x−3)²/16 − (y+2)²/9 = 1</text>
+  <text x="486" y="96" style="font:11px system-ui;fill:#16161a">a = 4,  b = 3,  c = 5</text>
+  <text x="486" y="114" style="font:11px system-ui;fill:#16161a">ε = c/a = 1,25</text>
+  <text x="486" y="132" style="font:11px system-ui;fill:#b3382e">F₁(−2; −2)</text>
+  <text x="486" y="150" style="font:11px system-ui;fill:#b3382e">F₂(8; −2)</text>
+  <text x="486" y="174" style="font:11px system-ui;fill:#16161a">вершины (−1; −2), (7; −2)</text>
+  <text x="470" y="198" style="font:10.5px system-ui;fill:#6b6b74">асимптоты y + 2 = ±¾(x − 3)</text>
+</svg>
+  <div class="caption">Ветви и асимптоты построены численно по найденному
+  каноническому уравнению; серым штрихом — новые оси с началом в \(O'(3;-2)\), к
+  которым и сводится выделение полных квадратов. Директрисы проходят
+  <i>между</i> центром и вершинами, потому что \(a^2/c=3{,}2&lt;a=4\), — это
+  верно для любой гиперболы.</div>
+
+  <div class="note tip"><b>Как сразу узнать тип кривой.</b> Знаки при \(x^2\) и
+  \(y^2\) одинаковы — эллипс (либо точка, либо пустое множество); разные —
+  гипербола (либо пара пересекающихся прямых); одного из квадратов нет —
+  парабола. Выкладки лишь уточняют положение и размеры.</div>
+
+  <div class="task">
+    <h3>Задача 8. Поверхность второго порядка</h3>
+    <div class="given">Дано: \(4x^2+9y^2-36z^2-16x+18y-11=0\). Найти:
+    канонический вид, тип поверхности, центр и полуоси; исследовать поверхность
+    сечениями координатных плоскостей, проведённых через центр.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Схема та же, что и для кривой: группируем, выносим
+        коэффициенты, выделяем полные квадраты. Переменная \(z\) входит только в
+        квадрате.</div>
+        <div class="calc">\(4(x^2-4x)+9(y^2+2y)-36z^2-11=0\) →
+          <span class="sub">4(x−2)² + 9(y+1)² − 36z² − 16 − 9 − 11 = 0</span> →
+          <b>\(4(x-2)^2+9(y+1)^2-36z^2=36\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Делим на 36 и вводим координаты с началом в центре.
+        Два плюса и один минус — признак однополостного гиперболоида.</div>
+        <div class="calc">\(\dfrac{x'^2}{9}+\dfrac{y'^2}{4}-\dfrac{z^2}{1}=1\),
+          где <span class="sub">x′ = x − 2, y′ = y + 1</span> —
+          <b>однополостный гиперболоид</b>, центр <b>\((2;-1;0)\)</b>, полуоси
+          <b>3, 2, 1</b>, ось — прямая \(x=2,\ y=-1\)</div>
+      </div>
+      <div class="step">
+        <div class="what">Метод сечений: подставляем \(z=h\), затем \(y=-1\) и
+        \(x=2\) и смотрим, какие кривые получаются.</div>
+        <div class="calc">\(z=h\): \(\dfrac{x'^2}{9}+\dfrac{y'^2}{4}=1+h^2\) —
+          <b>эллипсы</b> с полуосями \(3\sqrt{1+h^2}\) и \(2\sqrt{1+h^2}\);
+          \(h=0\) даёт <b>горловой эллипс 3 × 2</b>, \(h=\pm1\) —
+          <span class="sub">3√2 и 2√2</span> ≈ <b>4,24 и 2,83</b></div>
+        <div class="calc">\(y=-1\): \(\dfrac{x'^2}{9}-z^2=1\) — <b>гипербола</b>
+          с асимптотами \(z=\pm x'/3\); \(x=2\): \(\dfrac{y'^2}{4}-z^2=1\) —
+          <b>гипербола</b> с асимптотами \(z=\pm y'/2\)</div>
+      </div>
+    </div>
+    <div class="answer">однополостный гиперболоид
+    \(\dfrac{(x-2)^2}{9}+\dfrac{(y+1)^2}{4}-z^2=1\) с центром \((2;-1;0)\) и
+    полуосями 3, 2, 1; горизонтальные сечения — эллипсы, наименьший из них
+    (горловой) имеет полуоси 3 и 2, вертикальные сечения через центр — гиперболы.</div>
+    <div class="check">точка \((5;1;1)\) в каноническом виде даёт
+    \(\frac99+\frac44-1=1\), а в исходном уравнении
+    \(100+9-36-80+18-11=0\). Она же обязана лежать на сечении \(z=1\): её
+    \(x'=3\), \(y'=2\), эллипс сечения имеет полуоси \(3\sqrt2\) и \(2\sqrt2\),
+    и действительно \(\frac9{18}+\frac48=1\).</div>
+  </div>
+
+  <svg viewBox="0 0 640 292" class="geo-board" style="max-width:640px">
+  <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Однополостный гиперболоид (x−2)²/9 + (y+1)²/4 − z² = 1 в осях, связанных с центром</text>
+  <path d="M89 239 106 242 125 242 144 240 164 236 183 231 201 223 218 214 232 204 243 194 250 183 254 172 255 161 251 151 244 143 233 136 220 130 204 127 186 126 167 126 147 129 127 134 108 141 91 149 76 158 63 168 54 179 48 190 46 201 48 212 53 221 62 229 74 235 89 239" fill="none" stroke="#c8cfce" stroke-width="1.6"/>
+  <path d="M89 180 106 182 125 182 144 181 164 177 183 171 201 164 218 155 232 145 243 134 250 123 254 112 255 102 251 92 244 83 233 76 220 71 204 67 186 66 167 67 147 70 127 74 108 81 91 89 76 99 63 109 54 120 48 131 46 142 48 152 53 161 62 169 74 175 89 180" fill="none" stroke="#c8cfce" stroke-width="1.6"/>
+  <path d="M89 239 93 231 97 222 101 215 104 208 106 201 107 196 107 191 106 187 104 185 101 183 97 181 93 180 89 180" fill="none" stroke="#16161a" stroke-width="1.8"/>
+  <path d="M212 128 208 128 203 127 200 126 197 124 195 121 194 117 194 112 195 107 197 101 200 93 203 86 208 78 212 69" fill="none" stroke="#16161a" stroke-width="1.8"/>
+  <path d="M107 193 119 195 132 195 146 194 160 191 174 187 187 182 198 176 208 169 216 161 221 153 224 145 224 138 222 131 216 125 209 120 199 116 188 114 175 113 162 113 148 115 134 119 121 123 108 129 98 136 89 143 82 151 78 159 77 166 78 174 82 180 88 186 96 190 107 193" fill="rgba(179,56,46,.10)" stroke="#b3382e" stroke-width="2.2"/>
+  <line x1="150.4" y1="154.1" x2="150.4" y2="101.9" stroke="#6b6b74" stroke-width="1.1"/>
+  <path d="M150.4 101.9 153.4 108.9 147.4 108.9 Z" fill="#6b6b74"/>
+  <text x="155.4" y="104.9" style="font:11px system-ui;fill:#6b6b74">z</text>
+  <circle cx="150.4" cy="154.1" r="3.4" fill="#6b6b74"/>
+  <text x="20" y="240" style="font:11px system-ui;fill:#6b6b74">z = 1 и z = −1: эллипсы 3√2 × 2√2</text>
+  <text x="20" y="256" style="font:11px system-ui;fill:#b3382e">z = 0: горловой эллипс 3 × 2</text>
+  <line x1="314.8" y1="150" x2="605.2" y2="150" stroke="#16161a" stroke-width="1.1"/>
+  <path d="M605.2 150 597.2 153 597.2 147 Z" fill="#16161a"/>
+  <line x1="460" y1="238" x2="460" y2="62" stroke="#16161a" stroke-width="1.1"/>
+  <path d="M460 62 463 70 457 70 Z" fill="#16161a"/>
+  <text x="601.2" y="165" style="font:11px system-ui;fill:#16161a">x′</text>
+  <text x="446" y="66" style="font:11px system-ui;fill:#16161a">z</text>
+  <line x1="328" y1="230" x2="592" y2="70" stroke="#c8cfce" stroke-width="1.3" stroke-dasharray="6 4"/>
+  <line x1="328" y1="70" x2="592" y2="230" stroke="#c8cfce" stroke-width="1.3" stroke-dasharray="6 4"/>
+  <path d="M592 220 574 206 559 195 548 185 539 176 532 168 528 161 526 154 526 146 528 139 532 132 539 124 548 115 559 105 574 94 592 80" fill="none" stroke="#155e75" stroke-width="2.2"/>
+  <path d="M328 220 346 206 361 195 372 185 381 176 388 168 392 161 394 154 394 146 392 139 388 132 381 124 372 115 361 105 346 94 328 80" fill="none" stroke="#155e75" stroke-width="2.2"/>
+  <text x="390" y="42" style="font:11px system-ui;fill:#6b6b74">сечение плоскостью y = −1:</text>
+  <text x="390" y="56" style="font:11px system-ui;fill:#155e75">гипербола x′²/9 − z² = 1</text>
+  <text x="388" y="258" style="font:11px system-ui;fill:#6b6b74">асимптоты z = ± x′/3</text>
+</svg>
+  <div class="caption">Слева поверхность собрана из своих сечений: красным —
+  горловой эллипс \(z=0\), светлым — эллипсы \(z=\pm1\), чёрным — ветви
+  гиперболы, по которым поверхность пересекает плоскость \(y=-1\). Справа то же
+  сечение в собственных осях. Метод сечений — это ровно то, как строят
+  теоретический чертёж корпуса.</div>
+
+  <div class="applied"><b>Где это работает.</b> Поверхности второго порядка —
+  рабочие формы корпусных и машиностроительных конструкций: гиперболоид даёт
+  прямолинейные образующие при криволинейной поверхности, эллиптический
+  параболоид — форму антенн и обтекателей. Разбиение на сечения используется при
+  расчёте водоизмещения и площадей шпангоутов, см.
+  <a href="https://shadeswd.duckdns.org/shipstat/">статику корабля</a> и
+  <a href="https://shadeswd.duckdns.org/strength/">строительную механику</a>.</div>
+
+  <div class="task">
+    <h3>Задача 9. Полярные координаты</h3>
+    <div class="given">Дано: кривая \((x^2+y^2)^2=16(x^2-y^2)\) в декартовых
+    координатах и кривая \(\rho=\dfrac{6}{2-\cos\varphi}\) в полярных. Найти:
+    уравнение первой в полярных координатах и построить её по точкам; уравнение
+    второй в декартовых координатах, её тип и параметры.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="what">Подставляем \(x=\rho\cos\varphi\),
+        \(y=\rho\sin\varphi\); заранее замечаем \(x^2+y^2=\rho^2\) и
+        \(x^2-y^2=\rho^2\cos2\varphi\).</div>
+        <div class="calc">\((\rho^2)^2=16\rho^2\cos2\varphi\) →
+          <span class="sub">делим на ρ² ≠ 0</span> →
+          <b>\(\rho^2=16\cos2\varphi\)</b>, то есть
+          \(\rho=4\sqrt{\cos2\varphi}\) — <b>лемниската Бернулли</b></div>
+        <div class="calc">\(\cos2\varphi\ge0\) →
+          <b>\(\varphi\in[-45^\circ;45^\circ]\cup[135^\circ;225^\circ]\)</b>,
+          при остальных углах точек нет</div>
+      </div>
+      <div class="step">
+        <div class="what">Таблица значений для построения по точкам.</div>
+        <div class="calc">\(\varphi=0^\circ\): <b>4</b>; \(15^\circ\):
+          <span class="sub">4√cos30°</span> = <b>3,72</b>; \(30^\circ\):
+          <span class="sub">4√0,5</span> = <b>\(2\sqrt2\approx2{,}83\)</b>;
+          \(40^\circ\): <b>1,67</b>; \(45^\circ\): <b>0</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Обратный переход: освобождаемся от знаменателя,
+        заменяем \(\rho\cos\varphi\) на \(x\), \(\rho\) на \(\sqrt{x^2+y^2}\) и
+        возводим в квадрат.</div>
+        <div class="calc">\(2\rho-\rho\cos\varphi=6\) →
+          <b>\(2\sqrt{x^2+y^2}=6+x\)</b> →
+          <span class="sub">4(x²+y²) = 36 + 12x + x²</span> →
+          <b>\(3(x-2)^2+4y^2=48\)</b></div>
+      </div>
+      <div class="step">
+        <div class="what">Делим на свободный член. Полюс оказался не в центре
+        кривой, а в её фокусе — общее свойство полярного уравнения конического
+        сечения.</div>
+        <div class="calc">\(\dfrac{(x-2)^2}{16}+\dfrac{y^2}{12}=1\) —
+          <b>эллипс</b>, \(a=4\), \(b=2\sqrt3\), центр \((2;0)\); \(c\) =
+          <span class="sub">√(16−12)</span> = <b>2</b>, \(\varepsilon=c/a\) =
+          <b>0,5</b>, фокусы <b>\((0;0)\)</b> и <b>\((4;0)\)</b></div>
+      </div>
+    </div>
+    <div class="answer">\((x^2+y^2)^2=16(x^2-y^2)\) — лемниската
+    \(\rho^2=16\cos2\varphi\) с наибольшим радиусом 4;
+    \(\rho=\frac{6}{2-\cos\varphi}\) — эллипс
+    \(\dfrac{(x-2)^2}{16}+\dfrac{y^2}{12}=1\) с \(a=4\), \(b=2\sqrt3\),
+    \(\varepsilon=0{,}5\) и фокусом в полюсе.</div>
+    <div class="check">точка лемнискаты при \(\varphi=30^\circ\),
+    \(\rho=2\sqrt2\) имеет координаты \(x=\sqrt6\), \(y=\sqrt2\); подстановка
+    даёт \((6+2)^2=64\) слева и \(16(6-2)=64\) справа. Для эллипса: при
+    \(\varphi=0\) выходит \(\rho=6\) и точка \((6;0)\), при
+    \(\varphi=180^\circ\) — \(\rho=2\) и точка \((-2;0)\); сумма радиусов
+    \(6+2=8=2a\), то есть отрезок между ними и есть большая ось. При
+    \(\varphi=90^\circ\) получается \(\rho=3=b^2/a\) — полуфокальная хорда, что
+    подтверждает: полюс стоит в фокусе.</div>
+  </div>
+
+  <svg viewBox="0 0 640 288" class="geo-board" style="max-width:640px">
+  <text x="16" y="18" style="font:11px system-ui;fill:#6b6b74">Лемниската ρ² = 16 cos 2φ и эллипс ρ = 6/(2 − cos φ), у которого полюс — фокус</text>
+  <circle cx="150" cy="164" r="25" fill="none" stroke="#e6eaea" stroke-width="1"/>
+  <circle cx="150" cy="164" r="50" fill="none" stroke="#e6eaea" stroke-width="1"/>
+  <circle cx="150" cy="164" r="75" fill="none" stroke="#e6eaea" stroke-width="1"/>
+  <circle cx="150" cy="164" r="100" fill="none" stroke="#e6eaea" stroke-width="1"/>
+  <path d="M150 164L250 164M150 164L236.6 114M150 164L200 77.4M150 164L150 64M150 164L100 77.4M150 164L63.4 114M150 164L50 164M150 164L63.4 214M150 164L100 250.6M150 164L150 264M150 164L200 250.6M150 164L236.6 214" fill="none" stroke="#e6eaea" stroke-width="1"/>
+  <line x1="27.5" y1="164" x2="272.5" y2="164" stroke="#16161a" stroke-width="1.1"/>
+  <path d="M272.5 164 264.5 167 264.5 161 Z" fill="#16161a"/>
+  <text x="269.5" y="180" style="font:11px system-ui;fill:#16161a">x</text>
+  <line x1="150" y1="276.5" x2="150" y2="51.5" stroke="#16161a" stroke-width="1.1"/>
+  <path d="M150 51.5 153 59.5 147 59.5 Z" fill="#16161a"/>
+  <text x="136" y="55.5" style="font:11px system-ui;fill:#16161a">y</text>
+  <path d="M150 164 177 187 189 195 200 198 210 199 218 199 226 197 233 194 238 190 243 185 246 179 249 173 250 167 250 161 249 155 246 149 243 143 238 138 233 134 226 131 218 129 210 129 200 130 189 133 177 141 150 164Z" fill="rgba(21,94,117,.10)" stroke="#155e75" stroke-width="2.2"/>
+  <path d="M150 164 123 141 111 133 100 130 90 129 82 129 74 131 67 134 62 138 57 143 54 149 51 155 50 161 50 167 51 173 54 179 57 185 62 190 67 194 74 197 82 199 90 199 100 198 111 195 123 187 150 164Z" fill="rgba(21,94,117,.10)" stroke="#155e75" stroke-width="2.2"/>
+  <line x1="150" y1="164" x2="250" y2="164" stroke="#b3382e" stroke-width="2"/>
+  <circle cx="250" cy="164" r="3.4" fill="#b3382e"/>
+  <text x="187.5" y="155" style="font:11px system-ui;fill:#b3382e">φ = 0: ρ = 4</text>
+  <text x="40" y="278.5" style="font:11px system-ui;fill:#6b6b74">при |φ| &gt; 45° точек нет</text>
+  <line x1="336.4" y1="164" x2="571.6" y2="164" stroke="#16161a" stroke-width="1.1"/>
+  <path d="M571.6 164 563.6 167 563.6 161 Z" fill="#16161a"/>
+  <text x="568.6" y="180" style="font:11px system-ui;fill:#16161a">x</text>
+  <line x1="406" y1="255.2" x2="406" y2="72.8" stroke="#16161a" stroke-width="1.1"/>
+  <path d="M406 72.8 409 80.8 403 80.8 Z" fill="#16161a"/>
+  <text x="392" y="76.8" style="font:11px system-ui;fill:#16161a">y</text>
+  <path d="M550 164 548 146 541 129 530 114 517 101 502 92 487 86 471 82 456 81 443 81 430 84 418 87 408 91 399 96 392 101 385 106 379 112 374 118 370 124 366 130 363 136 361 142 360 149 359 155 358 161 358 167 359 173 360 179 361 186 363 192 366 198 370 204 374 210 379 216 385 222 392 227 399 232 408 237 418 241 430 244 443 247 456 247 471 246 487 242 502 236 517 227 530 214 541 199 548 182 550 164Z" fill="rgba(21,94,117,.08)" stroke="#155e75" stroke-width="2.2"/>
+  <line x1="406" y1="164" x2="550" y2="164" stroke="#b3382e" stroke-width="1.6"/>
+  <circle cx="550" cy="164" r="3" fill="#b3382e"/>
+  <text x="456" y="172.4" style="font:11px system-ui;fill:#b3382e">ρ = 6</text>
+  <line x1="406" y1="164" x2="406" y2="92" stroke="#b3382e" stroke-width="1.6"/>
+  <circle cx="406" cy="92" r="3" fill="#b3382e"/>
+  <text x="413" y="138.8" style="font:11px system-ui;fill:#b3382e">ρ = 3</text>
+  <line x1="406" y1="164" x2="358" y2="164" stroke="#b3382e" stroke-width="1.6"/>
+  <circle cx="358" cy="164" r="3" fill="#b3382e"/>
+  <text x="366" y="156" style="font:11px system-ui;fill:#b3382e">ρ = 2</text>
+  <line x1="406" y1="164" x2="454" y2="80.9" stroke="#b3382e" stroke-width="1.6"/>
+  <circle cx="454" cy="80.9" r="3" fill="#b3382e"/>
+  <text x="436" y="120.4" style="font:11px system-ui;fill:#b3382e">ρ = 4</text>
+  <circle cx="406" cy="164" r="4" fill="#1a7f37"/>
+  <text x="342" y="182" style="font:11px system-ui;fill:#1a7f37">полюс = фокус</text>
+  <circle cx="454" cy="164" r="3.2" fill="#6b6b74"/>
+  <text x="440" y="154" style="font:11px system-ui;fill:#6b6b74">центр</text>
+  <text x="338.8" y="259.2" style="font:11px system-ui;fill:#155e75">(x − 2)²/16 + y²/12 = 1,   ε = 1/2</text>
+</svg>
+  <div class="caption">Слева лемниската построена по точкам в полярной сетке:
+  вне углов \(\pm45^\circ\) подкоренное выражение отрицательно, и кривая туда не
+  заходит. Справа тот же эллипс с полюсом в левом фокусе; проведённые радиусы —
+  те самые значения, которые использованы в проверке.</div>
+
+  <div class="note warn"><b>Типичная ошибка при переходе к полярным
+  координатам.</b> Сокращение на \(\rho\) законно только при \(\rho\ne0\), и
+  после него надо отдельно выяснить, принадлежит ли полюс кривой; у лемнискаты
+  принадлежит — при \(\varphi=\pm45^\circ\) радиус обращается в нуль. Второе
+  место, где теряют решения, — возведение в квадрат: равенство
+  \(2\sqrt{x^2+y^2}=6+x\) требует \(6+x\ge0\), и для найденного эллипса это
+  выполнено, так как его точки лежат в полосе \(-2\le x\le6\).</div>
+
+  <h2>Что дальше</h2>
+  <ul>
+    <li>Теория к этим задачам — <a href="t-geometry">глава 2. Аналитическая
+    геометрия</a>: три произведения векторов, прямая и плоскость, кривые и
+    поверхности второго порядка, системы координат.</li>
+    <li>Определители и системы, через которые считаются произведения и
+    разложения по базису, — <a href="t-linear">глава 1</a> и разбор
+    <a href="z-linear">ТР‑1: матрицы и системы</a>.</li>
+    <li>Полярные координаты понадобятся при вычислении площадей и двойных
+    интегралов — <a href="t-integral">глава 5</a> и <a href="t-fnp">глава 6</a>.</li>
+    <li>Происхождение условий и литература — <a href="sources">Источники</a>;
+    список всех разборов — на странице <a href="tasks">Задачи</a>.</li>
+  </ul>
 </main>
 </body>
 </html>
