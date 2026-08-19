@@ -3,8 +3,13 @@
 
 Структурная целостность проверяется в test_site.py; здесь проверяется то,
 что специфично для этого сайта: единый каркас страниц, наличие блока
-«Коротко» в каждой главе, шаблон разбора задачи на страницах ТР, корректность
-записи формул KaTeX и рамка у собственных SVG-схем.
+«Коротко» в каждой аналитической главе, шаблон разбора задачи на страницах ТР,
+корректность записи формул KaTeX и рамка у собственных SVG-схем.
+
+Раздел «Численные методы» (страницы n-*) влит из отдельного сайта и живёт по
+своим правилам: у его глав нет блока «Коротко», зато каждая обязана нести
+ссылку на парную аналитическую главу, а страницы живых расчётов — подключать
+свои скрипты. Тесты этого раздела собраны в конце файла.
 """
 import os
 import re
@@ -19,6 +24,23 @@ TASKS = sorted(f for f in os.listdir(SITE) if f.startswith('z-') and f.endswith(
 CHAPTERS = THEORY + TASKS
 PAGES = sorted(f for f in os.listdir(SITE) if f.endswith('.html'))
 
+# раздел «Численные методы»: главы теории и страницы живых расчётов
+NUM_THEORY = sorted(f for f in os.listdir(SITE)
+                    if f.startswith('n-') and not f.startswith('n-calc-') and f.endswith('.html'))
+NUM_CALC = sorted(f for f in os.listdir(SITE) if f.startswith('n-calc-') and f.endswith('.html'))
+NUMERIC = NUM_THEORY + NUM_CALC
+
+# пара «численная глава ↔ аналитическая глава» (ссылки обязаны быть в обе стороны)
+PAIRS = {
+    'n-errors': 't-limits',
+    'n-interp': 't-series',
+    'n-integr': 't-integral',
+    'n-roots': 't-derivative',
+    'n-linalg': 't-linear',
+    'n-ode': 't-diffeq',
+    'n-pde': 't-fnp',
+}
+
 
 def read(name):
     with open(os.path.join(SITE, name), encoding='utf-8') as fh:
@@ -28,7 +50,7 @@ def read(name):
 def test_all_chapters_present():
     """Все главы и разборы, объявленные в навигации, лежат на диске."""
     js = read(os.path.join('assets', 'site.js'))
-    declared = set(re.findall(r"h:\s*'([tz]-[a-z]+)'", js))
+    declared = {h for h in re.findall(r"h:\s*'([a-z0-9-]*)'", js) if h}
     assert declared, 'в site.js не найдено ни одной главы'
     missing = sorted(n for n in declared if not os.path.isfile(os.path.join(SITE, n + '.html')))
     assert not missing, 'в навигации есть, а файла нет: %s' % ', '.join(missing)
@@ -119,3 +141,91 @@ def test_own_svg_frame(name):
         assert 'max-width:640px' in tag.replace(' ', ''), \
             'у схемы нет max-width:640px: %s' % tag[:120]
     assert '<img' not in html, 'на странице растровая картинка — схемы должны быть своими SVG'
+
+
+# ======================= раздел «Численные методы» =======================
+# Перенесены из репозитория nummet и адаптированы: имена страниц другие,
+# каркас и стили — общие с остальным сайтом.
+
+def test_numeric_section_complete():
+    """Раздел на месте целиком: обзор, семь глав теории, шесть живых расчётов."""
+    assert os.path.isfile(os.path.join(SITE, 'numeric.html')), 'нет обзора раздела'
+    assert len(NUM_THEORY) == 7, 'глав теории не семь: %s' % ', '.join(NUM_THEORY)
+    assert len(NUM_CALC) == 6, 'страниц живых расчётов не шесть: %s' % ', '.join(NUM_CALC)
+
+
+@pytest.mark.parametrize('name', NUMERIC)
+def test_numeric_uses_common_shell(name):
+    """Страницы раздела живут на общем каркасе, а не тащат свой."""
+    html = read(name)
+    assert 'assets/shell.js' in html, 'не подключён общий каркас'
+    assert 'data-page="numeric"' in html, 'страница не подсвечивает раздел в навигации'
+    assert '<style>' not in html, 'осталась собственная врезка стилей — место правил в style.css'
+    assert 'class="crumb"' in html, 'нет хлебных крошек раздела'
+
+
+@pytest.mark.parametrize('name', NUMERIC)
+def test_numeric_volume(name):
+    """Страница раздела — изложение или работающий расчёт, а не аннотация."""
+    html = read(name)
+    assert len(html) > 4000, 'страница слишком короткая (%d байт)' % len(html)
+    assert html.count('<h2') >= 2, 'меньше двух разделов на странице'
+
+
+@pytest.mark.parametrize('num,ana', sorted(PAIRS.items()))
+def test_pair_links_both_ways(num, ana):
+    """Каждая численная глава ссылается на аналитическую пару, и наоборот."""
+    n_html, a_html = read(num + '.html'), read(ana + '.html')
+    assert 'class="pair"' in n_html, '%s: нет врезки с аналитической парой' % num
+    assert 'href="%s"' % ana in n_html, '%s: нет ссылки на пару %s' % (num, ana)
+    assert 'class="pair"' in a_html, '%s: нет врезки с численной парой' % ana
+    assert 'href="%s"' % num in a_html, '%s: нет обратной ссылки на %s' % (ana, num)
+
+
+@pytest.mark.parametrize('name', NUM_THEORY + NUM_CALC)
+def test_numeric_backlink_to_overview(name):
+    """С любой страницы раздела можно вернуться в его оглавление."""
+    assert 'href="numeric"' in read(name), 'нет ссылки на обзор раздела'
+
+
+@pytest.mark.parametrize('name', NUM_CALC)
+def test_live_calc_scripts(name):
+    """Живой расчёт подключает общие движки и свой скрипт, и все они на диске."""
+    html = read(name)
+    for common in ('assets/common.js', 'assets/nm.js'):
+        assert common in html, 'не подключён %s' % common
+    own = re.findall(r'<script src="assets/([a-z0-9-]+\.js)"></script>', html)
+    own = [f for f in own if f not in ('shell.js', 'site.js', 'common.js', 'nm.js')]
+    assert len(own) == 1, 'ожидался ровно один собственный скрипт расчёта: %s' % own
+    for f in ['common.js', 'nm.js'] + own:
+        assert os.path.isfile(os.path.join(SITE, 'assets', f)), 'нет файла assets/%s' % f
+
+
+def test_live_calc_steps_class_not_clashing():
+    """Блок «решение по шагам» расчёта не занимает классы разбора типового расчёта.
+
+    На страницах ТР .steps/.step — нумерованный разбор с counter-ами; если бы
+    движок расчётов ставил те же классы, разбор бы поехал. Отсюда nm-steps.
+    """
+    js = read(os.path.join('assets', 'nm.js'))
+    assert 'nm-step' in js, 'движок расчётов не использует класс nm-step'
+    assert '"step"' not in js and "'steps'" not in js, \
+        'движок расчётов занял классы .step/.steps разбора типового расчёта'
+    css = read(os.path.join('assets', 'style.css'))
+    assert '.nm-steps' in css and '.nm-step ' in css, 'в стилях нет правил nm-steps/nm-step'
+
+
+def test_relmet_widget_kept():
+    """Виджет многокритериального выбора квадратурной формулы переехал целиком."""
+    html = read('n-integr.html')
+    assert 'class="relmet-choice"' in html, 'нет контейнера виджета'
+    assert '/relmet-choice.js' in html, 'не подключён скрипт виджета'
+    assert 'application/json' in html, 'нет данных виджета'
+    assert '"alternatives"' in html and '"criteria"' in html, 'в данных виджета нет альтернатив/критериев'
+    assert 'Трапеции' in html and 'Ромберг' in html, 'потерялась таблица оценок методов'
+
+
+def test_old_site_links_gone():
+    """Ссылок на бывший отдельный сайт численных методов не осталось."""
+    bad = [n for n in PAGES if 'duckdns.org/nummet' in read(n)]
+    assert not bad, 'ссылка на исчезнувший сайт: %s' % ', '.join(bad)
