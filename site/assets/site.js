@@ -41,9 +41,25 @@
         { h: 'z-diffeq', k: 'tasks', t: 'ТР. Дифференциальные уравнения' },
         { h: 'z-probability', k: 'tasks', t: 'ТР. Вероятность и статистика' },
       ] },
+      { t: 'Численные методы', h: 'numeric', drop: [
+        { h: 'numeric', k: 'numeric', t: 'Обзор раздела' },
+        { h: 'n-errors', k: 'numeric', t: '1. Погрешности вычислений' },
+        { h: 'n-interp', k: 'numeric', t: '2. Интерполяция и приближение' },
+        { h: 'n-integr', k: 'numeric', t: '3. Численное интегрирование' },
+        { h: 'n-roots', k: 'numeric', t: '4. Нелинейные уравнения' },
+        { h: 'n-linalg', k: 'numeric', t: '5. Системы линейных уравнений' },
+        { h: 'n-ode', k: 'numeric', t: '6. Задача Коши для ОДУ' },
+        { h: 'n-pde', k: 'numeric', t: '7. Уравнения в частных производных' },
+        { h: 'n-calc-interp', k: 'numeric', t: 'Расчёт: интерполяция таблицы' },
+        { h: 'n-calc-roots', k: 'numeric', t: 'Расчёт: уравнения и системы' },
+        { h: 'n-calc-integr', k: 'numeric', t: 'Расчёт: интегрирование' },
+        { h: 'n-calc-ode', k: 'numeric', t: 'Расчёт: дифференциальные уравнения' },
+        { h: 'n-calc-wave', k: 'numeric', t: 'Расчёт: колебания струны' },
+        { h: 'n-calc-special', k: 'numeric', t: 'Расчёт: специальные разделы' },
+      ] },
       { h: 'sources', k: 'sources', t: 'Источники' },
     ],
-    footer: `<div>Учебный сайт по курсу «Высшая математика» · кафедра математики СПбГМТУ · теория, разборы типовых расчётов и живые построения</div>`,
+    footer: `<div>Учебный сайт по курсу «Высшая математика» · кафедра математики СПбГМТУ · теория, численные методы, разборы типовых расчётов и живые расчёты в браузере</div>`,
     markers: `<marker id="arrE" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
       <path d="M0,0 L10,4 L0,8 z" fill="#16161a"/></marker>
     <marker id="arrS" markerWidth="10" markerHeight="8" refX="1" refY="4" orient="auto">

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Колебания струны — Численные методы</title>
+<meta name="description" content="Волновое уравнение струны: явная разностная схема «крест», условие Куранта, вариант с силой тяжести и живая анимация колебаний.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📐</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<script src="assets/shell.js"></script>
+<script src="assets/site.js" data-root="./" data-page="numeric"></script>
+<main class="wrap">
+  <p class="crumb"><a href="numeric">Численные методы</a> · живой расчёт</p>
+  <h1>Колебания струны</h1>
+  <p class="lead">Уравнение поперечных колебаний струны
+  \(u_{tt}=a^2u_{xx}\) (в варианте с тяжестью — \(u_{tt}=a^2u_{xx}-g\))
+  решается явной разностной схемой «крест». Параметры и начальная форма —
+  из практической работы; анимация показывает решение в реальном времени.</p>
+
+  <p class="pair">Теория к странице — <a href="n-pde"><b>глава 7 «Уравнения в частных производных»</b></a>; аналитические пары — <a href="t-fnp"><b>«Функции нескольких переменных»</b></a> (частные производные) и <a href="t-series"><b>«Ряды»</b></a> (разложение колебаний струны в ряд Фурье).</p>
+
+  <h2>Схема «крест»</h2>
+  <p>Обе вторые производные заменяются центральными разностями на сетке с
+  шагами \(h_x\) по длине и \(\tau\) по времени:</p>
+  $$\dfrac{u_i^{n+1}-2u_i^{n}+u_i^{n-1}}{\tau^2}
+    =a^2\,\dfrac{u_{i+1}^{n}-2u_i^{n}+u_{i-1}^{n}}{h_x^2}-g,$$
+  <p>откуда новый временной слой выражается явно:</p>
+  $$u_i^{n+1}=2u_i^{n}-u_i^{n-1}
+    +\lambda^2\bigl(u_{i+1}^{n}-2u_i^{n}+u_{i-1}^{n}\bigr)-g\tau^2,
+    \qquad \lambda=\dfrac{a\tau}{h_x}.$$
+  <p>Первый слой строится по начальной скорости \(u_t(x,0)=v\) с поправкой
+  Тейлора второго порядка:</p>
+  $$u_i^{1}=u_i^{0}+\tau v+\dfrac{\tau^{2}}{2}\bigl(a^{2}(u_{xx})_i^{0}-g\bigr).$$
+
+  <h2>Условие Куранта</h2>
+  <p>Явная схема устойчива только при</p>
+  $$\lambda=\dfrac{a\tau}{h_x}\le 1$$
+  <p>— возмущение физически распространяется со скоростью \(a\), и сеточная
+  область зависимости обязана накрывать физическую. При \(\lambda&gt;1\)
+  счёт разваливается за считаные шаги (это можно устроить движком скорости
+  ниже). Любопытно, что ровно при \(\lambda=1\) схема воспроизводит формулу
+  Даламбера точно — «магический шаг».</p>
+
+  <h2>Живая струна</h2>
+  <div class="panel">
+    <div class="controls">
+      <label><input type="checkbox" id="ck-g"> сила тяжести (g = 9)</label>
+      <label>скорость волн a <input type="range" id="in-a" min="0.4" max="1.4" step="0.1" value="1">
+        <span class="readout" id="out-a">1</span></label>
+      <label>темп анимации <input type="range" id="in-speed" min="1" max="12" step="1" value="4"></label>
+      <button class="btn" id="btn-pause">Пауза</button>
+      <button class="btn" id="btn-restart">Сначала</button>
+      <span id="out-courant"></span>
+    </div>
+    <div id="anim"></div>
+    <div class="caption">Анимация: профиль струны u(x, t); серым — начальная
+    форма. Время в углу; шкала подобрана под размах решения работы.</div>
+  </div>
+
+  <h2>Профили во времени</h2>
+  <div class="panel">
+    <div class="boards">
+      <div style="flex:1 1 440px">
+        <div id="plot-prof0"></div>
+        <div class="caption">Без тяжести: профили u(x) в моменты t = 0.5,
+        1.5 и 3.0 (столбцы 5, 15 и 30 матрицы numol из работы).</div>
+      </div>
+      <div style="flex:1 1 440px">
+        <div id="plot-profg"></div>
+        <div class="caption">С тяжестью (g = 9): струна «проседает» — к
+        колебаниям добавляется прогиб к равновесной параболе
+        \(u_{\text{р}}=-\dfrac{g\,x\,(l-x)}{2a^{2}}\).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note warn"><b>Честное примечание о начальной форме.</b>
+  В работе начальный профиль задан как \(\varphi(x)=h\,x\,(1-x)\) при
+  \(h=2\) на струне длиной \(l=10\). Эта формула — «горбик» для струны
+  единичной длины: на \([0,10]\) она положительна лишь до \(x=1\), а дальше
+  уходит вниз до \(\varphi(10)=-180\), конфликтуя с закреплённым концом
+  \(u(10,t)=0\). Поэтому амплитуды решения в работе достигают сотен единиц.
+  Сайт по умолчанию воспроизводит расчёт работы (и сверяет числа с матрицей
+  numol), а флажок ниже включает нормированную форму
+  \(\varphi=h\,\frac{x}{l}\bigl(1-\frac{x}{l}\bigr)\), с которой колебания
+  выглядят «по-струнному».</div>
+  <div class="controls"><label><input type="checkbox" id="ck-norm">
+  нормированная начальная форма \(h\,\frac{x}{l}(1-\frac{x}{l})\)</label></div>
+
+  <div id="steps-wave"></div>
+
+  <div class="note tip">Самопроверки страницы (консоль): начальный профиль,
+  строки матрицы решения против numol-эталонов работы (для g = 0 и g = 9)
+  и выполнение условия Куранта на сетке по умолчанию.</div>
+
+  <p class="chapnav"><a href="numeric">← Оглавление раздела «Численные методы»</a> ·
+  <a href="sources">Источники</a></p>
+</main>
+<script src="assets/common.js"></script>
+<script src="assets/nm.js"></script>
+<script src="assets/wave.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Обыкновенные дифференциальные уравнения — Численные методы</title>
+<meta name="description" content="Задача Коши методом Рунге — Кутты 4-го порядка, система двух уравнений с фазовой траекторией и исследование устойчивости по собственным числам матрицы.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📐</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<script src="assets/shell.js"></script>
+<script src="assets/site.js" data-root="./" data-page="numeric"></script>
+<main class="wrap">
+  <p class="crumb"><a href="numeric">Численные методы</a> · живой расчёт</p>
+  <h1>Обыкновенные дифференциальные уравнения</h1>
+  <p class="lead">Задача Коши \(y'=\cos(x+y)+0.5\,(x-y)\), \(y(0)=0\) из
+  практической работы решается методом Рунге — Кутты с постоянным шагом и
+  сравнивается с плотным эталонным решением; далее — система двух уравнений
+  с фазовой траекторией и исследование устойчивости линейных систем по
+  собственным числам.</p>
+
+  <p class="pair">Теория к странице — <a href="n-ode"><b>глава 6 «Обыкновенные дифференциальные уравнения»</b></a>; аналитическая пара — <a href="t-diffeq"><b>«Дифференциальные уравнения»</b></a>, где та же задача Коши решается в квадратурах.</p>
+
+  <h2>Метод Рунге — Кутты четвёртого порядка</h2>
+  <p>Идея: чтобы шагнуть из \((x_n,y_n)\) на шаг \(h\), наклон поля
+  направлений пробуется в четырёх точках, и результаты усредняются с весами,
+  подобранными так, чтобы разложение Тейлора воспроизводилось до
+  \(h^4\) включительно:</p>
+  $$\begin{aligned}
+    k_1&=f(x_n,\,y_n),\\
+    k_2&=f\bigl(x_n+\tfrac{h}{2},\;y_n+\tfrac{h}{2}k_1\bigr),\\
+    k_3&=f\bigl(x_n+\tfrac{h}{2},\;y_n+\tfrac{h}{2}k_2\bigr),\\
+    k_4&=f\bigl(x_n+h,\;y_n+h\,k_3\bigr),
+  \end{aligned}\qquad
+  y_{n+1}=y_n+\dfrac{h}{6}\bigl(k_1+2k_2+2k_3+k_4\bigr).$$
+  <p>Локальная погрешность — \(O(h^5)\), глобальная — \(O(h^4)\): уменьшение
+  шага вдвое уменьшает ошибку примерно в 16 раз. Адаптивные варианты
+  (в работе — <i>Rkadapt</i>) выбирают шаг сами: мельчат там, где решение
+  быстро меняется, и экономят там, где оно гладкое.</p>
+
+  <h2>Задача Коши из работы</h2>
+  <div class="panel">
+    <div class="controls">
+      <label>число шагов N
+        <select id="sel-N">
+          <option value="20">20 (h = 1)</option>
+          <option value="40" selected>40 (h = 0.5)</option>
+          <option value="80">80 (h = 0.25)</option>
+        </select></label>
+    </div>
+    <div class="boards">
+      <div style="flex:2 1 460px">
+        <div id="plot-ode"></div>
+        <div class="caption">Чёрная кривая — эталон (РК4 с шагом 0.01);
+        цветная ломаная — РК4 с выбранным шагом. При h = 1 ломаная лишь
+        грубо повторяет решение, при h = 0.5 расхождение уже не видно на
+        глаз — тот же вывод сделан в работе.</div>
+      </div>
+      <div style="flex:1 1 300px">
+        <h3 style="margin-top:0">Таблица решения</h3>
+        <div class="tbl-scroll"><div id="out-tab"></div></div>
+      </div>
+    </div>
+  </div>
+  <div id="steps-rk"></div>
+
+  <h2>Система двух уравнений</h2>
+  <p>Метод Рунге — Кутты дословно переносится на системы: \(y\) и \(k_i\)
+  становятся векторами. Система из работы:</p>
+  $$\begin{cases}x'(t)=\cos\bigl(t\,x+y\bigr),\\ y'(t)=\sin\bigl(x-4y\bigr),\end{cases}
+    \qquad x(0)=2,\quad y(0)=1,\quad t\in[0,10].$$
+  <div class="panel">
+    <div class="boards">
+      <div style="flex:1 1 440px">
+        <div id="plot-sys-t"></div>
+        <div class="caption">Компоненты решения x(t) и y(t), РК4 с 50 узлами
+        поверх плотного эталона.</div>
+      </div>
+      <div style="flex:1 1 380px">
+        <div id="plot-sys-phase"></div>
+        <div class="caption">Фазовая траектория (x(t), y(t)): время — параметр
+        вдоль кривой, стартовая точка отмечена.</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Устойчивость линейных систем</h2>
+  <p>Для системы \(\dot{\vec x}=A\vec x\) общее решение — комбинация
+  \(e^{\lambda_i t}\) по собственным числам матрицы. Отсюда критерий:
+  нулевое решение <b>асимптотически устойчиво</b>, если все
+  \(\operatorname{Re}\lambda_i&lt;0\); <b>устойчиво (не асимптотически)</b>,
+  если \(\operatorname{Re}\lambda_i\le 0\) и чисто мнимые числа просты;
+  <b>неустойчиво</b>, если есть \(\operatorname{Re}\lambda&gt;0\).</p>
+  <div class="panel">
+    <div class="controls">
+      <label>размер <select id="sel-msize"><option value="2" selected>2×2</option><option value="3">3×3</option></select></label>
+      <span>A =</span><span id="mat-St" class="matgrid"></span>
+      <button class="btn" id="btn-ex1">пример 1 работы</button>
+      <button class="btn" id="btn-ex2">пример 3 работы</button>
+    </div>
+    <div class="boards">
+      <div style="flex:1 1 380px">
+        <div id="out-eig" class="kv"></div>
+        <div id="out-verdict" class="result-line"></div>
+        <div class="tbl-scroll"><div id="out-poly" class="kv small"></div></div>
+      </div>
+      <div style="flex:1 1 420px">
+        <div id="plot-phase2"></div>
+        <div class="caption">Фазовые траектории \(\dot{\vec x}=A\vec x\) из
+        трёх начальных точек работы (интегрирование РК4): при
+        \(\operatorname{Re}\lambda&lt;0\) все траектории стягиваются к нулю.</div>
+      </div>
+    </div>
+  </div>
+  <div id="steps-eig"></div>
+
+  <p>Отдельное задание работы — устойчивость по характеристическому
+  многочлену \(9\lambda^5+13\lambda^4+25\lambda^3+16\lambda^2+4\lambda+1\):
+  все коэффициенты положительны (необходимое условие выполнено), а численно
+  найденные корни — один отрицательный вещественный и две пары комплексных с
+  отрицательной вещественной частью, значит нулевое решение асимптотически
+  устойчиво. Страница пересчитывает эти корни сама и сверяет с работой
+  (−0.591; −0.336 ± 1.396i; −0.090 ± 0.288i).</p>
+
+  <div class="note tip">Самопроверки страницы (консоль): столбец решения РК4
+  при h = 0.5 против матрицы Yr из работы, собственные числа обоих примеров,
+  корни характеристического многочлена.</div>
+
+  <p class="chapnav"><a href="numeric">← Оглавление раздела «Численные методы»</a> ·
+  <a href="sources">Источники</a></p>
+</main>
+<script src="assets/common.js"></script>
+<script src="assets/nm.js"></script>
+<script src="assets/ode.js"></script>
+</body>
+</html>
